@@ -7,6 +7,8 @@
 \newcommand\M{\text{M}(X\uplus X^{-1})}
 \newcommand\G{\mathscr{G}(X)}
 \renewcommand\F{\mathscr{F}(X)}
+\newcommand\V{\mathbb{V}}
+\newcommand\D{\mathbb{D}}
 \newcommand\bet{\rightarrow_\beta}
 \newcommand\beq{=_\beta}
 \newcommand\Rel{\text{Rel}}
@@ -16,6 +18,8 @@
 \renewcommand\P{\mathscr{P}}
 \newcommand\ar{\text{ar}}
 \newcommand\csp{\text{CSP}}
+\renewcommand\C{\mathscr{C}}
+\newcommand\fset{\text{FinSet}}
 
 \title{Mémoire de L3~: Un approche catégorique au problème CSP}
 \author{}
@@ -24,6 +28,13 @@
 
 \maketitle
 
+
+%   ____ ____  ____                    _     _                
+%  / ___/ ___||  _ \   _ __  _ __ ___ | |__ | | ___ _ __ ___  
+% | |   \___ \| |_) | | '_ \| '__/ _ \| '_ \| |/ _ \ '_ ` _ \ 
+% | |___ ___) |  __/  | |_) | | | (_) | |_) | |  __/ | | | | |
+%  \____|____/|_|     | .__/|_|  \___/|_.__/|_|\___|_| |_| |_|
+%                     |_|                                     
 \section{Premier rendez vous}
 
 Soit $D$ un ensemble fini.
@@ -231,6 +242,226 @@ On a maintenant le premier résultat intéressant, qui motive leur définition~:
             & \text{ par propriété d'adjunction} \\
     \end{array}\]
 \end{proof}
+
+
+%   ____      _                        _           _    ____ ____  ____  
+%  / ___|__ _| |_ ___  __ _  ___  _ __(_) ___ __ _| |  / ___/ ___||  _ \ 
+% | |   / _` | __/ _ \/ _` |/ _ \| '__| |/ __/ _` | | | |   \___ \| |_) |
+% | |__| (_| | ||  __/ (_| | (_) | |  | | (_| (_| | | | |___ ___) |  __/ 
+%  \____\__,_|\__\___|\__, |\___/|_|  |_|\___\__,_|_|  \____|____/|_|    
+%                     |___/                                              
+\section{Une catégorie pour les CSP}
+
+Soit $\Sigma = \{R_1, \dots R_n\}$ un alphabet de symboles de relations, avec
+leurs arités $a_1, \dots a_n\in\N$.
+
+L'objectif est de créer une catégorie $\C_\Sigma$, que l'on notera $\C$ en l'absence
+d'ambiguïté sur $\Sigma$, telle que la donnée d'un problème CSP soit exactement la donnée
+d'un faisseau sur $\C$ (à valeur dans $\fset$, puisqu'on se limite à ce cadre là). Pour
+pouvoir parler de faisseau, il faudra munir $\C$ d'une structure de site.
+
+\subsection{Définition de $\C$}
+
+Afin de simplifier, on va essayer de donner une représentation des formules indépendante
+du renommage des variables (pour éviter les problèmes d'alpha-équivalence) et qui réduit
+la structure d'une formule à son plus simple.
+
+La donnée d'une formule est alors un $n$-uplet $r\in\N^n$, avec $r_1$ qui indique le
+nombre d'occurence du prédicat $R_1$, $r_2$ le nombre d'occurences du prédicat $R_2$,
+\dots On ne dit pour l'instant rien sur les variables, et on appelle $r$ le 
+\emph{squelette} de la formule.
+
+\begin{defi}{Lieu de variable}
+    Étant donné $r\in\N^n$ un squelette de formule, on va définir l'ensemble des
+    \emph{lieux de variables} de la façon suivante~:
+
+    \[ \V(r):= \{(i,j,k)\in\N^3 |        1\leq i\leq n
+                                  \wedge 1\leq j\leq r_j
+                                  \wedge 1\leq k\leq a_j\} \]
+
+    Intuitivement, un triplet $(i,j,k)\in\V(r)$ désigne un endroit où une variable peut
+    aller dans la formule, plus précisément cela désigne le $k$-ième argument de la
+    $j$-ième instance d'un prédicat $R_i$.
+\end{defi}
+
+Dans une formule, tous les emplacement possibles ne sont pas nécessairement remplis
+par des variables différentes, il faut donc un moyen d'assimiler les lieus de variable
+qui sont occupés par la même variable. On fait ça de façon brutale en se munissant d'une
+relation d'équivalence sur $\V(r)$.
+
+\begin{defi}{Formule}
+    Une \emph{formule} est alors un couple $(r,R)\in\N^n\times\P(\V(r)^2)$ où $R$ est
+    une relation d'équivalence. On nomme une \emph{variable} de $(r,R)$ une classe
+    d'équivalence de lieus, c'est à dire un élément de $\V(r)/R$.
+\end{defi}
+
+La catégorie $\C$ va alors avoir comme objets les formules telles que définit ci-dessus,
+plus un objet spécial $\star$.
+
+Il faut maintenant définir une notion de morphisme sur $\C$. On va distinguer les
+morphismes entre formule, et les morphismes depuis $\star$, qui a un rôle particulier.
+Commençons par les morphismes depuis $\star$. Ces morphismes sont simples~: ils 
+représentent les variables de la formules visée.
+
+\begin{defi}{Morphismes depuis $\star$}
+    On pose $\C(\star,\star) = \{\text{id}_\star\}$ (cet objet n'a pas d'intérêt autre
+    que d'être nécessaire). Plus intéressant, on pose~:
+
+    \[\C(\star, (r,R)) = \V(r)/R \]
+\end{defi}
+
+Maintenant, il faut définir les morphismes entre formules. L'idée est qu'un morphisme
+d'une formule vers une autre est une instance de la première formule dans la deuxième.
+Intuitivement, ça indique que la première formule est une sous-formule de la deuxième,
+et de quelle manière. Pour cela, il faut un moyen d'indiquer où vont les anciennes
+instances des relations. On fait ça à l'aide d'un \emph{déplacement}.
+
+\begin{defi}{Déplacement}
+    Un \emph{déplacement} de $r$ vers $r'$ est un n-uplet de fonctions $\phi$, tel que
+    $\forall 1\leq i\leq n, \phi_i : r_i\hookrightarrow r_i'$.
+
+    On note l'ensemble des déplacements de $r$ vers $r'$ $\D(r,r')$
+\end{defi}
+
+\begin{rem}
+    On remarque que $\D(r,r')\neq\emptyset\implies r\leq r'$ où $\leq$ est l'ordre
+    partiel point par point.
+\end{rem}
+
+On va maintenant définir l'action d'un déplacement sur une relation.
+
+\begin{defi}{Déplacement d'une relation}
+    Soient $(r,R)$ et $(r',R')$ deux formules. Soit $\phi\in\D(r,r')$. On pose~:
+
+    \[ \begin{array}{rccl}
+          \phi(R) &:= & & \{ ((i,\phi_i(j), k), (i', \phi_{i'}(j'), k'))
+                           ~|~ ((i,j,k), (i',j',k'))\in R \} \\
+                  &   & \cup &\{ ((i,j,k), (i,j,k)) ~|~ (i,j,k)\in\V(r') \} \\
+    \end{array} \]
+\end{defi}
+
+On peut vérifier que cette définition a bien un sens~:
+
+\begin{lem}
+    Soient $(r,R)$ et $(r',R')$ deux formules. Soit $\phi\in\D(r,r')$.
+    Alors $\phi(R)$ est une relation d'équivalence sur $\V(r')$.
+\end{lem}
+
+\begin{proof}
+    TODO mais facile.
+\end{proof}
+
+On a maintenant tout en main pour définir les morphismes entre formules.
+
+\begin{defi}{Morphismes entre formules}
+    Soient $(r,R)$ et $(r',R')$ deux formules. On pose~:
+
+    \[\C((r,R),(r',R')) := \{ \phi\in\D(r,r') ~|~ \phi(R)\subseteq R' \}\]
+\end{defi}
+
+\begin{rem}\begin{itemize}
+    \item $\C((r,R), (r',R'))\neq\emptyset \implies r\leq r'$, ce qui est cohérent
+        avec l'intuition derrière la définition des morphismes.
+    \item $\C((r,R), (r,R))$ n'est jamais vide, il contient toujours le $n$-uplet
+        des identités des $r_i$. Ce sera d'ailleurs la flèche identité pour la loi
+        de composition que l'on définira plus bas.
+    \item $\star$ n'a aucune flèche entrante en dehors de son identité.
+\end{itemize}\end{rem}
+
+On a maintenant besoin de quelques définitions et lemmes préliminaires pour pouvoir
+définir proprement la composition de morphismes dans $\C$.
+
+\begin{lem}
+    Soient $(r,R)$, $(r',R')$ et $(r'',R'')$ des formules.
+    Soient $\phi_1\in\C((r,R),(r',R'))$ et $\phi_2\in\C((r',R'),(r'',R''))$.
+    Alors $\phi_2\circ\phi_1\in\C((r,R),(r'',R''))$ où $\circ$ est compris
+    terme à terme.
+\end{lem}
+
+\begin{proof}
+    Comme la composition de deux injections est un injection, on a que
+    $\phi_2\circ\phi_1\in\D(r,r'')$.
+
+    On sait que l'on a $\phi_1(R)\subseteq R'$ et $\phi_2(R')\subseteq R''$. Or
+    les déplacements sont immédiatements croissants pour l'inclusion lorsque pensés
+    comme fonctions de relations.
+    Donc $\phi_2\circ\phi_1(R)\subseteq\phi_2(R')\subseteq R''$.
+\end{proof}
+
+\begin{defi}{Déplacement d'un lieu de variable}
+    Soient $(r,R)$ et $(r',R')$ des formules, et $\phi\in\D(r,r')$.
+    Soit $(i,j,k)\in\V(r)$. On définit $\phi((i,j,k)) = (i, \phi_i(j), k)\in\V(r')$.
+\end{defi}
+
+\begin{lem}
+    Soient $(r,R)$ et $(r',R')$ des formules, et $\phi\in\C((r,R),(r',R'))$.
+    On a que~:
+    
+    \[\forall v_1,v_2\in\V(r), (v_1,v_2)\in\R\implies (\phi(v_1),\phi(v_2))\in R'\]
+\end{lem}
+
+\begin{defi}{Déplacement d'une variable}
+    Soient $(r,R)$ et $(r',R')$ des formules, et $\phi\in\C((r,R),(r',R'))$.
+    Soit $c\in\V(r)/R$. Soit $v\in c$. On pose $\phi(c) = [\phi(v)]\in\V(r')/R'$.
+
+    Le lemme précédent nous assure que c'est bien définit.
+\end{defi}
+
+On a maintenant tout en main pour définir la composition de morphismes.
+
+\begin{defi}{Composition dans $\C$}
+    Il y a trois cas à considérer~:\begin{itemize}
+        \item $id_\star\in\C(\star,\star)$ et $f\in\C(\star, x)$ où $x$ est n'importe
+            quel object de $\C$. Alors $f\circ id_\star := f$.
+        \item $c\in\C(\star, (r,R))$ et $\phi\in\C((r,R), (r',R'))$. Alors
+            on pose $\phi\circ c := \phi(c)$.
+        \item $\phi_1\in\C((r,R),(r',R'))$ et $\phi_2\in\C((r',R'),(r'',R''))$. Alors
+            on pose $\phi_2\circ\phi_1$ définit terme à terme, comme dans le lemme
+            précédent.
+    \end{itemize}
+\end{defi}
+
+\begin{lem}
+    Pour toute formule $(r,R)$, on a que
+        $\phi=(id_{r_1},\dots id_{r_n})\in\C((r,R),(r,R))$.
+    De plus, $\forall f\in\C(x, (r,R)), \phi\circ f = f$
+    et $\forall \phi'\in\C((r,R), (r',R')), f\circ\phi = f$.
+\end{lem}
+
+\begin{lem}
+    Soient $(r,R)$, $(r',R')$ et $(r'',R'')$ trois formules. Soit $c\in\C(\star,(r,R))$,
+    $\phi_1\in\C((r,R), (r',R'))$ et $\phi_2\in\C((r',R'), (r'',R''))$.
+
+    Alors $(\phi_2\circ\phi_1)\circ c = \phi_2\circ (\phi_1\circ c)$.
+\end{lem}
+
+\begin{lem}
+    Soient $(r_1,R_1)$, $(r_2,R_2)$, $(r_3,R_3)$ et $(r_4,R_4)$ quatres formules.
+    Soient $\phi_1\in\C((r_1,R_1), (r_2,R_2))$, $\phi_2\in\C((r_2,R_2), (r_3,R_3))$ et
+    $\phi_3\in\C((r_3,R_3),(r_4,R_4))$.
+
+    Alors $\phi_3\circ(\phi_2\circ\phi_1) = (\phi_3\circ\phi_2)\circ\phi_1$.
+\end{lem}
+
+\begin{proof} Les trois lemmes sont immédiats. Il suffit d'écrire la définition de $\circ$
+    dans chacun des cas pour que ça marche.
+\end{proof}
+
+\begin{theo}{Définition de $\C$}
+    $\C$ est une catégorie.
+\end{theo}
+
+\begin{proof} Conséquence immédiate des trois lemmes précédents.
+\end{proof}
+\subsection{Structure de site}
+
+% TODO définition d'un site
+
+% TODO
+
+\subsection{Correction de la définition}
+
+% TODO
 
 \end{document}
 
