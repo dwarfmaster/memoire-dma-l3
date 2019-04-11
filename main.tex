@@ -4,6 +4,7 @@
 
 \usepackage{mathrsfs}
 \usetikzlibrary{positioning}
+\usepackage{tikz-cd}
 \newcommand\M{\text{M}(X\uplus X^{-1})}
 \newcommand\G{\mathscr{G}(X)}
 \renewcommand\F{\mathscr{F}(X)}
@@ -12,6 +13,7 @@
 \newcommand\bet{\rightarrow_\beta}
 \newcommand\beq{=_\beta}
 \newcommand\Rel{\text{Rel}}
+\newcommand\Set{\text{Set}}
 \newcommand\Oper{\text{Oper}}
 \newcommand\Inv{\text{Inv}}
 \newcommand\Pol{\text{Pol}}
@@ -20,6 +22,7 @@
 \newcommand\csp{\text{CSP}}
 \renewcommand\C{\mathscr{C}}
 \newcommand\fset{\text{FinSet}}
+\newcommand\im{\text{Im }}
 
 \title{Mémoire de L3~: Un approche catégorique au problème CSP}
 \author{}
@@ -455,9 +458,128 @@ On a maintenant tout en main pour définir la composition de morphismes.
 \end{proof}
 \subsection{Structure de site}
 
-% TODO définition d'un site
+\begin{defi}{Site}
+    Soit $\C$ une catégorie quelconque. On donne, pour
+    chaque $c\in\C$, d'un ensemble de familles $(f_i : c_i\rightarrow c)_{i\in I}$,
+    dites couvrantes, telles que~:
 
-% TODO
+    \begin{align*}
+        \forall c\in\C, & \forall (f_i)_{i\in I} \text{ couvrante de } c,
+          \forall h : d\rightarrow c, \exists (g_j)_{j\in J} \text{ couvrante de } d, \\
+        & \forall j\in J, \exists i\in I,
+          \begin{tikzcd}[ampersand replacement=\&]
+            d \arrow[r, "h"] \& c \\
+            g_j \arrow[u, "g_j"] \arrow[r, dotted] \& c_i \arrow[u, "f_i"] \\
+          \end{tikzcd}
+    \end{align*}
+
+    La catégorie $\C$ munie de ces familles est appellée un \emph{site}.
+\end{defi}
+
+L'intuition est de définir une notion de recouvrement d'objets de $\C$ par des morphismes.
+Cela permet de définir une notion de localité sur les objets de $\C$, sans pour autant
+avoir de foncteur d'oublie vers $\Set$ et de topologie. Cela permet de définir des
+faisceaux, qui sont intuitivement une manière d'associer une collection d'objets à
+chaque objet de $\C$ qui soit essentiellement locale.
+
+\begin{defi}{Famille cohérente}
+    Soit $\C$ un site et $F : \C^{\text{op}}\rightarrow\Set$ un préfaisceau sur
+    $\C$. Soit $c\in\C$ et $(f_i)_{i\in I}$ une famille couvrante de $c$.
+    
+    Soit $(a_i)_{i\in I}\in \Pi_{i\in I} Fc_i$. $(a_i)$ est dite \emph{cohérente} si~:
+
+    \[\forall i,j\in I, \forall f : d\rightarrow c_i, \forall h : d\rightarrow c_j,
+      \begin{tikzcd}
+          d \arrow[r, "g"] \arrow[d, "h"] & c_i \arrow[d, "f_i"] \\
+          c_j \arrow[r, "f_j"] & c \\
+      \end{tikzcd}
+      \implies Fg(a_i) = Fh(a_j) \]
+\end{defi}
+
+Si l'on pense une famille couvrante comme une notion de localité, une famille cohérente
+est une information locale sur un objet $Fc$.
+
+\begin{defi}{Faisceau}
+    Un faisceau sur $\C$ un site est un préfaisceau sur $\C$ tel que~:
+
+    \begin{align*}
+        \forall c\in\C, & \forall (f_i)_{i\in I}\text{ couvrante de } c, \\
+                        & \forall (a_i)_{i\in I}\in\Pi_{i\in I}Fc_i \text{ cohérente}, \\
+                        & \exists ! a\in Fc, \forall i\in I, Ff_i(a) = a_i
+    \end{align*}
+\end{defi}
+
+La condition de faisceau confirme l'intuition~: elle nous dit que l'information locale
+correspont bien à un objet de $Fc$. Sans cette condition on ne pourrait pas nécessairement
+obtenir l'existence d'un objet à partir d'une description locale.
+
+Pourquoi s'intéresser à ça ? Parce que l'objectif est de montrer que les CSP sur un 
+alphabet de relation $\Sigma$ sont les faisceau sur la catégorie $\C_\Sigma$,
+où $F\phi$ contient des témoins de satisfiabilité de $\phi$. La construction de $\C_\Sigma$
+et la condition de fonctorialité nous permettrons de dire que chaque élément de $F\phi$
+correspond bien à une solution de $\phi$, mais ce n'est pas suffisant pour obtenir que
+$F\phi$ contient des témoins pour toutes les solutions. Pour cela, il faut montrer que
+l'on peut construire une solution de $\phi$ à partir de ses constituants~: c'est ce que
+la condition de faisceau va nous donner.
+
+On veut donc définir une notion de recouvrement sur $\C_\Sigma$. L'idée est qu'un
+recouvrement d'une formule doit être suffisant pour obtenir toutes les solutions de
+cette formule. Il faut donc avoir les solutions de chaque formule atomique, directement
+ou via une formule plus compliqué. On va maintenant formaliser ça, la preuve que ça
+fonctionne sera donnée dans la section suivante.
+
+\begin{defi}{Recouvrement d'une formule}
+    Soit $(r,R)$ une formule dans $\C_\Sigma$. Soit un $(\phi_i)_{i\in I}$ un ensemble
+    de morphismes de formules de $\C_\Sigma$ (ne contient donc pas de flèche depuis
+    $\star$). $(\phi_i)$ est dit \emph{couvrante} si~:
+
+    \[ \bigcup_{i\in I} \im\phi_i = r \]
+
+    Où l'image de $\phi$ est le $n$-uplet des images des fonctions constituantes et
+    l'union est prise terme à terme.
+\end{defi}
+
+Cette définition revient exactement à dire que chaque formule atomique de la formule est
+présente dans au moins une des formule du recouvrement.
+
+\begin{defi}{Site sur $\C_\sigma$}
+    On munit $\C_\Sigma$ d'une structure de site en lui donnant, pour chaque formule,
+    tous les recouvrements définis tels que précédemment, et pour $\star$ le recouvrement
+    $(\id_\star)$.
+\end{defi}
+
+Il faut prouver que cette définition donne bien un site. C'est l'objectif du
+lemme suivant.
+
+\begin{rem}
+    Soit $(r,R)$ une formule de $\C_\Sigma$. Alors cette formule possède un
+    recouvrement constitué uniquement de formule atomique avec une relation d'équivalence
+    triviale. On appelle ce recouvrement le \emph{recouvrement fondamental}
+    (il est unique à permutation de la famille près).
+\end{rem}
+
+\begin{lem}
+    Cette définition est bien un site.
+\end{lem}
+
+\begin{proof}
+    Soit $\star\in\C$. Comme il existe une seule flèche entrante en $\star$, son identité,
+    et un seul recouvrement, la propriété de site est immédiatement vraie.
+
+    Soit $(r,R)$ une formule et $(f_i)_{i\in I}$ un recouvrement de cette formule.
+    
+    Soit $\phi$ un morphisme de $(r', R')$ dans $(r,R)$. On prend $(g_j)_{j\in J}$ le
+    recouvrement fondamental de $(r', R')$. Soit $j\in J$. On a que $\phi\circ g_j$ est
+    l'une des sous-formules atomiques de $(r,R)$. Par définition d'un recouvrement, on
+    a $i\in I$ tel que $f_j$ identifie une sous-formule de $(r,R)$ contenant la
+    sous-formule atomique considérée. Le morphisme qui envoie cette formule atomique
+    dans le départ de $f_j$ fait alors commuter le carré voulu.
+
+    Soit $v$ un morphisme de $\star$ dans $(r,R)$, autrement dit une variable de $(r,R)$.
+    Cette variable apparait nécessairement dans une sous-formule du recouvrement. En
+    prenant le morphisme depuis $\star$ vers cette sous-formule qui identifie l'une des
+    variables qui est ensuite envoyée sur $v$, on fait commuter le carré voulu.
+\end{proof}
 
 \subsection{Correction de la définition}
 
