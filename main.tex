@@ -15,6 +15,7 @@
 \newcommand\Pol{\text{Pol}}
 \renewcommand\P{\mathscr{P}}
 \newcommand\ar{\text{ar}}
+\newcommand\csp{\text{CSP}}
 
 \title{Mémoire de L3~: Un approche catégorique au problème CSP}
 \author{}
@@ -27,7 +28,71 @@
 
 Soit $D$ un ensemble fini.
 
-% TODO définition CSP et logique régulière
+\subsection{CSP}
+
+\begin{defi}{Logique régulière}
+    Une proposition de la logique régulière est construite à partir d'un nombre
+    fini de relations $R_1, \dots R_n$, sur un langage de termes ne contenant que
+    des variables $x, y, z \dots$, de la conjonction, de la quantification existentielle
+    et du symbole faux.
+
+    \[\begin{array}{rcl}
+        P, Q & := & R_1(x_1, \dots, x_{\ar(R_1)}) \\
+             & |  & \vdots                        \\
+             & |  & R_n(x_1, \dots, x_{\ar(R_n)}) \\
+             & |  & x = y                         \\
+             & |  & P \wedge Q                    \\
+             & |  & \exists x. P                  \\
+             & |  & \bot                          \\
+    \end{array}\]
+\end{defi}
+
+\begin{defi}{Problème de satisfaction de contraintes}
+    Pour un ensemble fini $\mathcal{D}$ de contraintes, on donne une interprétation de
+    ces contraintes sur $D$. Cela revient à dire que $D$ est un modèle de la théorie
+    vide sur le langage de la logique régulière. L'interprétation des différents 
+    connecteurs se font comme en théorie des modèle de premier ordre usuel. 
+    $\csp(\mathcal{D})$ est alors le problème, pour une proposition de la logique
+    régulière $P$, de déterminer si $D\models P$.
+\end{defi}
+
+Par la suite, on assimilera une proposition à $m$ variables libres avec une relation
+d'arité $m$.
+
+\begin{lem}
+    Pour tout $\mathcal{D}$, $\csp(\mathcal{D})$ est dans $NP$.
+
+    On ne peut pas dire mieux dans le cas général. En effet, $3-SAT$ est un $\csp$
+    (facile), donc certains $\csp$ sont $NP$-complets.
+\end{lem}
+
+\begin{theo}{Dichotomie}
+    Soit $\mathcal{D}$. $\csp(\mathcal{D})$ est soit $NP$-complet, soit dans $P$.
+\end{theo}
+
+Ce théorème est très difficile. Pour commencer à l'attauqer, on veut pouvoir comparer les
+$\csp$ par difficulté. La comparaison qui va nous intéresser est la réduction LOGSpace.
+
+\begin{defi}{Réduction}
+    Soient $\mathcal{D}$ et $\mathcal{F}$ des ensembles finis de relations, éventuellement
+    sur des domaines différents. On écrit $\csp(\mathcal{D})\leq\csp(\mathcal{F})$ si il
+    existe une fonction calculable en espace logarithmique qui envoie une instance de
+    $\csp(\mathcal{D})$ sur une instance de $\csp(\mathcal{F})$ qui soit équisatisfiable.
+\end{defi}
+
+On va maintenant considérer des critères plus simples qui permettent de comparer des
+$\csp$.
+
+\begin{defi}{pp-réduction}
+    $\mathcal{F}$ est dit pp-réductible (primitif positif réductible) à
+    $\mathcal{D}$ (sur un même domaine) si chaque relation de $\mathcal{F}$ peut
+    s'écrire comme une formule régulière sur $\mathcal{D}$.
+\end{defi}
+
+\begin{lem}
+    Si $\mathcal{F}$ est pp-réductible à $\mathcal{D}$, alors
+    $\csp(\mathcal{F})\leq\csp(\mathcal{D})$.
+\end{lem}
 
 \subsection{Adjunction}
 
@@ -72,7 +137,7 @@ entre $\Rel$ et $\Oper$ qui formeront notre adjunction.
     \end{array}\]
 \end{defi}
 
-\begin{lem}{Fonctorialité}
+\begin{lem}
     $\Pol$ et $\Inv$ sont des foncteurs contrinvariants, respectivement de $\Rel$ vers
     $\Oper$ et de $\Oper$ vers $\Rel$.
 \end{lem}
@@ -111,6 +176,8 @@ On a maintenant le premier résultat intéressant, qui motive leur définition~:
 
 \subsection{Théorème important}
 
+% TODO hypothèse : l'image de Inv est toujours un clone relationel, et l'image de Pol est
+% toujours un clone
 \begin{lem}{}
     \[\forall \Gamma\in\Rel, \Inv(\Pol(\Gamma)) \text{ est un clone relationel}\]
 \end{lem}
@@ -122,7 +189,47 @@ On a maintenant le premier résultat intéressant, qui motive leur définition~:
         \implies f(a_1, \dots a_{\ar(f)}) = f(b_1, \dots b_{\ar(f)})$, on a $\Delta\bot f$
     et donc $\Delta\in \Inv(F)$ pour tout $F\in\Oper$. Donc $\Delta\in\Inv(\Pol(\Gamma))$.
 
-    % TODO
+    De manière immédiate, $\Inv(F)$ est clos par intersection de relations pour tout
+    $F\in\Oper$.
+
+    Soit $f\in\Pol(\Gamma)$. Soit $R\in\Inv(\Pol(\Gamma))$, avec $\ar(R)>1$. Posons
+    $R'$ la relation définie par $R'(x_1, \dots x_{\ar(R)-1}) :\iff
+    \exists x. R(x, x_1, \dots x_{\ar(R)-1})$. Posons $m = \ar(R) - 1$ et $n = \ar(f)$.
+    Soient maintenant $(a_{i,j})\in D^{mn}$ tels que
+    $\forall 1\leq j\leq n, R'(a_{1,j}, \dots, a_{m,j})$. On prends $x_1, \dots x_n$ les
+    témoins de chaque relation. En posant $x = f(x_1, \dots x_n)$, et
+    $a_i = f(a_{i,1}, \dots a_{i,n})$, on a $R(x, a_1, \dots a_m)$ et donc
+    $R'(a_1, \dots a_m)$, d'où le résultat.
+\end{proof}
+
+\begin{theo}{1969}
+    \[\forall \Gamma\in\Rel, <\Gamma> = \Inv(\Pol(\Gamma))\]
+\end{theo}
+\begin{proof}\begin{description}
+    \item[$\subseteq$] Par propriété d'adjonction, on a 
+        $\Gamma\subseteq\Inv(\Pol(\Gamma))$. Or d'après le lemme précédent, 
+        $\Inv(\Pol(\Gamma))$ est un clone relationel. Donc, comme $<\Gamma >$ est le
+        plus petit clone relationel contenant $\Gamma$, on a 
+        $<\Gamma>\subseteq\Inv(\Pol(\Gamma))$.
+    \item[$\supseteq$] Difficile ! Donc admis. % TODO
+\end{description}\end{proof}
+
+\begin{cor}{Critère de pp-réductibilité}
+    $\mathcal{D}$ est pp-réductible à $\mathcal{F}$ si et seulement si
+    $\Pol(\mathcal{F})\subseteq\Pol(\mathcal{D})$.
+\end{cor}
+
+\begin{proof}
+    $\mathcal{D}$ est pp-réductible à $\mathcal{F}$ si et seulement si
+    $\mathcal{D}\subseteq<\mathcal{F}>$ (c'est exactement la définition de
+    pp-réductibilité). On a alors~:
+    \[\begin{array}{rll}
+        \mathcal{D}\subseteq<\mathcal{F}>
+          &\iff \mathcal{D}\subseteq\Inv(\Pol(\mathcal{F}))
+            & \text{ par le théorème précédent} \\
+          &\iff \Pol(\mathcal{F})\subseteq\Pol(\mathcal{D})
+            & \text{ par propriété d'adjunction} \\
+    \end{array}\]
 \end{proof}
 
 \end{document}

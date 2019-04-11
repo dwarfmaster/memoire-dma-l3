@@ -4,7 +4,7 @@ LATEX=pdflatex
 
 all: $(FILE).pdf
 
-$(FILE).pdf: $(FILE).tex
+$(FILE).pdf: $(FILE).tex inc.tex
 	$(WRAPPER) '$(LATEX) $(FILE).tex'
 
 clean:
