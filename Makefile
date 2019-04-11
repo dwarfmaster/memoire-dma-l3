@@ -1,15 +1,16 @@
-FILE=main
+NAME=main
+PARTS=faisceau.tex csp.tex
 WRAPPER=nix-shell --pure --command
 LATEX=pdflatex
 
-all: $(FILE).pdf
+all: $(NAME).pdf
 
-$(FILE).pdf: $(FILE).tex inc.tex
-	$(WRAPPER) '$(LATEX) $(FILE).tex'
+$(NAME).pdf: $(NAME).tex inc.tex $(PARTS)
+	$(WRAPPER) '$(LATEX) $(NAME).tex'
 
 clean:
-	@touch $(FILE).pdf
-	rm $(FILE).pdf
+	@touch $(NAME).pdf
+	rm $(NAME).pdf
 
 rec: clean all
 
