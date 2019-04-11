@@ -1,0 +1,332 @@
+
+Soit $\Sigma = \{R_1, \dots R_n\}$ un alphabet de symboles de relations, avec
+leurs arités $a_1, \dots a_n\in\N$.
+
+L'objectif est de créer une catégorie $\C_\Sigma$, que l'on notera $\C$ en l'absence
+d'ambiguïté sur $\Sigma$, telle que la donnée d'un problème CSP soit exactement la donnée
+d'un faisseau sur $\C$ (à valeur dans $\fset$, puisqu'on se limite à ce cadre là). Pour
+pouvoir parler de faisseau, il faudra munir $\C$ d'une structure de site.
+
+\subsection{Définition de $\C$}
+
+Afin de simplifier, on va essayer de donner une représentation des formules indépendante
+du renommage des variables (pour éviter les problèmes d'alpha-équivalence) et qui réduit
+la structure d'une formule à son plus simple.
+
+La donnée d'une formule est alors un $n$-uplet $r\in\N^n$, avec $r_1$ qui indique le
+nombre d'occurence du prédicat $R_1$, $r_2$ le nombre d'occurences du prédicat $R_2$,
+\dots On ne dit pour l'instant rien sur les variables, et on appelle $r$ le 
+\emph{squelette} de la formule.
+
+\begin{defi}{Lieu de variable}
+    Étant donné $r\in\N^n$ un squelette de formule, on va définir l'ensemble des
+    \emph{lieux de variables} de la façon suivante~:
+
+    \[ \V(r):= \{(i,j,k)\in\N^3 |        1\leq i\leq n
+                                  \wedge 1\leq j\leq r_j
+                                  \wedge 1\leq k\leq a_j\} \]
+
+    Intuitivement, un triplet $(i,j,k)\in\V(r)$ désigne un endroit où une variable peut
+    aller dans la formule, plus précisément cela désigne le $k$-ième argument de la
+    $j$-ième instance d'un prédicat $R_i$.
+\end{defi}
+
+Dans une formule, tous les emplacement possibles ne sont pas nécessairement remplis
+par des variables différentes, il faut donc un moyen d'assimiler les lieus de variable
+qui sont occupés par la même variable. On fait ça de façon brutale en se munissant d'une
+relation d'équivalence sur $\V(r)$.
+
+\begin{defi}{Formule}
+    Une \emph{formule} est alors un couple $(r,R)\in\N^n\times\P(\V(r)^2)$ où $R$ est
+    une relation d'équivalence. On nomme une \emph{variable} de $(r,R)$ une classe
+    d'équivalence de lieus, c'est à dire un élément de $\V(r)/R$.
+\end{defi}
+
+La catégorie $\C$ va alors avoir comme objets les formules telles que définit ci-dessus,
+plus un objet spécial $\star$.
+
+Il faut maintenant définir une notion de morphisme sur $\C$. On va distinguer les
+morphismes entre formule, et les morphismes depuis $\star$, qui a un rôle particulier.
+Commençons par les morphismes depuis $\star$. Ces morphismes sont simples~: ils 
+représentent les variables de la formules visée.
+
+\begin{defi}{Morphismes depuis $\star$}
+    On pose $\C(\star,\star) = \{\text{id}_\star\}$ (cet objet n'a pas d'intérêt autre
+    que d'être nécessaire). Plus intéressant, on pose~:
+
+    \[\C(\star, (r,R)) = \V(r)/R \]
+\end{defi}
+
+Maintenant, il faut définir les morphismes entre formules. L'idée est qu'un morphisme
+d'une formule vers une autre est une instance de la première formule dans la deuxième.
+Intuitivement, ça indique que la première formule est une sous-formule de la deuxième,
+et de quelle manière. Pour cela, il faut un moyen d'indiquer où vont les anciennes
+instances des relations. On fait ça à l'aide d'un \emph{déplacement}.
+
+\begin{defi}{Déplacement}
+    Un \emph{déplacement} de $r$ vers $r'$ est un n-uplet de fonctions $\phi$, tel que
+    $\forall 1\leq i\leq n, \phi_i : r_i\hookrightarrow r_i'$.
+
+    On note l'ensemble des déplacements de $r$ vers $r'$ $\D(r,r')$
+\end{defi}
+
+\begin{rem}
+    On remarque que $\D(r,r')\neq\emptyset\implies r\leq r'$ où $\leq$ est l'ordre
+    partiel point par point.
+\end{rem}
+
+On va maintenant définir l'action d'un déplacement sur une relation.
+
+\begin{defi}{Déplacement d'une relation}
+    Soient $(r,R)$ et $(r',R')$ deux formules. Soit $\phi\in\D(r,r')$. On pose~:
+
+    \[ \begin{array}{rccl}
+          \phi(R) &:= & & \{ ((i,\phi_i(j), k), (i', \phi_{i'}(j'), k'))
+                           ~|~ ((i,j,k), (i',j',k'))\in R \} \\
+                  &   & \cup &\{ ((i,j,k), (i,j,k)) ~|~ (i,j,k)\in\V(r') \} \\
+    \end{array} \]
+\end{defi}
+
+On peut vérifier que cette définition a bien un sens~:
+
+\begin{lem}
+    Soient $(r,R)$ et $(r',R')$ deux formules. Soit $\phi\in\D(r,r')$.
+    Alors $\phi(R)$ est une relation d'équivalence sur $\V(r')$.
+\end{lem}
+
+\begin{proof}
+    TODO mais facile.
+\end{proof}
+
+On a maintenant tout en main pour définir les morphismes entre formules.
+
+\begin{defi}{Morphismes entre formules}
+    Soient $(r,R)$ et $(r',R')$ deux formules. On pose~:
+
+    \[\C((r,R),(r',R')) := \{ \phi\in\D(r,r') ~|~ \phi(R)\subseteq R' \}\]
+\end{defi}
+
+\begin{rem}\begin{itemize}
+    \item $\C((r,R), (r',R'))\neq\emptyset \implies r\leq r'$, ce qui est cohérent
+        avec l'intuition derrière la définition des morphismes.
+    \item $\C((r,R), (r,R))$ n'est jamais vide, il contient toujours le $n$-uplet
+        des identités des $r_i$. Ce sera d'ailleurs la flèche identité pour la loi
+        de composition que l'on définira plus bas.
+    \item $\star$ n'a aucune flèche entrante en dehors de son identité.
+\end{itemize}\end{rem}
+
+On a maintenant besoin de quelques définitions et lemmes préliminaires pour pouvoir
+définir proprement la composition de morphismes dans $\C$.
+
+\begin{lem}
+    Soient $(r,R)$, $(r',R')$ et $(r'',R'')$ des formules.
+    Soient $\phi_1\in\C((r,R),(r',R'))$ et $\phi_2\in\C((r',R'),(r'',R''))$.
+    Alors $\phi_2\circ\phi_1\in\C((r,R),(r'',R''))$ où $\circ$ est compris
+    terme à terme.
+\end{lem}
+
+\begin{proof}
+    Comme la composition de deux injections est un injection, on a que
+    $\phi_2\circ\phi_1\in\D(r,r'')$.
+
+    On sait que l'on a $\phi_1(R)\subseteq R'$ et $\phi_2(R')\subseteq R''$. Or
+    les déplacements sont immédiatements croissants pour l'inclusion lorsque pensés
+    comme fonctions de relations.
+    Donc $\phi_2\circ\phi_1(R)\subseteq\phi_2(R')\subseteq R''$.
+\end{proof}
+
+\begin{defi}{Déplacement d'un lieu de variable}
+    Soient $(r,R)$ et $(r',R')$ des formules, et $\phi\in\D(r,r')$.
+    Soit $(i,j,k)\in\V(r)$. On définit $\phi((i,j,k)) = (i, \phi_i(j), k)\in\V(r')$.
+\end{defi}
+
+\begin{lem}
+    Soient $(r,R)$ et $(r',R')$ des formules, et $\phi\in\C((r,R),(r',R'))$.
+    On a que~:
+    
+    \[\forall v_1,v_2\in\V(r), (v_1,v_2)\in\R\implies (\phi(v_1),\phi(v_2))\in R'\]
+\end{lem}
+
+\begin{defi}{Déplacement d'une variable}
+    Soient $(r,R)$ et $(r',R')$ des formules, et $\phi\in\C((r,R),(r',R'))$.
+    Soit $c\in\V(r)/R$. Soit $v\in c$. On pose $\phi(c) = [\phi(v)]\in\V(r')/R'$.
+
+    Le lemme précédent nous assure que c'est bien définit.
+\end{defi}
+
+On a maintenant tout en main pour définir la composition de morphismes.
+
+\begin{defi}{Composition dans $\C$}
+    Il y a trois cas à considérer~:\begin{itemize}
+        \item $id_\star\in\C(\star,\star)$ et $f\in\C(\star, x)$ où $x$ est n'importe
+            quel object de $\C$. Alors $f\circ id_\star := f$.
+        \item $c\in\C(\star, (r,R))$ et $\phi\in\C((r,R), (r',R'))$. Alors
+            on pose $\phi\circ c := \phi(c)$.
+        \item $\phi_1\in\C((r,R),(r',R'))$ et $\phi_2\in\C((r',R'),(r'',R''))$. Alors
+            on pose $\phi_2\circ\phi_1$ définit terme à terme, comme dans le lemme
+            précédent.
+    \end{itemize}
+\end{defi}
+
+\begin{lem}
+    Pour toute formule $(r,R)$, on a que
+        $\phi=(id_{r_1},\dots id_{r_n})\in\C((r,R),(r,R))$.
+    De plus, $\forall f\in\C(x, (r,R)), \phi\circ f = f$
+    et $\forall \phi'\in\C((r,R), (r',R')), f\circ\phi = f$.
+\end{lem}
+
+\begin{lem}
+    Soient $(r,R)$, $(r',R')$ et $(r'',R'')$ trois formules. Soit $c\in\C(\star,(r,R))$,
+    $\phi_1\in\C((r,R), (r',R'))$ et $\phi_2\in\C((r',R'), (r'',R''))$.
+
+    Alors $(\phi_2\circ\phi_1)\circ c = \phi_2\circ (\phi_1\circ c)$.
+\end{lem}
+
+\begin{lem}
+    Soient $(r_1,R_1)$, $(r_2,R_2)$, $(r_3,R_3)$ et $(r_4,R_4)$ quatres formules.
+    Soient $\phi_1\in\C((r_1,R_1), (r_2,R_2))$, $\phi_2\in\C((r_2,R_2), (r_3,R_3))$ et
+    $\phi_3\in\C((r_3,R_3),(r_4,R_4))$.
+
+    Alors $\phi_3\circ(\phi_2\circ\phi_1) = (\phi_3\circ\phi_2)\circ\phi_1$.
+\end{lem}
+
+\begin{proof} Les trois lemmes sont immédiats. Il suffit d'écrire la définition de $\circ$
+    dans chacun des cas pour que ça marche.
+\end{proof}
+
+\begin{theo}{Définition de $\C$}
+    $\C$ est une catégorie.
+\end{theo}
+
+\begin{proof} Conséquence immédiate des trois lemmes précédents.
+\end{proof}
+\subsection{Structure de site}
+
+\begin{defi}{Site}
+    Soit $\C$ une catégorie quelconque. On donne, pour
+    chaque $c\in\C$, d'un ensemble de familles $(f_i : c_i\rightarrow c)_{i\in I}$,
+    dites couvrantes, telles que~:
+
+    \begin{align*}
+        \forall c\in\C, & \forall (f_i)_{i\in I} \text{ couvrante de } c,
+          \forall h : d\rightarrow c, \exists (g_j)_{j\in J} \text{ couvrante de } d, \\
+        & \forall j\in J, \exists i\in I,
+          \begin{tikzcd}[ampersand replacement=\&]
+            d \arrow[r, "h"] \& c \\
+            g_j \arrow[u, "g_j"] \arrow[r, dotted] \& c_i \arrow[u, "f_i"] \\
+          \end{tikzcd}
+    \end{align*}
+
+    La catégorie $\C$ munie de ces familles est appellée un \emph{site}.
+\end{defi}
+
+L'intuition est de définir une notion de recouvrement d'objets de $\C$ par des morphismes.
+Cela permet de définir une notion de localité sur les objets de $\C$, sans pour autant
+avoir de foncteur d'oublie vers $\Set$ et de topologie. Cela permet de définir des
+faisceaux, qui sont intuitivement une manière d'associer une collection d'objets à
+chaque objet de $\C$ qui soit essentiellement locale.
+
+\begin{defi}{Famille cohérente}
+    Soit $\C$ un site et $F : \C^{\text{op}}\rightarrow\Set$ un préfaisceau sur
+    $\C$. Soit $c\in\C$ et $(f_i)_{i\in I}$ une famille couvrante de $c$.
+    
+    Soit $(a_i)_{i\in I}\in \Pi_{i\in I} Fc_i$. $(a_i)$ est dite \emph{cohérente} si~:
+
+    \[\forall i,j\in I, \forall f : d\rightarrow c_i, \forall h : d\rightarrow c_j,
+      \begin{tikzcd}
+          d \arrow[r, "g"] \arrow[d, "h"] & c_i \arrow[d, "f_i"] \\
+          c_j \arrow[r, "f_j"] & c \\
+      \end{tikzcd}
+      \implies Fg(a_i) = Fh(a_j) \]
+\end{defi}
+
+Si l'on pense une famille couvrante comme une notion de localité, une famille cohérente
+est une information locale sur un objet $Fc$.
+
+\begin{defi}{Faisceau}
+    Un faisceau sur $\C$ un site est un préfaisceau sur $\C$ tel que~:
+
+    \begin{align*}
+        \forall c\in\C, & \forall (f_i)_{i\in I}\text{ couvrante de } c, \\
+                        & \forall (a_i)_{i\in I}\in\Pi_{i\in I}Fc_i \text{ cohérente}, \\
+                        & \exists ! a\in Fc, \forall i\in I, Ff_i(a) = a_i
+    \end{align*}
+\end{defi}
+
+La condition de faisceau confirme l'intuition~: elle nous dit que l'information locale
+correspont bien à un objet de $Fc$. Sans cette condition on ne pourrait pas nécessairement
+obtenir l'existence d'un objet à partir d'une description locale.
+
+Pourquoi s'intéresser à ça ? Parce que l'objectif est de montrer que les CSP sur un 
+alphabet de relation $\Sigma$ sont les faisceau sur la catégorie $\C_\Sigma$,
+où $F\phi$ contient des témoins de satisfiabilité de $\phi$. La construction de $\C_\Sigma$
+et la condition de fonctorialité nous permettrons de dire que chaque élément de $F\phi$
+correspond bien à une solution de $\phi$, mais ce n'est pas suffisant pour obtenir que
+$F\phi$ contient des témoins pour toutes les solutions. Pour cela, il faut montrer que
+l'on peut construire une solution de $\phi$ à partir de ses constituants~: c'est ce que
+la condition de faisceau va nous donner.
+
+On veut donc définir une notion de recouvrement sur $\C_\Sigma$. L'idée est qu'un
+recouvrement d'une formule doit être suffisant pour obtenir toutes les solutions de
+cette formule. Il faut donc avoir les solutions de chaque formule atomique, directement
+ou via une formule plus compliqué. On va maintenant formaliser ça, la preuve que ça
+fonctionne sera donnée dans la section suivante.
+
+\begin{defi}{Recouvrement d'une formule}
+    Soit $(r,R)$ une formule dans $\C_\Sigma$. Soit un $(\phi_i)_{i\in I}$ un ensemble
+    de morphismes de formules de $\C_\Sigma$ (ne contient donc pas de flèche depuis
+    $\star$). $(\phi_i)$ est dit \emph{couvrante} si~:
+
+    \[ \bigcup_{i\in I} \im\phi_i = r \]
+
+    Où l'image de $\phi$ est le $n$-uplet des images des fonctions constituantes et
+    l'union est prise terme à terme.
+\end{defi}
+
+Cette définition revient exactement à dire que chaque formule atomique de la formule est
+présente dans au moins une des formule du recouvrement.
+
+\begin{defi}{Site sur $\C_\sigma$}
+    On munit $\C_\Sigma$ d'une structure de site en lui donnant, pour chaque formule,
+    tous les recouvrements définis tels que précédemment, et pour $\star$ le recouvrement
+    $(\id_\star)$.
+\end{defi}
+
+Il faut prouver que cette définition donne bien un site. C'est l'objectif du
+lemme suivant.
+
+\begin{rem}
+    Soit $(r,R)$ une formule de $\C_\Sigma$. Alors cette formule possède un
+    recouvrement constitué uniquement de formule atomique avec une relation d'équivalence
+    triviale. On appelle ce recouvrement le \emph{recouvrement fondamental}
+    (il est unique à permutation de la famille près).
+\end{rem}
+
+\begin{lem}
+    Cette définition est bien un site.
+\end{lem}
+
+\begin{proof}
+    Soit $\star\in\C$. Comme il existe une seule flèche entrante en $\star$, son identité,
+    et un seul recouvrement, la propriété de site est immédiatement vraie.
+
+    Soit $(r,R)$ une formule et $(f_i)_{i\in I}$ un recouvrement de cette formule.
+    
+    Soit $\phi$ un morphisme de $(r', R')$ dans $(r,R)$. On prend $(g_j)_{j\in J}$ le
+    recouvrement fondamental de $(r', R')$. Soit $j\in J$. On a que $\phi\circ g_j$ est
+    l'une des sous-formules atomiques de $(r,R)$. Par définition d'un recouvrement, on
+    a $i\in I$ tel que $f_j$ identifie une sous-formule de $(r,R)$ contenant la
+    sous-formule atomique considérée. Le morphisme qui envoie cette formule atomique
+    dans le départ de $f_j$ fait alors commuter le carré voulu.
+
+    Soit $v$ un morphisme de $\star$ dans $(r,R)$, autrement dit une variable de $(r,R)$.
+    Cette variable apparait nécessairement dans une sous-formule du recouvrement. En
+    prenant le morphisme depuis $\star$ vers cette sous-formule qui identifie l'une des
+    variables qui est ensuite envoyée sur $v$, on fait commuter le carré voulu.
+\end{proof}
+
+\subsection{Correction de la définition}
+
+% TODO
+
+
