@@ -327,6 +327,69 @@ lemme suivant.
 
 \subsection{Correction de la définition}
 
-% TODO
+On veut maintenant
+
+\subsubsection{Tout CSP est un faisceau}
+
+\begin{defi}{CSP}
+    Un CSP est une sémantique finie pour la logique régulière sur un alphabet de formules 
+    $\Sigma = \{R_1, \dots R_n\}$. Concrètement, cela consiste en un domaine $D$ qui est
+    un ensemble fini, et pour chaque $1\leq i\leq n$ une relation $\sem{R_i}$
+    d'arité $a_i$ sur $D$.
+\end{defi}
+
+\begin{rem}
+    On considère une formule conjonctive $\psi$. On note alors $\V(\psi)$ ses variables.
+    Pour chaque formule atomique $R_i(x_1, \dots x_{a_i})$ de $\psi$, on dispose
+    d'une fonction de $\V(R_i(x_1, \dots x_{a_i}))\rightarrow\V(\psi)$
+    qui nous donne l'assimilation des variables de $R_i$ vue comme sous formule de
+    $\psi$ (et ce pour chaque instance de $R_i$ dans $\psi$).
+
+    Alors $\sem{R_i(x_1, \dots x_{a_i})}$ peut être vu comme une partie de
+    $\fns(\V(R_i(\dots)), D)$.
+\end{rem}
+
+\begin{defi}{Extension de domaine}
+    Étant donné deux ensembles de variables $V_1$ et $V_2$ avec une fonction
+    $i : V_1 \rightarrow V_2$ et une partie $E\subseteq\fns(V_1, D)$. On peut définir
+    l'extension de $E$ par rapport à $i$ de la façon suivante~:
+
+    \[ \ext_i(E) = \{f\in\fns(V_2,D) | \exists g\in E, f_{|i(V_1)} = g\circ i \} \]
+\end{defi}
+
+Intuitivement, cela correspond à rajouter des variables qui n'apparaissent pas dans une
+formule à sa sémantique. On dispose alors d'un moyen de définir la sémantique d'une
+formule à partir de ses formules atomiques.
+
+\begin{defi}{Sémantique d'une formule}
+    Soit $\psi$ une formule quelconque. $\psi$ s'écrit $A_1\wedge \dots \wedge A_k$ où
+    les $A_i$ sont des formules atomiques. On note $j_i$ l'entier tel que $R_{j_i}$ soit
+    la relation de $A_i$. On note $f_i$ la fonction de $\V(R_{j_i}(x_1, x_2 \dots))$
+    dans $\V(\psi)$ telle que décrite dans la remarque ci-dessus. On pose alors~:
+
+    \[ \sem{\psi} = \bigcap_{1\leq i\leq k} \ext_{f_i}(\sem{R_{j_i}(x_1, x_2\dots)}) \]
+
+    Il est facile de se convaincre que cette sémantique correspond bien à la sémantique
+    telle que donnée par la structure de logique régulière.
+\end{defi}
+
+On peut alors définir un faisceau sur $\C_\Sigma$ à partir du CSP. On remarque que pour 
+chaque formule $(r,R)$ de $\C_\Sigma$, on peut associer une vraie formule conjonctive
+$\psi_{(r,R)}$ de manière naturelle-ish. %TODO détailler l'association
+
+\begin{defi}{Faisceau de CSP}
+    % TODO sans intérêt sans l'association précédente
+    On pose $F\star = D$ et $F(r,R) = \sem{\psi_{(r,R)}}$.
+
+    Soit $v\in\C_\Sigma(\star, (r,R))$, on peut lui associer une variable $v'$ de manière
+    naturelle dans $\V(\psi_{(r,R)})$. Alors~:
+    
+    \[ Fv = \left\{\begin{array}{ccc}
+                       \sem{\psi_{(r,R)}} & \rightarrow & D     \\
+                              f           & \mapsto     & f(v') \\
+    \end{array}\right.\]
+\end{defi}
+
+\subsubsection{Tout faisceau est un CSP}
 
 
