@@ -1,0 +1,129 @@
+\documentclass[12pt]{article}
+
+\input{inc.tex}
+
+\usepackage{mathrsfs}
+\usetikzlibrary{positioning}
+\newcommand\M{\text{M}(X\uplus X^{-1})}
+\newcommand\G{\mathscr{G}(X)}
+\renewcommand\F{\mathscr{F}(X)}
+\newcommand\bet{\rightarrow_\beta}
+\newcommand\beq{=_\beta}
+\newcommand\Rel{\text{Rel}}
+\newcommand\Oper{\text{Oper}}
+\newcommand\Inv{\text{Inv}}
+\newcommand\Pol{\text{Pol}}
+\renewcommand\P{\mathscr{P}}
+\newcommand\ar{\text{ar}}
+
+\title{Mémoire de L3~: Un approche catégorique au problème CSP}
+\author{}
+
+\begin{document}
+
+\maketitle
+
+\section{Premier rendez vous}
+
+Soit $D$ un ensemble fini.
+
+% TODO définition CSP et logique régulière
+
+\subsection{Adjunction}
+
+\begin{defi}{$\Rel$}
+    $\Rel$ est l'ensemble des ensembles de relations sur $D$.
+
+    \[\Rel = \P\left(\bigcup_{n\in\N^*} \P(D^n)\right)\]
+\end{defi}
+
+\begin{defi}{$\Oper$}
+    $\Oper$ est l'ensemble des ensemble d'opérations sur $D$.
+
+    \[\Oper = \P\left(\bigcup_{n\in\N^*} \P(D^{D^n})\right)\]
+\end{defi}
+
+Ces deux ensembles sont partiellement ordonnables par l'inclusion. On va alors
+chercher à créer une connection de Galois (ou adjonction/dualité) entre ces
+ensembles.
+
+Pour cela, on va définir une relation entre les opérations et les relations sur $D$.
+
+\begin{defi}{$\bot$} Soit $R\in \bigcup_{n\in\N^*} \P(D^n)$ une relation sur $D$
+    et $f\in\bigcup_{n\in\N^*} \P(D^{D^n})$ une opération sur $D$. On écrit alors
+    $R\bot f$ si, en posant $n = \ar(R)$ et $m = \ar(f)$~:
+
+    \[ \forall (a_{i,j})\in D^{nm}, (\forall 1\leq j\leq m, R(a_{1,j}, \dots a_{n, j}))
+         \implies R(f(a_{1,1}, \dots a_{1,m}), \dots f(a_{n,1}, \dots a_{n,m})) \]
+\end{defi}
+
+On va maintenant définir les deux foncteurs contrinvariant (fonctions décroissantes)
+entre $\Rel$ et $\Oper$ qui formeront notre adjunction.
+
+\begin{defi}{$\Pol$ et $\Inv$}
+    On définit~:
+
+    \[\Pol:\begin{array}{rcl}\Rel & \rightarrow & \Oper \\
+        S & \mapsto & \{f\in\Oper | \forall R\in S, R\bot f\} \\
+    \end{array}\]
+
+    \[\Inv:\begin{array}{rcl}\Oper & \rightarrow & \Rel \\
+        S & \mapsto & \{R\in\Rel | \forall f\in S, R\bot f\} \\
+    \end{array}\]
+\end{defi}
+
+\begin{lem}{Fonctorialité}
+    $\Pol$ et $\Inv$ sont des foncteurs contrinvariants, respectivement de $\Rel$ vers
+    $\Oper$ et de $\Oper$ vers $\Rel$.
+\end{lem}
+
+On a maintenant le premier résultat intéressant, qui motive leur définition~:
+
+\begin{theo}{Adjunction}
+    $\Pol\dashv\Inv : \Rel^\text{op} \rightarrow \Oper$
+\end{theo}
+\begin{proof}
+    Soit $S_R\in\Rel$ et $S_f\in\Oper$. On a~:
+
+    \begin{align*}
+        S_f\subseteq\Pol(S_R) &\iff \forall f\in S_f, \forall R\in S_R, R\bot f \\
+                              &\iff \forall R\in S_R, \forall f\in S_f, R\bot f \\
+                              &\iff S_R\subseteq\Inv(S_f)
+    \end{align*}
+\end{proof}
+
+\subsection{Clone}
+
+\begin{defi}{Clone} Un clone est un ensemble d'opérations (donc un élément de $\Oper$)
+    contenant l'identité, et stable par composition, permutation, affaiblissement et
+    contraction.
+\end{defi}
+
+\begin{defi}{Clone relationel} Un clone relationel est un ensemble de relations
+    (donc un élément de $\Rel$) contenant l'égalité et clôt par les constructions
+    régulières (quantification existentielle et conjonction).
+\end{defi}
+
+\begin{defi}{Clone relationel engendré} Pour $\Gamma\in\Rel$, on note $<\Gamma>$ le plus
+    petit clone relationel contenant $\Gamma$ (c'est bien défini car l'intersection d'un
+    ensemble quelconque de clones relationels est un clone relationel).
+\end{defi}
+
+\subsection{Théorème important}
+
+\begin{lem}{}
+    \[\forall \Gamma\in\Rel, \Inv(\Pol(\Gamma)) \text{ est un clone relationel}\]
+\end{lem}
+\begin{proof}
+    Soit $\Gamma\in\Rel$.
+
+    Soit $f$ une opération sur $D$. Comme
+    $\forall (a_i), (b_i)\in D^{\ar(f)}, (a_i) = (b_i) 
+        \implies f(a_1, \dots a_{\ar(f)}) = f(b_1, \dots b_{\ar(f)})$, on a $\Delta\bot f$
+    et donc $\Delta\in \Inv(F)$ pour tout $F\in\Oper$. Donc $\Delta\in\Inv(\Pol(\Gamma))$.
+
+    % TODO
+\end{proof}
+
+\end{document}
+
