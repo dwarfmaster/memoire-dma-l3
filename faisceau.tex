@@ -1,4 +1,16 @@
 
+% r         -- n-uplet
+% \alpha    -- la relation d'équivalence
+% R         -- une lettre de relation/un atome
+% f,g,h     -- une flèche dans la catégorie de \Sigma
+% \phi,\psi -- une formule syntaxique
+% [\phi]    -- une formule dans la catégorie de \Sigma
+% x,y,z     -- une variable d'une formule syntaxique
+% v         -- une variable dans la catégorie (un élément de \C(\star,[\phi])
+% bf{x},    -- une solution (ie un objet de F[\phi])
+% bb{x},    -- une solution (ie un objet de \sem{\phi})
+% F,G,H     -- un préfaisceau
+
 Soit $\Sigma = \{R_1, \dots R_n\}$ un alphabet de symboles de relations, avec
 leurs arités $a_1, \dots a_n\in\N$.
 
@@ -18,15 +30,15 @@ nombre d'occurence du prédicat $R_1$, $r_2$ le nombre d'occurences du prédicat
 \dots On ne dit pour l'instant rien sur les variables, et on appelle $r$ le 
 \emph{squelette} de la formule.
 
-\begin{defi}{Lieu de variable}
+\begin{defi}{Emplacement}
     Étant donné $r\in\N^n$ un squelette de formule, on va définir l'ensemble des
-    \emph{lieux de variables} de la façon suivante~:
+    \emph{emplacements} de la façon suivante~:
 
-    \[ \V(r):= \{(i,j,k)\in\N^3 |        1\leq i\leq n
+    \[ \E(r):= \{(i,j,k)\in\N^3 |        1\leq i\leq n
                                   \wedge 1\leq j\leq r_j
                                   \wedge 1\leq k\leq a_j\} \]
 
-    Intuitivement, un triplet $(i,j,k)\in\V(r)$ désigne un endroit où une variable peut
+    Intuitivement, un triplet $(i,j,k)\in\E(r)$ désigne un endroit où une variable peut
     aller dans la formule, plus précisément cela désigne le $k$-ième argument de la
     $j$-ième instance d'un prédicat $R_i$.
 \end{defi}
@@ -34,12 +46,13 @@ nombre d'occurence du prédicat $R_1$, $r_2$ le nombre d'occurences du prédicat
 Dans une formule, tous les emplacement possibles ne sont pas nécessairement remplis
 par des variables différentes, il faut donc un moyen d'assimiler les lieus de variable
 qui sont occupés par la même variable. On fait ça de façon brutale en se munissant d'une
-relation d'équivalence sur $\V(r)$.
+relation d'équivalence sur $\E(r)$.
 
 \begin{defi}{Formule}
-    Une \emph{formule} est alors un couple $(r,R)\in\N^n\times\P(\V(r)^2)$ où $R$ est
-    une relation d'équivalence. On nomme une \emph{variable} de $(r,R)$ une classe
-    d'équivalence de lieus, c'est à dire un élément de $\V(r)/R$.
+    Une \emph{formule} est alors un couple $(r,\alpha)\in\N^n\times\P(\E(r)^2)$
+    où $\alpha$ est une relation d'équivalence. On nomme une \emph{variable} de
+    $(r,\alpha)$ une classe d'équivalence de lieux, c'est à dire un élément de
+    $\E(r)/\alpha$.
 \end{defi}
 
 La catégorie $\C$ va alors avoir comme objets les formules telles que définit ci-dessus,
@@ -54,7 +67,7 @@ représentent les variables de la formules visée.
     On pose $\C(\star,\star) = \{\text{id}_\star\}$ (cet objet n'a pas d'intérêt autre
     que d'être nécessaire). Plus intéressant, on pose~:
 
-    \[\C(\star, (r,R)) = \V(r)/R \]
+    \[\C(\star, (r,\alpha)) = \E(r)/\alpha) \]
 \end{defi}
 
 Maintenant, il faut définir les morphismes entre formules. L'idée est qu'un morphisme
@@ -64,8 +77,8 @@ et de quelle manière. Pour cela, il faut un moyen d'indiquer où vont les ancie
 instances des relations. On fait ça à l'aide d'un \emph{déplacement}.
 
 \begin{defi}{Déplacement}
-    Un \emph{déplacement} de $r$ vers $r'$ est un n-uplet de fonctions $\phi$, tel que
-    $\forall 1\leq i\leq n, \phi_i : r_i\hookrightarrow r_i'$.
+    Un \emph{déplacement} de $r$ vers $r'$ est un n-uplet de fonctions $f$, tel que
+    $\forall 1\leq i\leq n, f_i : r_i\hookrightarrow r_i'$.
 
     On note l'ensemble des déplacements de $r$ vers $r'$ $\D(r,r')$
 \end{defi}
@@ -78,20 +91,20 @@ instances des relations. On fait ça à l'aide d'un \emph{déplacement}.
 On va maintenant définir l'action d'un déplacement sur une relation.
 
 \begin{defi}{Déplacement d'une relation}
-    Soient $(r,R)$ et $(r',R')$ deux formules. Soit $\phi\in\D(r,r')$. On pose~:
+    Soient $(r,\alpha)$ et $(r',\alpha')$ deux formules. Soit $f\in\D(r,r')$. On pose~:
 
     \[ \begin{array}{rccl}
-          \phi(R) &:= & & \{ ((i,\phi_i(j), k), (i', \phi_{i'}(j'), k'))
-                           ~|~ ((i,j,k), (i',j',k'))\in R \} \\
-                  &   & \cup &\{ ((i,j,k), (i,j,k)) ~|~ (i,j,k)\in\V(r') \} \\
+          f(\alpha) &:= & & \{ ((i,f_i(j), k), (i', f_{i'}(j'), k'))
+                              ~|~ ((i,j,k), (i',j',k'))\in \alpha \} \\
+                    &   & \cup &\{ ((i,j,k), (i,j,k)) ~|~ (i,j,k)\in\V(r') \} \\
     \end{array} \]
 \end{defi}
 
 On peut vérifier que cette définition a bien un sens~:
 
 \begin{lem}
-    Soient $(r,R)$ et $(r',R')$ deux formules. Soit $\phi\in\D(r,r')$.
-    Alors $\phi(R)$ est une relation d'équivalence sur $\V(r')$.
+    Soient $(r,\alpha)$ et $(r',\alpha')$ deux formules. Soit $\phi\in\D(r,r')$.
+    Alors $\phi(\alpha)$ est une relation d'équivalence sur $\E(r')$.
 \end{lem}
 
 \begin{proof}
@@ -101,15 +114,16 @@ On peut vérifier que cette définition a bien un sens~:
 On a maintenant tout en main pour définir les morphismes entre formules.
 
 \begin{defi}{Morphismes entre formules}
-    Soient $(r,R)$ et $(r',R')$ deux formules. On pose~:
+    Soient $(r,\alpha)$ et $(r',\alpha')$ deux formules. On pose~:
 
-    \[\C((r,R),(r',R')) := \{ \phi\in\D(r,r') ~|~ \phi(R)\subseteq R' \}\]
+    \[\C((r,\alpha),(r',\alpha')) := \{ f\in\D(r,r') ~|~
+                                        f(\alpha)\subseteq \alpha' \}\]
 \end{defi}
 
 \begin{rem}\begin{itemize}
-    \item $\C((r,R), (r',R'))\neq\emptyset \implies r\leq r'$, ce qui est cohérent
-        avec l'intuition derrière la définition des morphismes.
-    \item $\C((r,R), (r,R))$ n'est jamais vide, il contient toujours le $n$-uplet
+    \item $\C((r,\alpha), (r',\alpha'))\neq\emptyset \implies r\leq r'$, ce qui
+        est cohérent avec l'intuition derrière la définition des morphismes.
+    \item $\C((r,\alpha), (r,\alpha))$ n'est jamais vide, il contient toujours le $n$-uplet
         des identités des $r_i$. Ce sera d'ailleurs la flèche identité pour la loi
         de composition que l'on définira plus bas.
     \item $\star$ n'a aucune flèche entrante en dehors de son identité.
@@ -119,37 +133,40 @@ On a maintenant besoin de quelques définitions et lemmes préliminaires pour po
 définir proprement la composition de morphismes dans $\C$.
 
 \begin{lem}
-    Soient $(r,R)$, $(r',R')$ et $(r'',R'')$ des formules.
-    Soient $\phi_1\in\C((r,R),(r',R'))$ et $\phi_2\in\C((r',R'),(r'',R''))$.
-    Alors $\phi_2\circ\phi_1\in\C((r,R),(r'',R''))$ où $\circ$ est compris
+    Soient $(r,\alpha)$, $(r',\alpha')$ et $(r'',\alpha'')$ des formules.
+    Soient $f\in\C((r,\alpha),(r',\alpha'))$
+        et $g\in\C((r',\alpha'),(r'',\alpha''))$.
+    Alors $g\circ f\in\C((r,\alpha),(r'',\alpha''))$ où $\circ$ est compris
     terme à terme.
 \end{lem}
 
 \begin{proof}
     Comme la composition de deux injections est un injection, on a que
-    $\phi_2\circ\phi_1\in\D(r,r'')$.
+    $g\circ f\in\D(r,r'')$.
 
-    On sait que l'on a $\phi_1(R)\subseteq R'$ et $\phi_2(R')\subseteq R''$. Or
+    On sait que l'on a $f(\alpha)\subseteq \alpha'$ et $g(\alpha')\subseteq \alpha''$. Or
     les déplacements sont immédiatements croissants pour l'inclusion lorsque pensés
     comme fonctions de relations.
-    Donc $\phi_2\circ\phi_1(R)\subseteq\phi_2(R')\subseteq R''$.
+    Donc $g\circ f(\alpha)\subseteq g(\alpha')\subseteq \alpha''$.
 \end{proof}
 
 \begin{defi}{Déplacement d'un lieu de variable}
-    Soient $(r,R)$ et $(r',R')$ des formules, et $\phi\in\D(r,r')$.
-    Soit $(i,j,k)\in\V(r)$. On définit $\phi((i,j,k)) = (i, \phi_i(j), k)\in\V(r')$.
+    Soient $(r,\alpha)$ et $(r',\alpha')$ des formules, et $f\in\D(r,r')$.
+    Soit $(i,j,k)\in\E(r)$. On définit $f((i,j,k)) = (i, f_i(j), k)\in\V(r')$.
 \end{defi}
 
 \begin{lem}
-    Soient $(r,R)$ et $(r',R')$ des formules, et $\phi\in\C((r,R),(r',R'))$.
+    Soient $(r,\alpha)$ et $(r',\alpha')$ des formules, et
+    $f\in\C((r,\alpha),(r',\alpha'))$.
     On a que~:
     
-    \[\forall v_1,v_2\in\V(r), (v_1,v_2)\in\R\implies (\phi(v_1),\phi(v_2))\in R'\]
+    \[\forall e_1,e_2\in\E(r), (e_1,e_2)\in\alpha\implies (f(e_1),f(e_2))\in \alpha'\]
 \end{lem}
 
 \begin{defi}{Déplacement d'une variable}
-    Soient $(r,R)$ et $(r',R')$ des formules, et $\phi\in\C((r,R),(r',R'))$.
-    Soit $c\in\V(r)/R$. Soit $v\in c$. On pose $\phi(c) = [\phi(v)]\in\V(r')/R'$.
+    Soient $(r,\alpha)$ et $(r',\alpha')$ des formules, et
+    $f\in\C((r,\alpha),(r',\alpha'))$.
+    Soit $v\in\E(r)/\alpha$. Soit $e\in v$. On pose $f(v) = [\phi(e)]\in\V(r')/\alpha'$.
 
     Le lemme précédent nous assure que c'est bien définit.
 \end{defi}
@@ -160,34 +177,36 @@ On a maintenant tout en main pour définir la composition de morphismes.
     Il y a trois cas à considérer~:\begin{itemize}
         \item $id_\star\in\C(\star,\star)$ et $f\in\C(\star, x)$ où $x$ est n'importe
             quel object de $\C$. Alors $f\circ id_\star := f$.
-        \item $c\in\C(\star, (r,R))$ et $\phi\in\C((r,R), (r',R'))$. Alors
-            on pose $\phi\circ c := \phi(c)$.
-        \item $\phi_1\in\C((r,R),(r',R'))$ et $\phi_2\in\C((r',R'),(r'',R''))$. Alors
-            on pose $\phi_2\circ\phi_1$ définit terme à terme, comme dans le lemme
+        \item $v\in\C(\star, (r,\alpha))$ et $f\in\C((r,\alpha), (r',\alpha'))$. Alors
+            on pose $f\circ v := f(v)$.
+        \item $f\in\C((r,\alpha),(r',\alpha'))$ et $g\in\C((r',\alpha'),(r'',\alpha''))$.
+            Alors on pose $g\circ f$ définit terme à terme, comme dans le lemme
             précédent.
     \end{itemize}
 \end{defi}
 
 \begin{lem}
-    Pour toute formule $(r,R)$, on a que
-        $\phi=(id_{r_1},\dots id_{r_n})\in\C((r,R),(r,R))$.
-    De plus, $\forall f\in\C(x, (r,R)), \phi\circ f = f$
-    et $\forall \phi'\in\C((r,R), (r',R')), f\circ\phi = f$.
+    Pour toute formule $(r,\alpha)$, on a que
+        $f=(id_{r_1},\dots id_{r_n})\in\C((r,\alpha),(r,\alpha))$.
+    De plus, $\forall g\in\C(x, (r,\alpha)), f\circ g = g$
+    et $\forall g\in\C((r,\alpha), (r',\alpha')), g\circ f = g$.
 \end{lem}
 
 \begin{lem}
-    Soient $(r,R)$, $(r',R')$ et $(r'',R'')$ trois formules. Soit $c\in\C(\star,(r,R))$,
-    $\phi_1\in\C((r,R), (r',R'))$ et $\phi_2\in\C((r',R'), (r'',R''))$.
+    Soient $(r,\alpha)$, $(r',\alpha')$ et $(r'',\alpha'')$ trois formules.
+    Soit $v\in\C(\star,(r,\alpha))$,
+    $f\in\C((r,\alpha), (r',\alpha'))$ et $g\in\C((r',\alpha'), (r'',\alpha''))$.
 
-    Alors $(\phi_2\circ\phi_1)\circ c = \phi_2\circ (\phi_1\circ c)$.
+    Alors $(g\circ f)\circ v = g\circ (f\circ v)$.
 \end{lem}
 
 \begin{lem}
-    Soient $(r_1,R_1)$, $(r_2,R_2)$, $(r_3,R_3)$ et $(r_4,R_4)$ quatres formules.
-    Soient $\phi_1\in\C((r_1,R_1), (r_2,R_2))$, $\phi_2\in\C((r_2,R_2), (r_3,R_3))$ et
-    $\phi_3\in\C((r_3,R_3),(r_4,R_4))$.
+    Soient $(r_1,\alpha_1)$, $(r_2,\alpha_2)$, $(r_3,\alpha_3)$ et $(r_4,\alpha_4)$
+    quatres formules.
+    Soient $f\in\C((r_1,\alpha_1), (r_2,\alpha_2))$,
+    $g\in\C((r_2,\alpha_2), (r_3,\alpha_3))$ et $h\in\C((r_3,\alpha_3),(r_4,\alpha_4))$.
 
-    Alors $\phi_3\circ(\phi_2\circ\phi_1) = (\phi_3\circ\phi_2)\circ\phi_1$.
+    Alors $h\circ(g\circ f) = (h\circ g)\circ f$.
 \end{lem}
 
 \begin{proof} Les trois lemmes sont immédiats. Il suffit d'écrire la définition de $\circ$
@@ -200,6 +219,119 @@ On a maintenant tout en main pour définir la composition de morphismes.
 
 \begin{proof} Conséquence immédiate des trois lemmes précédents.
 \end{proof}
+
+\subsection{Représentation des formules}
+% TODO est-ce qu'on veut faire les preuves en détail ici ?
+
+\begin{lem}
+    On considère $\phi$ une formule de la logique régulière sur l'alphabet
+    $\Sigma$.  Il est possible d'écrire $\phi$ de manière logiquement
+    équivalente sous forme d'une conjonction d'atomes, avec toutes les
+    existentielles en tête et sans utiliser ni l'égalité, ni le faux (si la
+    formule est différentes de juste la formule fausse).
+
+    On appelle une telle écrite la forme normale de $\phi$.
+\end{lem}
+
+\begin{proof} Induction sur la structure de la formule.
+\end{proof}
+
+On suppose désormais que toutes les formules sont sous forme normale.
+
+\begin{defi}{Variables}
+    On note $\V(\phi)$ l'ensemble des variables d'une formule.
+\end{defi}
+
+\begin{rem}
+    Soient $\phi$ et $\psi$ deux formules. On dit que $\phi$ est une sous-formule
+    de $\psi$ si l'on peut associer chaque atome de $\phi$ à un atome de $\psi$, de
+    manière injective et de façon que si des variables sont égales au depart, elles
+    le sont à l'arrivée (les variables de $\phi$ sont \emph{plus libres} que celles
+    de $\psi$).
+
+    On dispose alors d'une assimilation des variables
+    $\iota : \V(\phi)\rightarrow \V(\psi)$ qui donne l'envoi des variables de $\phi$
+    dans celle de $\psi$ selon l'assimilation des atomes.
+\end{rem}
+
+\begin{defi}{Représentation catégorique}
+    Soit $\phi$ une formule. On définit $[\phi]\in\C_\Sigma$ comme le couple $(r,\alpha)$
+    où $r$ compte les occurences des atomes dans $\phi$ et $\alpha$ regroupe les
+    emplacements qui correspondent aux même variables dans $\phi$.
+\end{defi}
+
+On va montrer que cette représentation contient toute l'information qui nous intéresse.
+
+\begin{lem}
+    Soit $\phi$ une formule.
+
+    Alors il existe une bijection naturelle entre $\C_\Sigma(\star, [\phi])$ et
+    $\V(\phi)$.
+\end{lem}
+
+\begin{defi}{Variable associée}
+    Soit $\phi$ une formule.
+
+    Soit $v\in\C_\Sigma(\star, [\phi])$. On note $v^*\in\V(\phi)$ la variable qui
+    lui est associée par la bijection définie ci-dessus.
+
+    Réciproquement, pour $x\in\V(\phi)$, on note $[x]\in\C_\Sigma(\star, [\phi])$
+    la flèche qui lui est associée par la bijection ci-dessus.
+\end{defi}
+
+\begin{lem}
+    Soient $\phi$ et $\psi$ deux formules telles que $[\phi] = [\psi]$.
+
+    Alors $\vdash \phi\iff\psi$
+\end{lem}
+
+\begin{lem}
+    Soient $\phi$ et $\psi$ deux formules.
+    
+    Si $\phi$ est une sous-formule de $\psi$ avec $\iota$ l'assimilation de
+    variables associée, alors il existe $f\in\C_\Sigma([\phi], [\psi])$ telle
+    que le diagramme suivant commute~:
+
+    % \[\begin{tikzcd}
+    %     \C_\Sigma(\star,[\phi]) \arrow[d, "f"] & \V(\phi) \arrow[l, "[.]"]
+    %                                                       \arrow[d, "\iota"] \\
+    %     \C_\Sigma(\star,[\psi]) \arrow[r, ".^*"] & \V(\psi)
+    % \end{tikzcd}\]
+
+
+    \[\begin{tikzcd}
+        \C_\Sigma(\star,[\phi]) \arrow[d, "f"] & \V(\phi) \arrow[d, "\iota"]
+                                                          \arrow[l, "\brk{.}"] \\
+        \C_\Sigma(\star,[\psi]) \arrow[r, ".^*"] & \V(\psi)
+    \end{tikzcd}\]
+
+    Réciproquement, pour chaque $f\in\C([\phi], [\psi])$ on peut montrer que $\phi$ est
+    une sous formule de $\psi$ de façon à avoir l'égalité ci-dessus.
+\end{lem}
+
+\begin{defi}{Assimilation associée}
+    Soit $f\in\C_\Sigma([\phi],[\psi])$. On note $f^*$ la fonction de $\V(\phi)$ dans
+    $\V(\psi)$ donnée par le lemme ci-dessus.
+\end{defi}
+
+\begin{lem}
+    Soit $(r,\alpha)\in\C_\Sigma$.
+
+    Alors il existe une formule $\phi$ telle que $[\phi] = (r,\alpha)$.
+\end{lem}
+
+Les lemmes ci-dessus montrent donc que $\C_\Sigma$ capture parfaitement la notion de
+sous-formule et celle de variable. On assimilera désormais le $\iota$ avec le $f$ du
+lemme ci-dessus lorsque l'on parlera de sous-formule.
+
+\begin{defi}{Concrétisation}
+    Soit $(r,\alpha)\in\C_\Sigma$.
+
+    On note $\phi_{(r,\alpha)}$ une formule telle que $[\phi_{(r,\alpha)}] = (r,\alpha)$.
+    C'est toujours possible d'après le lemme (ci-dessus-4) et le choix n'est pas important
+    puisque toutes les formules sont équivalentes d'après le lemme (ci-dessus-2).
+\end{defi}
+
 \subsection{Structure de site}
 
 \begin{defi}{Site}
@@ -222,7 +354,7 @@ On a maintenant tout en main pour définir la composition de morphismes.
 
 L'intuition est de définir une notion de recouvrement d'objets de $\C$ par des morphismes.
 Cela permet de définir une notion de localité sur les objets de $\C$, sans pour autant
-avoir de foncteur d'oublie vers $\Set$ et de topologie. Cela permet de définir des
+avoir de foncteur d'oubli vers $\Set$ et de topologie. Cela permet de définir des
 faisceaux, qui sont intuitivement une manière d'associer une collection d'objets à
 chaque objet de $\C$ qui soit essentiellement locale.
 
@@ -257,29 +389,31 @@ La condition de faisceau confirme l'intuition~: elle nous dit que l'information 
 correspont bien à un objet de $Fc$. Sans cette condition on ne pourrait pas nécessairement
 obtenir l'existence d'un objet à partir d'une description locale.
 
-Pourquoi s'intéresser à ça ? Parce que l'objectif est de montrer que les CSP sur un 
-alphabet de relation $\Sigma$ sont les faisceau sur la catégorie $\C_\Sigma$,
-où $F\phi$ contient des témoins de satisfiabilité de $\phi$. La construction de $\C_\Sigma$
-et la condition de fonctorialité nous permettrons de dire que chaque élément de $F\phi$
-correspond bien à une solution de $\phi$, mais ce n'est pas suffisant pour obtenir que
-$F\phi$ contient des témoins pour toutes les solutions. Pour cela, il faut montrer que
-l'on peut construire une solution de $\phi$ à partir de ses constituants~: c'est ce que
+Pourquoi s'intéresser à ça ? Parce que l'objectif est de montrer que les CSP
+sur un alphabet de relation $\Sigma$ sont les faisceau sur la catégorie
+$\C_\Sigma$, où $F[\phi]$ contient des témoins de satisfiabilité de $\phi$. La
+construction de $\C_\Sigma$ et la condition de fonctorialité nous permettrons
+de dire que chaque élément de $F[\phi]$ correspond bien à une solution de
+$\phi$, mais ce n'est pas suffisant pour obtenir que $F[\phi]$ contient des
+témoins pour toutes les solutions. Pour cela, il faut montrer que l'on peut
+construire une solution de $\phi$ à partir de ses constituants~: c'est ce que
 la condition de faisceau va nous donner.
 
-On veut donc définir une notion de recouvrement sur $\C_\Sigma$. L'idée est qu'un
-recouvrement d'une formule doit être suffisant pour obtenir toutes les solutions de
-cette formule. Il faut donc avoir les solutions de chaque formule atomique, directement
-ou via une formule plus compliqué. On va maintenant formaliser ça, la preuve que ça
-fonctionne sera donnée dans la section suivante.
+On veut donc définir une notion de recouvrement sur $\C_\Sigma$. L'idée est
+qu'un recouvrement d'une formule doit être suffisant pour obtenir toutes les
+solutions de cette formule. Il faut donc avoir les solutions de chaque formule
+atomique, directement ou via une formule plus compliqué. On va maintenant
+formaliser ça, la preuve que ça fonctionne sera donnée dans la section
+suivante.
 
 \begin{defi}{Recouvrement d'une formule}
-    Soit $(r,R)$ une formule dans $\C_\Sigma$. Soit un $(\phi_i)_{i\in I}$ un ensemble
+    Soit $(r,\alpha)$ une formule dans $\C_\Sigma$. Soit un $(f_i)_{i\in I}$ un ensemble
     de morphismes de formules de $\C_\Sigma$ (ne contient donc pas de flèche depuis
-    $\star$). $(\phi_i)$ est dit \emph{couvrante} si~:
+    $\star$). $(f_i)$ est dit \emph{couvrante} si~:
 
-    \[ \bigcup_{i\in I} \im\phi_i = r \]
+    \[ \bigcup_{i\in I} \im f_i = r \]
 
-    Où l'image de $\phi$ est le $n$-uplet des images des fonctions constituantes et
+    Où l'image de $f$ est le $n$-uplet des images des fonctions constituantes et
     l'union est prise terme à terme.
 \end{defi}
 
@@ -296,7 +430,7 @@ Il faut prouver que cette définition donne bien un site. C'est l'objectif du
 lemme suivant.
 
 \begin{rem}
-    Soit $(r,R)$ une formule de $\C_\Sigma$. Alors cette formule possède un
+    Soit $(r,\alpha)$ une formule de $\C_\Sigma$. Alors cette formule possède un
     recouvrement constitué uniquement de formule atomique avec une relation d'équivalence
     triviale. On appelle ce recouvrement le \emph{recouvrement fondamental}
     (il est unique à permutation de la famille près).
@@ -307,28 +441,32 @@ lemme suivant.
 \end{lem}
 
 \begin{proof}
-    Soit $\star\in\C$. Comme il existe une seule flèche entrante en $\star$, son identité,
-    et un seul recouvrement, la propriété de site est immédiatement vraie.
+    Traitons d'abords le cas de $\star$. Comme il existe une seule flèche
+    entrante en $\star$, son identité, et un seul recouvrement, la propriété de
+    site est immédiatement vraie.
 
-    Soit $(r,R)$ une formule et $(f_i)_{i\in I}$ un recouvrement de cette formule.
+    Soit $(r,\alpha)$ une formule et $(f_i)_{i\in I}$ un recouvrement de cette formule.
     
-    Soit $\phi$ un morphisme de $(r', R')$ dans $(r,R)$. On prend $(g_j)_{j\in J}$ le
-    recouvrement fondamental de $(r', R')$. Soit $j\in J$. On a que $\phi\circ g_j$ est
-    l'une des sous-formules atomiques de $(r,R)$. Par définition d'un recouvrement, on
-    a $i\in I$ tel que $f_j$ identifie une sous-formule de $(r,R)$ contenant la
-    sous-formule atomique considérée. Le morphisme qui envoie cette formule atomique
-    dans le départ de $f_j$ fait alors commuter le carré voulu.
+    Soit $h$ un morphisme de $(r', \alpha')$ dans $(r,\alpha)$. On prend
+    $(g_j)_{j\in J}$ le recouvrement fondamental de $(r', \alpha')$. Soit $j\in
+    J$. On a que $h\circ g_j$ est l'une des sous-formules atomiques de
+    $(r,\alpha)$. Par définition d'un recouvrement, on a $i\in I$ tel que $f_j$
+    identifie une sous-formule de $(r,\alpha)$ contenant la sous-formule
+    atomique considérée. Le morphisme qui envoie cette formule atomique dans le
+    départ de $f_j$ fait alors commuter le carré voulu.
 
-    Soit $v$ un morphisme de $\star$ dans $(r,R)$, autrement dit une variable de $(r,R)$.
-    Cette variable apparait nécessairement dans une sous-formule du recouvrement. En
-    prenant le morphisme depuis $\star$ vers cette sous-formule qui identifie l'une des
-    variables qui est ensuite envoyée sur $v$, on fait commuter le carré voulu.
+    Soit $v$ un morphisme de $\star$ dans $(r,\alpha)$, autrement dit une
+    variable de $(r,\alpha)$.  Cette variable apparait nécessairement dans une
+    sous-formule du recouvrement. En prenant le morphisme depuis $\star$ vers
+    cette sous-formule qui identifie l'une des variables qui est ensuite
+    envoyée sur $v$, on fait commuter le carré voulu.
 \end{proof}
 
 \subsection{Correction de la définition}
 
 \subsubsection{Tout CSP est un faisceau}
 
+% TODO idéalement la définition de CSP viendra de la partie 1
 \begin{defi}{CSP}
     Un CSP est une sémantique finie pour la logique régulière sur un alphabet de formules 
     $\Sigma = \{R_1, \dots R_n\}$. Concrètement, cela consiste en un domaine $D$ qui est
@@ -336,23 +474,24 @@ lemme suivant.
     d'arité $a_i$ sur $D$.
 \end{defi}
 
-\begin{rem}\begin{itemize}
-    \item On considère une formule conjonctive $\psi$. On note alors $\V(\psi)$ ses 
-        variables.  Pour chaque sous-formule $\psi'$ de $\psi$, on dispose
-        d'une fonction de $\V(\psi')\rightarrow\V(\psi)$ qui nous donne
-        l'assimilation des variables de $\psi'$ vue comme sous formule de
-        $\psi$.
+\begin{rem}
+    Un relation d'arité $k$ sur $D$ peut être vu comme un ensemble de $k$-uplets
+    d'éléments de $D$. De plus, un $k$-uplet d'éléments de $D$ est une fonction de
+    $k$ dans $D$. Or ici on demande un $k$-uplet parce qu'on a une énumération canonique
+    des variables de la formule, dans le cas où c'est un atome, ce qui n'est pas vrai
+    dans le cas général. On va donc plutôt considérer des fonctions des variables de
+    la formule dans $D$. On aura alors~:
 
-    \item $\sem{R_i(x_1, \dots x_{a_i})}$ peut être vu comme une partie de
-        $\fns(\V(R_i(\dots)), D)$.
-\end{itemize}\end{rem}
+    \[ \sem{\phi}\subseteq \fns(\V(\phi), D) \]
+\end{rem}
 
 \begin{defi}{Extension de domaine}
     Étant donné deux ensembles de variables $V_1$ et $V_2$ avec une fonction
-    $i : V_1 \rightarrow V_2$ et une partie $E\subseteq\fns(V_1, D)$. On peut définir
-    l'extension de $E$ par rapport à $i$ de la façon suivante~:
+    $\iota : V_1 \rightarrow V_2$ et une partie $E\subseteq\fns(V_1, D)$. On peut définir
+    l'extension de $E$ par rapport à $\iota$ de la façon suivante~:
 
-    \[ \ext_i(E) = \{f\in\fns(V_2,D) | \exists g\in E, f\circ i = g \} \]
+    \[ \ext_\iota(E) = \{\mathbf{x}\in\fns(V_2,D)
+                        | \exists \mathbf{y}\in E, \mathbf{x}\circ\iota = \mathbf{y} \} \]
 \end{defi}
 
 Intuitivement, cela correspond à rajouter des variables qui n'apparaissent pas dans une
@@ -360,40 +499,46 @@ formule à sa sémantique. On dispose alors d'un moyen de définir la sémantiqu
 formule à partir de ses formules atomiques.
 
 \begin{defi}{Sémantique d'une formule}
-    Soit $\psi$ une formule quelconque. $\psi$ s'écrit $A_1\wedge \dots \wedge A_k$ où
-    les $A_i$ sont des formules atomiques. On note $j_i$ l'entier tel que $R_{j_i}$ soit
-    la relation de $A_i$. On note $f_i$ la fonction de $\V(R_{j_i}(x_1, x_2 \dots))$
-    dans $\V(\psi)$ telle que décrite dans la remarque ci-dessus. On pose alors~:
+    Soit $\psi$ une formule quelconque. $\psi$ est une conjonction d'atomes~:
+
+    \[ \psi = \exists x_1,\exists x_2,\dots
+                  R_{j_1}(\dots)\wedge\dots\wedge R_{j_k}(\dots) \]
+
+    Alors pour $1\leq i\leq k$, on prend $f_i$ l'assimilation de
+    $R_{j_i}(x_1, x_2, \dots)$ (toutes les variables doivent être distinctes) comme
+    sous formule de $\psi$. Elle induit une fonction de $\V(R_{j_i}(x_1, x_2, \dots))$
+    dans $\V(\psi)$ d'après le lemme ?? % TODO numéroter les lemmes et faire les liens
+
+    On pose alors~:
 
     \[ \sem{\psi} = \bigcap_{1\leq i\leq k} \ext_{f_i}(\sem{R_{j_i}(x_1, x_2\dots)}) \]
-
-    Il est facile de se convaincre que cette sémantique correspond bien à la sémantique
-    telle que donnée par la structure de logique régulière.
 \end{defi}
 
-On peut alors définir un faisceau sur $\C_\Sigma$ à partir du CSP. On remarque que pour 
-chaque formule $(r,R)$ de $\C_\Sigma$, on peut associer une vraie formule conjonctive
-$\psi_{(r,R)}$ de manière naturelle-ish. %TODO détailler l'association
+\begin{lem}
+    Soit $\psi$ une formule. Alors $\sem{\psi}$ correspond bien à la sémantique de
+    $\psi$ comme formule conjonctive.
+\end{lem}
+
+% TODO A-t-on envie de prouver ça ? Ça impliquerait une définition plus détaillée de CSP
 
 \begin{defi}{Faisceau de CSP}
-    On pose $F\star = D$ et $F(r,R) = \sem{\psi_{(r,R)}}$.
+    On pose $F\star = D$ et $F(r,\alpha) = \sem{\psi_{(r,\alpha)}}$.
 
-    Soit $v\in\C_\Sigma(\star, (r,R))$, on peut lui associer une variable $v'$ de manière
-    naturelle dans $\V(\psi_{(r,R)})$. Alors~:
+    Soit $v\in\C_\Sigma(\star, (r,\alpha))$, on peut lui associer une variable
+    $v^*$ de manière naturelle dans $\V(\psi_{(r,\alpha)})$ d'après le lemme %TODO ref
+    . Alors on pose~:
     
     \[ Fv = \left\{\begin{array}{ccc}
-                       \sem{\psi_{(r,R)}} & \rightarrow & D     \\
-                              f           & \mapsto     & f(v') \\
+                       \sem{\psi_{(r,\alpha)}} & \rightarrow & D              \\
+                             \mathbf{x}        & \mapsto     & \mathbf{x}(v^*) \\
     \end{array}\right.\]
 
-    Soit $\phi\in\C_\Sigma((r,R), (r',R'))$. Alors $\psi_{(r,R)}$ est une sous-formule
-    de $\psi_{(r',R')}$, donc on dispose de
-    $i : \V(\psi_{(r,R)})\rightarrow\V(\psi_{(r',R')})$ cohérente avec $\phi$ telle
-    que décrit dans la remarque ce-dessus. On pose alors~:
+    Soit $f\in\C_\Sigma((r,\alpha), (r',\alpha'))$. $f$ induit une fonction
+    $f^* : \V(\psi_{(r,\alpha)})\rightarrow\V(\psi_{(r',\alpha')})$. On pose alors~:
 
-    \[ F\phi = \left\{\begin{array}{ccc}
-                         \sem{\psi_{(r',R')}} & \rightarrow & \sem{\psi_{(r,R)}} \\
-                                  f           & \mapsto     & f \circ i \\
+    \[ Ff = \left\{\begin{array}{ccc}
+                    \sem{\psi_{(r',\alpha')}} & \rightarrow & \sem{\psi_{(r,\alpha)}} \\
+                           \mathbf{x}         & \mapsto     & \mathbf{x} \circ f^* \\
     \end{array}\right.\]
 
     Enfin, on pose $F\id_\star = \id_D$.
@@ -411,13 +556,22 @@ Vérifions que c'est bien un faisceau.
     L'image d'une composition de morphismes de formules est immédiatements la composition
     des images.
 
-    Enfin, soit $v\in\C_\Sigma(\star, (r,R))$ et $\phi\in\C_\Sigma((r,R), (r',R'))$. Notons
-    $i:\V(\psi_{(r,R)})\rightarrow\V(\psi_{(r',R')})$ qui correspond à $\phi$.
+    Enfin, soit $v\in\C_\Sigma(\star, (r,\alpha))$ et
+    $f\in\C_\Sigma((r,\alpha), (r',\alpha'))$.
 
-    Alors $F(\phi\circ v) = F(\phi(v)) = f\mapsto f\circ i(v) = Fv \circ F\phi$.
+    Alors~:
+    
+    \[\begin{array}{rcll}
+        F(f\circ v) & = & F(f(v)) & \\
+                    & = & \mathbf{x}\mapsto \mathbf{x}((f(v))^*) 
+                            & \text{par définition de F} \\
+                    & = & \mathbf{x}\mapsto (\mathbf{x}\circ f^*)(v^*)
+                            & \text{d'après le lemme TODO} \\
+                    & = & Fv \circ Ff & \text{par définition de F} \\
+    \end{array}\]
 \end{proof}
 
-Il faut alors vérifier la condition de faisceautude.
+Il faut alors vérifier la condition de faisceau.
 
 \begin{lem}
     $F$ tel que définit ci-dessus est un faisceau sur $\C_\Sigma$ vers $\fset$.
@@ -425,38 +579,65 @@ Il faut alors vérifier la condition de faisceautude.
 
 \begin{proof}
     D'après de lemme précédent $F$ est un préfaisceau. Il reste vérifier la condition
-    de faisceautude.
+    de faisceau.
 
     Dans le cas de $\star$, le cas est immédiat~: l'unique recouvrement est $(\id_\star)$
     et les seules flèches entrantes de $\star$ sont $\id_\star$.
 
-    Soit $(r,R)\in\C_\Sigma$ une formule. Soit
-    $(\phi_i : (r_i, R_i)\rightarrow (r,R))_{i\in I}$ une famille couvrante de $(r,R)$.
-    Soit $(f_i)\in\Pi_{i\in I} F(r_i,R_i)$ une famille cohérente. On note
-    $\iota_i : \V(\psi_{(r_i,R_i)})\rightarrow\V(\psi_{(r,R)})$ l'assimilation des
-    variables associée à $\phi_i$.
+    Soit $(r,\alpha)\in\C_\Sigma$ une formule. Soit $(f_i : (r_i,
+    \alpha_i)\rightarrow (r,R))_{i\in I}$ une famille couvrante de
+    $(r,\alpha)$.  Soit $(\mathbf{x_i})\in\Pi_{i\in I} F(r_i,\alpha_i)$ une
+    famille cohérente.
 
     On définit l'ensemble des candidats solutions~:
 
-    \[\mathscr{S} := \{ f\in F(r,R) | \forall i\in I, f \circ\iota_i = f_i \} \]
+    \[\mathscr{S} := \{ \mathbf{x}\in F(r,R)
+                      | \forall i\in I, \mathbf{x}\circ f_i^* = \mathbf{x_i} \} \]
 
-    On a par définition que $f\in\mathscr{S}$ si et seulement si
-    $\forall i\in I, F\phi_i(f) = f_i$. On veut donc montrer que $\mathscr{S}$
-    est singleton.
+    On a par définition que $\mathbf{x}\in\mathscr{S}$ si et seulement si
+    $\forall i\in I, Ff_i(\mathbf{x}) = \mathbf{x_i}$. On veut donc montrer que
+    $\mathscr{S}$ est singleton.
 
-    Montrons d'abord qu'il est au plus singleton. Soient $f_1, f_2\in\mathscr{S}$. Soit
-    $x\in\V(\psi_{(r,R)})$. Par définition du site, il existe $i\in I$ tel que
-    $x\in \text{Im }\iota_i$. Alors $f_1(x) = f_2(\iota_i(x')) = f_i(x') = f_2(x)$.
-    Donc $f_1 = f_2$.
+    Montrons d'abord qu'il est au plus singleton. Soient $\mathbf{x},
+    \mathbf{y}\in\mathscr{S}$. Soit $v\in\C_\Sigma(\star,(r,\alpha))$.
+    Par définition du site il existe $i\in I$ tel que $v$ se factorise
+    par $f_i$~: $\exists v'\in\C_\Sigma(\star,(r_i,\alpha_i)), v = f_i\circ v'$.
+    Alors~:
+    
+    \[\begin{array}{rcll}
+        \mathbf{x}(v^*) & = & \mathbf{x}((f_i\circ v')^*)
+                                 & \text{par choix de } i \\
+                        & = & \mathbf{x}(f_i^*(v'^*))
+                                 & \text{d'après le lemme TODO} \\
+                        & = & \mathbf{x_i}(v'^*)
+                                 & \text{par définition de }\mathscr{S}\\
+                        & = & \mathbf{y}(f_i^*(v'^*))
+                                 & \text{par définition de }\mathscr{S}\\
+                        & = & \mathbf{y}(v^*) & \\
+    \end{array}\]
+
+    Donc $\mathbf{x} = \mathbf{y}$.
 
     Pour montrer que $\mathscr{S}$ est non vide, il va falloir utiliser la condition de
-    cohérence des $(f_i)$. Soit $x\in\V(\psi_{(r,R)})$ et $i,j\in I$ tels que
-    $x = \iota_i(x_1) = \iota_j(x_2)$. Il suffit de vérifier que $f_i(x_1) = f_j(x_2)$.
-    Ici $x_1$ peut être vu comme une flèche de $\star$ vers $(r_i,R_i)$ et $x_2$ comme
-    une flèche de $\star$ vers $(r_j,R_j)$. On a alors que 
-    $f_i(x_1) = Fx_1(f_i)$ et $Fx_2(f_j)$. La définition de famille cohérente nous donne
-    automatiquement ce résultat si $x_1\circ f_i = x_2\circ f_j$. Or par définition de la
-    composition avec une variable, on a $x_1\circ f_i = x = x_2\circ f_j$.
+    cohérence des $(\mathbf{x_i})$. Soit $v\in\C(\star, (r,\alpha))$ et $i,j\in I$ tels
+    que $v$ se factorise par $f_i$ et $f_j$, ie
+    il existe $v_1\in\C(\star, (r_i,\alpha_i))$ et $v_2\in\C(\star, (r_j,\alpha_j))$ tels
+    que~:
+    
+    \begin{equation}\label{fact} v = f_i\circ v_1 = f_j\circ v_2 \end{equation}
+    
+    Il suffit de vérifier que $\mathbf{x_i}(v_1^*) = \mathbf{x_j}(v_2^*)$.
+    On a que $\mathbf{x_i}(v_1^*) = Fv_1(\mathbf{x_i})$ et
+    $\mathbf{x_j}(v_2^*) = Fv_2(\mathbf{x_j})$ par définition de $F$. On obtient alors
+    l'égalité cherchée en appliquant la propriété de cohérence des $(\mathbf{x_i})$
+    au carré commutatif~:
+
+    \[\begin{tikzcd}
+        \star \arrow[r, "v_1"] \arrow[d, "v_2"] & (r_i,\alpha_i) \arrow[d, "f_i"] \\
+        (r_j,\alpha_j) \arrow[r, "f_j"] & (r,R) \\
+    \end{tikzcd}\]
+
+    Ce carré commute bien d'après l'égalité \ref{fact}.
 \end{proof}
 
 \subsubsection{Tout faisceau est un CSP}
@@ -466,21 +647,19 @@ $F$ un faisceau de $\C_\Sigma$. On commence par définir la sémantique d'une fo
 selon $F$.
 
 \begin{defi}{Sémantique de faisceau}
-    Soit $\psi$ une formule et $(r,R)$ sa représentation dans $\C_\Sigma$. La sémantique
-    de $\psi$ selon $F$ est alors (on rappelle que
-    $\V(\psi)\approx\C_\Sigma(\star,(r,R))$)~:
+    Soit $\psi$ une formule. La sémantique de $\psi$ selon $F$ est alors~:
 
     \[ \sem{\psi}_F := \left\{ f:\begin{array}{ccc}
             \V(\psi) & \rightarrow & F\star \\
-            v        & \mapsto     & Fv(x) \\
-    \end{array}\Large|~x\in F(r,R) \right\}\]
+            v        & \mapsto     & F[v](x) \\
+    \end{array}\Large|~x\in F[\psi] \right\}\]
 \end{defi}
 
 La donnée d'un CSP est la donnée d'un domaine et d'une sémantique des atomes.
 
 \begin{defi}{CSP d'un faisceau}
     On note $\csp_F$ le CSP de domaine $F\star$ et qui donne à
-    $R_i$ la sémantique $\sem{R_i(x_1, \dots x_{a_i})}_F$.
+    $R_i$ la sémantique $\sem{R_i(x_1, \dots x_{\ar(R_i)})}_F$.
 \end{defi}
 
 Techniquement, on vient bien de définir un CSP. Mais on remarque maintenant que l'on a
@@ -491,81 +670,98 @@ cela que l'on considère des faisceaux et pas juste des préfaisceaux (les défi
 ci-dessus marcheraient aussi avec juste un préfaisceau).
 
 \begin{theo}{Correction de la sémantique de faisceau}
-    Pour tout $\psi$, $\sem{\psi}_F = \sem{\psi}$.
+    Pour toute formule $\psi$, $\sem{\psi}_F = \sem{\psi}$.
 \end{theo}
 
 \begin{proof}
-    Soit $\psi$ un formule et $(r,R)$ sa représentation dans $\C_\Sigma$.
+    Soit $\psi$ une formule.
     Soient $(j_i)_{1\leq i\leq k}$ les indices des formules atomiques de $\psi$
-    et $(f_i)$ les morphismes de sous-formule associés (peuvent être vus comme
-    des fonctions de $\V(R_{j_i}(x_1,\dots x_{a_{j_i}})$ dans $\V(\psi)$).
+    et $(f_i)$ les morphismes de sous-formule associés.
 
     On va procéder par double inclusion.
 
-    $\boxed{\subseteq}$ Soit $f\in\sem{\psi}_F$.  Pour montrer que
-    $f\in\sem{\psi}$, il suffit de montrer que $\forall 1\leq i\leq k,
-    f\in\ext_{f_i}(\sem{R_{j_i}(x_1,\dots x_{a_{j_i}})}_F)$.
+    $\boxed{\subseteq}$ Soit $\mathbb{x}\in\sem{\psi}_F$.  Pour montrer que
+    $\mathbb{x}\in\sem{\psi}$, il suffit de montrer que $\forall 1\leq i\leq k,
+    \mathbb{x}\in\ext_{f_i}(\sem{R_{j_i}(x_1,\dots)}_F)$.
 
-    Soit $1\leq i\leq k$. $f\in\ext_{f_i}(\sem{R_{j_i}(x_1,\dots
-    x_{a_{j_i}})}_F)$ si et seulement si $f\circ f_i\in\sem{R_{j_i}(x_1,\dots
-    x_{a_{j_i}})}_F$. Soit $x$ in $F(r,R)$ tel que $f = v\mapsto Fv(x)$.
+    Soit $1\leq i\leq k$. $\mathbb{x}\in\ext_{f_i}(\sem{R_{j_i}(x_1,\dots
+    x_{a_{j_i}})}_F)$ si et seulement si $\mathbb{x}\circ f_i^*\in\sem{R_{j_i}(x_1,\dots
+    x_{a_{j_i}})}_F$. Soit $\mathbf{x}\in F[\psi]$ tel que
+    $\mathbb{x} = x\mapsto F[x](\mathbf{x})$.
     Alors~:
     
     \[\begin{array}{rll}
-        f\circ f_i(v) &= F(f_i(v))(x) & \\
-         &= F(f_i\circ v)(x) & \text{par définition de la composition dans } \C_\Sigma\\
-         &= (Fv\circ Ff_i)(x) & \text{par fonctiorialité de } F\\
-         &= Fv(Ff_i(x)) & \\
+        \mathbb{x}\circ f_i^*(v^*) &= F([f_i^*(v^*)])(\mathbf{x}) & \\
+         &= F(f_i\circ v)(\mathbf{x})
+             & \text{d'après le lemme TODO} \\
+         &= (Fv\circ Ff_i)(\mathbf{x}) & \text{par fonctiorialité de } F\\
+         &= Fv(Ff_i(\mathbf{x})) & \\
     \end{array}\]
 
-    Donc $f\circ f_i = v\mapsto Fv(y)$ avec $y = Ff_i(x)$, d'où le résultat.
+    Donc $\mathbb{x}\circ f_i = x\mapsto F[x](\mathbf{y})$ 
+    avec $\mathbf{y} = Ff_i(\mathbf{x})$, d'où le résultat.
 
-    $\boxed{\supseteq}$ Soit $f\in\sem{\psi}$. On note $(r_i,R_i)$ la
+    $\boxed{\supseteq}$ Soit $\mathbb{x}\in\sem{\psi}$. On note $(r_i,R_i)$ la
     représentation de $R_{j_i}(x_1,\dots x_{a_{j_i}})$ dans $\C_\Sigma$. On
-    remarque $f\circ f_i\in\sem{R_{j_i}(x_1,\dots x_{a_{j_i}})}$, donc il existe
-    $x_i\in F(r_i,R_i)$ tel que $f\circ f_i = v\mapsto Fv(x_i)$. De plus, on remarque que
-    $((r_i,R_i))_{i\in I}$ est une famille couvrante de $(r,R)$. On va alors utiliser
-    la propriété de faisceautude pour construire un $x\in F(r,R)$ tel que
-    $f = v\mapsto Fv(x)$.
+    remarque $\mathbb{x}\circ f_i^*\in\sem{R_{j_i}(x_1,\dots x_{a_{j_i}})}$, donc il existe
+    $\mathbf{x_i}\in F(r_i,R_i)$ tel que
+    $\mathbb{x}\circ f_i^* = x\mapsto F[x](\mathbf{x_i})$. De plus, on remarque que
+    $((r_i,\alpha_i))_{i\in I}$ est une famille couvrante de $[\phi]$. On va alors utiliser
+    la propriété de faisceau pour construire un $\mathbf{x}\in F[\phi]$ tel que
+    $\mathbb{x} = x\mapsto F[x](\mathbf{x})$.
 
-    Commençons par vérifier que $(x_i)_{i\in I}$ est une famille cohérente. Soient
-    $i,j\in I$, soit $\phi\in\C_\Sigma$ un formule, soient $g:\psi\rightarrow (r_i,R_i)$
-    et $h:\psi\rightarrow (r_j,R_j)$ telles que le diagramme suivant commute~:
+    Commençons par vérifier que $(\mathbf{x_i})_{i\in I}$ est une famille cohérente. Soient
+    $i,j\in I$, soit $c\in\C_\Sigma$ un formule, soient
+    $g:c\rightarrow (r_i,\alpha_i)$
+    et $h:c\rightarrow (r_j,\alpha_j)$ telles que le diagramme suivant commute~:
 
     \[\begin{tikzcd}
-        \phi \arrow[r, "g"] \arrow[d, "h"] & (r_i,R_i) \arrow[d, "f_i"] \\
-          (r_j,R_j) \arrow[r, "f_j"] & (r,R) \\
+        c \arrow[r, "g"] \arrow[d, "h"] & (r_i,\alpha_i) \arrow[d, "f_i"] \\
+          (r_j,\alpha_j) \arrow[r, "f_j"] & \brk{\phi} \\
     \end{tikzcd}\]
 
-    On veut alors montrer que $Fg(x_i) = Fh(x_j)$. Ce qui va permettre à la preuve de
-    marcher est le fait que $(r_i,R_i)$ et $(r_j,R_j)$ représentent des atomes avec toutes
-    leurs variables libres. Il y a donc deux cas à traiter.
+    On veut alors montrer que $Fg(\mathbf{x_i}) = Fh(\mathbf{x_j})$. Ce qui va
+    permettre à la preuve de marcher est le fait que $(r_i,\alpha_i)$ et
+    $(r_j,\alpha_j)$ représentent des atomes avec toutes leurs variables
+    libres. Il y a donc deux cas à traiter.
 
-    Soit $\phi = \star$, auquel cas $g$ et $h$ sont des variables, qui plongées dans 
-    $(r,R)$ s'identifient à la même variable $v$. Donc~:
+    Soit $c = \star$, auquel cas $g$ et $h$ sont des variables, qui plongées dans 
+    $[\phi]$ s'identifient à la même variable $v$. Donc~:
     
     \[\begin{array}{rcll}
-        Fg(x_i) & = & f\circ f_i(g) & \text{par définition de } x_i     \\
-                & = & f\circ f_j(h) & \text{par condition de cohérence} \\
-                & = & Fh(x_j)       & \text{par définition de } x_j     \\
+        Fg(\mathbf{x_i}) & = & \mathbb{x}\circ f_i^*(g^*)
+                             & \text{par définition de } \mathbf{x_i} \\
+                         & = & \mathbb{x}((f_i\circ g)^*)
+                             & \text{d'après le lemme TODO } \\
+                         & = & \mathbb{x}((f_j\circ h)^*)
+                             & \text{par condition de cohérence} \\
+                         & = & Fh(\mathbf{x_j})
+                             & \text{par définition de } \mathbf{x_j} \\
     \end{array}\]
 
-    Sinon, on a $(r_i,R_i) = (r_j,R_j) = \phi$ et $g = h = \id_\phi$. Auquel cas le
+    Sinon, on a $(r_i,\alpha_i) = (r_j,\alpha_j) = \phi$ et $g = h = \id_c$. Auquel cas le
     résultat est immédiat.
 
     On peut donc appliquer la propriété de faisceau à cette famille pour créer un
-    $x\in F(r,R)$ tel que $\forall 1\leq i\leq n, Ff_i(x) = x_i$. Alors on a, pour
-    $v\in\C_\Sigma(\star,(r,R))$~:
+    $\mathbf{x}\in F[\phi]$ tel que
+    $\forall 1\leq i\leq n, Ff_i(\mathbf{x}) = \mathbf{x_i}$. Alors on a, pour
+    $v\in\C_\Sigma(\star,[\phi])$~:
 
     \[\begin{array}{rcll}
-        f(v) & = & f\circ f_i(v') & \text{car $(f_i)$ est couvrante} \\
-             & = & Fv'(x_i) & \\
-             & = & Fv'(Ff_i(x)) & \text{par définition de } x \\
-             & = & F(f_i\circ v')(x) & \text{par fonctorialité} \\
-             & = & Fv(x) & \\
+        \mathbb{x}(v^*) & = & \mathbb{x}((f_i\circ v')^*)
+                                & \text{car $(f_i)$ est couvrante} \\
+                        & = & \mathbb{x}\circ f_i^*(v'^*)
+                                & \text{d'après le lemme TODO} \\
+                        & = & Fv'(\mathbf{x_i})
+                                & \text{par définition de }\mathbf{x_i}\\
+                        & = & Fv'(Ff_i(\mathbf{x}))
+                                & \text{par définition de }\mathbf{x} \\
+                        & = & F(f_i\circ v')(\mathbf{x})
+                                & \text{par fonctorialité} \\
+                        & = & Fv(\mathbf{x}) & \\
     \end{array}\]
 
-    Donc $f = v\mapsto Fv(x)$, d'où $f\in\sem{\psi}_F$.
+    Donc $\mathbb{x} = x\mapsto F[x](\mathbf{x})$, d'où $\mathbb{x}\in\sem{\psi}_F$.
 \end{proof}
 
 
