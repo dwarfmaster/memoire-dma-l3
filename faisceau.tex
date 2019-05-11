@@ -764,4 +764,136 @@ ci-dessus marcheraient aussi avec juste un préfaisceau).
     Donc $\mathbb{x} = x\mapsto F[x](\mathbf{x})$, d'où $\mathbb{x}\in\sem{\psi}_F$.
 \end{proof}
 
+\subsection{Canonicité}
+
+Une propriété que l'on aimerait avoir sur notre site est la \emph{canonicité}. Afin
+d'introduire ce que c'est exactement, on doit définir la notion suivante.
+
+\begin{defi}{Sous-canonicité}
+    Un site $(C,J)$ est dit \emph{sous-canonique} sous tous les préfaisceaux
+    représentables sont des faisceaux.
+\end{defi}
+
+On remarque qu'il est possible d'ordonner les sites sur une catégorie par inclusions
+des recouvrements. On obtient alors un ordre partiel sur les sites, ce qui justifie
+la définition suivante.
+
+\begin{defi}{Canonicité}
+    Un site sur une catégorie $C$ est dit canonique s'il est sous-canonique maximal.
+\end{defi}
+
+La proposition suivante justifie cette définition.
+
+\begin{prop}
+    Soit $C$ une catégorie. Il existe un unique site canonique sur cette catégorie.
+\end{prop}
+
+\begin{proof}
+    Afin de prouver cette proposition, on va utiliser le lemme suivant~:
+
+    \begin{lem}
+        Une union quelconque de sites sous-canoniques est un sites sous-canoniques.
+    \end{lem}
+    \begin{proof}
+        Commençons par remarquer qu'une union quelconque de sites est un sites.
+        La sous-canonicité vient du fait que la condition de faisceau est de la
+        forme $\forall (f)\text{ recouvrement}, P(F,(f))$ où $F$ est le
+        faisceau considéré.  Donc une union quelconque de familles de
+        recouvrements qui ont toutes la propriétés vraie aura encore la
+        propriété validée.
+    \end{proof}
+
+    L'unicité est alors immédiate.
+
+    Pour l'existence, on peut construire le site canonique comme étant l'union
+    de tous les sites sous-canoniques. Il suffit de vérifier qu'il existe toujours
+    au moins un site sous-canonique. On prends le site discret~: chaque objet a
+    exactement un recouvrement qui est son identité. C'est effectivement un site,
+    et alors tout préfaisceau est un faisceau, donc notament les préfaisceaux
+    représentables.
+\end{proof}
+
+On aimerait vérifier que le site $\C_\Sigma$ est canonique, ou éventuellement le modifier
+pour qu'il le soit. Cependant, la définition ci-dessus de canonicité rends compliqué
+la vérification. Rien que vérifier la sous-canonicité peut s'avérer compliquer. On
+va alors donner un critère de sous-canonicité avec lequel il est plus simple de
+travailler.
+
+\begin{defi}{Span sur $J$}
+    Soit $J$ une famille de morphismes dans $\C$. Un span sur $J$ est un couple de
+    morphismes $f:a\rightarrow b,g:a\rightarrow c$ de $\C$ de même codomaine tels que~:
+
+    \[\exists f':b\rightarrow d, g':c\rightarrow d,\begin{tikzcd}
+        & b \arrow[rd, "f'"] & \\
+        a \arrow[ru, "f"] \arrow[rd, "g"] & & d \\
+        & c \arrow[ru, "g'"] & \\
+    \end{tikzcd}\]
+\end{defi}
+
+\begin{defi}{Famille effective épimorphique}
+    Soit $J$ une famille de morphismes dans $\C$ de même domaine $c$. $J$ est dite
+    \emph{effective polymorphique} si c'est la colimite du diagramme formé de tous
+    les spans sur $J$.
+\end{defi}
+
+On a alors le résultat suivant~:
+
+\begin{lem}
+    Soit $(\C,J)$ un site. $(\C,J)$ est sous-canonique si et seulement si tous les
+    récouvrements de $J$ sont effectifs-polymorphiques.
+\end{lem}
+
+\begin{proof}
+    $\boxed{\implies}$ Soit $c\in \C$ et $S\in Jc$. Soit $D$ le diagramme formé
+    de tous les spans sur $S$.
+
+    Immédiatement, $(c,S)$ est un cocône sur $D$. Vérifions que c'est le cocône
+    colimite.
+
+    Soit $(c',S')$ un autre cocône sur $D$~:
+
+    \[\begin{tikzcd}
+        & d \arrow[rr, "u_d"] \arrow[rrdd, "v_d"] & & c \arrow[dd, dashed, "?"] \\
+        e \arrow[ru, "g"] \arrow[rd, "h"] & & & \\
+        & d' \arrow[rruu, "u_{d'}"] \arrow[rr, "v_{d'}"] & & c' \\
+    \end{tikzcd}\]
+
+    Remarquons que $C(\cdot, c')$ est un faisceau puisque le site est sous-canonique. On
+    va donc construire la flèche manquante en utilisant la propriété de faisceau.
+    On prend la famille $(v_d)_{d\in\text{dom}S}\in \Pi_{d\in\text{dom}S} C(d,c')$.
+    
+    C'est immédiatement une famille cohérente. En effet, la condition de cohérence
+    reviens à dire que les $(v_d)$ commutent aux spans sur $S$, ce qui est exactement
+    la façon dont ils sont définits.
+
+    Alors la condition de faisceau nous donne l'existence d'une unique flèche dans
+    $C(c,c')$ qui est un morphisme de cônes.
+
+    $\boxed{\Longleftarrow}$ On peut en fait remonter la preuve puisque les familles 
+    cohérentes sont exactement les cocône sur les diagrammes de spans sur des
+    recouvrements.
+\end{proof}
+
+On peut alors montrer que le site canonique est celui dont les recouvrements sont
+exactement les familles effectives épimorphiques de $\C$.
+
+Un problème apparait cependant ! Considérons la formule $\phi=R(x)\wedge R(y)\wedge S(z)$
+recouverte par $f:R(x)\rightarrow\phi$ qui identifie le premier atome et
+$g:R(x)\wedge S(y)\rightarrow\phi$ qui identifie le reste de la formule. Le diagramme
+des spans contient uniquement $R(x)$ et $R(x)\wedge S(y)$ et aucune flèche. La
+condition ci-dessus voudrait donc que $\phi$ soit le produit de ces deux formules dans
+$\C_\Sigma$. Or on a les diagramme suivant~:
+
+\[\begin{tikzcd}
+    R(x) \arrow[r, "f"] \arrow[rd] & \phi \arrow[d, red] \\
+    R(x)\wedge S(y) \arrow[ru, "g"] \arrow[r] & R(x)\wedge S(y) \\
+\end{tikzcd}\]
+
+La flèche rouge est impossible puisque $R(x)\wedge S(y)$ a strictement moins d'atomes
+que $\phi$. Ce recouvrement n'est donc pas effectif polymorphique~: $\C_\Sigma$ n'est pas
+sous canonique~!
+
+On pourrait manuellement essayer de corriger ça en modifiant les définitions, mais ce
+serait fastidieux et pas trivial du tout. Cependant une autre approche, plus catégorique,
+nous permet de résoudre ce problème.
 
