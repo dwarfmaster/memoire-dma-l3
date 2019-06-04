@@ -1,0 +1,221 @@
+
+\subsection{Intuition}
+
+Après l'échec de la partie précédente, revenons aux bases. Qu'est-ce qu'un CSP
+sur un alphabet de relation $\Sigma$~? C'est la donnée d'un domaine fini $D$ et
+de relations sur $D$ de bonne arité pour chaque relation de $\Sigma$. Si
+$\Sigma = \{R_1, \dots R_n\}$, on peut poser la catégorie qui a pour objets
+$\{\star, R_1, \dots R_n\}$ et commes flèches les identités, ainsi pour pour
+tout $1\leq i\leq n$, autant de flèche de $\star$ vers $R_i$ que l'arité de
+$R_i$. Un préfaisceau sur cette catégorie nous donne alors un CSP (et
+vice-versa, par contre plusieurs préfaisceaux peuvent correspondre au même
+CSP).
+
+Pourquoi ne pas se contenter de ça ? Parce que cette catégorie n'est pas
+intéressante pour travailler sur les CSP. En effet, elle ne contient comme
+information que la liste des relations et leur arité, et rien d'autre. Nous la
+noterons d'ailleurs $\Sigma$, puisque la donnée d'un alphabet de relation est
+aussi exactement la donnée de leur liste et leurs arités. $\Sigma$ a donc la forme~:
+
+\[\begin{tikzcd}
+    & \star \arrow[ddl, shift right, swap, "f_1^1"]
+            \arrow[ddl]
+            \arrow[ddl, shift left, "f_{\ar(R_1)}^1"] % TODO fix
+            \arrow[ddr, shift right, swap, "f_1^m"]
+            \arrow[ddr]
+            \arrow[ddr, shift left, "f_{\ar(R_m)}^m"]
+            \\
+    & & \\
+    R_1 & \dots & R_m \\
+\end{tikzcd}\]
+
+C'est là que le résultat suivant entre en jeu.
+
+\begin{prop}
+    Le plongement de Yoneda de $\psh(\C)\rightarrow\shc(\psh(\C))$ est une équivalence
+    de catégorie.
+    % TODO expliciter l'inverse
+\end{prop}
+
+\begin{proof}
+    TODO
+\end{proof}
+
+Par cet isomorphisme, $\shc(\psh(\Sigma))$ correspond aux CSP. On aimerait donc pouvoir
+interpréter cette fois un préfaisceau sur $\Sigma$ comme une formule. C'est en fait assez
+simple, on procède par analogie avec la façon de représenter un graphe dirigé. Un graphe
+(au sens informatique) est un préfaisceau (fini) sur la catégorie $G$ suivante~:
+
+\[\begin{tikzcd}
+    v \arrow[r, bend right, "s"] \arrow[r, bend left, "t"] & e \\
+\end{tikzcd}\]
+
+Un tel préfaisceau $F : G^{\text{op}}\rightarrow\fset$ représente le graphe ayant pour
+ensemble sous jacent $Fe$ et pour arrêtes $Fv$. De plus, la source d'une arrête $a\in Fv$
+est $Fs(a)$ et sa destination est $Ft(a)$. On peut aussi interpréter un graphe comme
+étant une formule conjonctive, dont les variables sont les points et qui possède un
+unique prédicat binaire qui marque les arrêtes. On remarque que la catégorie $G$ est
+exactement celle d'un alphabet avec un seul prédicat binaire. On peut donc généraliser
+l'interprétation.
+
+\begin{defi}{Formule associée à un faisceau}
+    Soit $A\in\psh(\Sigma)$. On note $\phi_A$ la formule suivante~:
+    
+    \[\bigwedge_{1\leq i\leq m} \bigwedge_{x\in AR_i}
+            R_i(Af_1^i(x), \dots Af_{\ar(R_i)}^i(x)) \]
+
+    Avec la règle qu'une conjonction vide est $\top$
+
+    C'est une formule conjonctive sur $\Sigma$ et dont les variables sont prises dans
+    l'ensemble $A\star$.
+\end{defi}
+
+On pose alors $\C_\Sigma = \psh(\Sigma)$ notre nouvelle catégorie des formules.
+
+\subsection{Propriétés générales de $\C_\Sigma$}
+
+\begin{lem}
+    $\C_\Sigma$ possède toutes ses limites et colimites finies.
+\end{lem}
+
+\begin{proof}
+    C'est une propriété générale des catégories des faisceaux.
+\end{proof}
+
+On peut alors étudier quelques limites particulières.
+
+\begin{lem}
+    Soit $\mathbf{0}$ l'objet inital de $\C_\Sigma$. Alors $\phi_\mathbf{0}\iff\top$.
+\end{lem}
+
+\begin{proof}
+    Une limite sur une catégorie de faisceau se calcule point par point. Donc $\mathbb{0}$
+    est le préfaisceau qui envoie tous les objets de $\Sigma$ sur $\emptyset$ et toutes
+    les flèches sur $\id_\emptyset$.
+
+    Alors $\phi_\mathbf{0} = \bigwedge_{1\leq i\leq m}\top \iff \top$.
+\end{proof}
+
+\begin{lem}
+    Soit $\mathbf{1}$ l'objet final de $\C_\Sigma$. Alors~:
+
+    \[\phi_\mathbf{1} \iff \bigwedge_{1\leq i\leq m}R_i(x,\dots x)\]
+\end{lem}
+
+\begin{proof}
+    Même démarche que pour la proposition précédente.
+\end{proof}
+
+\begin{lem}
+    Soient $A$ et $B$ deux objets de $\C_\Sigma$. On note $A\wedge B$ leur coproduit
+    dans $\C_\Sigma$. On a alors~:
+
+    \[\phi_{A\wedge B} \iff \phi_A\wedge\phi_B \]
+\end{lem}
+
+\subsection{Description syntaxique des morphismes de formules}
+
+Étudions maintenant les morphismes de formules, qui sont ici des transformations
+naturelles entre faisceau. Regardons un peu plus précisément comment elles se
+comportent. Soient $F,G\in\C_\psh(\Sigma)$ deux formules et $\theta:F\rightarrow F$
+une transformation naturelle. Regardons comment elle doit se comporter~:
+
+\[ \theta_\star : F\star \rightarrow G\star \]
+
+L'existence de cette fonction nous dit que l'on renomme les variables de $F$ en des
+variables de $G$, éventuellement en en contractant certaines. De plus, pour chaque
+$R$ relation on a~:
+
+\[ \theta_R : FR\rightarrow GR\]
+
+Si on regarde comment $\phi_F$ et $\phi_G$ sont définies, cela signifie que chaque
+instance de relation de $F$ est envoyée sur une instance de la même relation de $G$,
+de nouveau en en contractant éventuellement certaines. Finalement, la contrainte
+de naturalité est la suivante~:
+
+\[\begin{tikzcd}
+    F\star \arrow[d, "\theta_\star"] & FR_j \arrow[l, "Ff_i^j"]
+                                            \arrow[d, "\theta_{R_j}"] \\
+    G\star & GR_j \arrow[l, "Gf_i^j"] \\
+\end{tikzcd}\]
+
+Cela nous dit qu'après avoir renommé les variables de $F$ par $\theta_\star$, les
+instance de relation sont envoyées sur des instances identiques dans $G$.
+
+Ces différentes opérations nous rappellent un peu le calcul des séquent, et
+c'est en effet le cas. Afin de le définir plus formellement, il va falloir décrire
+les formules sous forme de séquents.
+
+\begin{defi}{Séquent associé à une formule}
+    Soit $\phi$ une formule conjonctive que l'on suppose mise sous la
+    forme canonique $\exists x_1,\dots\exists x_n, R(\dots)\wedge R(\dots)$. On
+    y associe le séquent $<\phi> = x_1,\dots x_n\vdash R(\dots), \dots, R(\dots)$.
+\end{defi}
+
+\begin{rem}
+    L'habitué remarquera que la partie droite du séquent est utilisée de manière non
+    canonique. En effet, elle sert usuellement à représenter une disjonction et
+    l'on s'en sert ici pour représenter un conjonction. C'est lié au fait que
+    les faisceaux partent de $\C_\Sigma^\text{op}$, et donc que le sens de lecture
+    des règles de déduction est inversé lorsque pris par le faisceau. Ainsi, si l'on
+    veut avoir des règles correspondant aux conjonctions à l'arrivée, il faut dualiser
+    les règles, et cela nous donne les règles de disjonction, ce qui est cohérent avec
+    l'interprétation standard des séquents.
+\end{rem}
+
+Nous rappelons maintenant les règles de déduction structurelle adaptées à nos séquents
+(ce sont presque exactement celles du calcul des séquents intuitionistes).
+
+\begin{defi}{Règles de déduction}
+    Commençons par la règle de l'$\alpha$-renommage~:
+
+    \[ \tproof{ \hypo{\Gamma, x\vdash \Delta}
+         \infer1[$y\not\in\Gamma$]{\Gamma, y\vdash \Delta[x/y]} }\]
+
+    Viennent ensuite les règles de commutation~:
+
+    \[ \tproof{ \hypo{\Gamma, x, y, \Xi\vdash \Delta}
+         \infer1{\Gamma, y, x, \Xi\vdash \Delta} }
+       \qquad
+       \tproof{ \hypo{\Gamma\vdash \Delta_1, R(\mathbf{x}), S(\mathbf{y}), \Delta_2}
+         \infer1{\Gamma\vdash \Delta_1, S(\mathbf{y}), R(\mathbf{x}), \Delta_2} }
+    \]
+
+    Maintenant, les règles d'affaiblissement~:
+
+    \[ \tproof{ \hypo{\Gamma\vdash\Delta}
+         \infer1{\Gamma, x\vdash \Delta} }
+       \qquad
+       \tproof{ \hypo{\Gamma\vdash\Delta}
+         \infer1{\Gamma\vdash\Delta,R(\mathbf{x})} }\]
+
+    Enfin, les règles de contraction~:
+
+    \[ \tproof{ \hypo{\Gamma,x,y\vdash\Delta}
+         \infer1{\Gamma, x\vdash\Delta[y/x]} }
+       \qquad
+       \tproof{ \hypo{\Gamma\vdash\Delta, R(\mathbf{x}), R(\mathbf{x})}
+         \infer1{\Gamma\vdash\Delta, R(\mathbf{x})} }\]
+
+\end{defi}
+
+On arrive maintenant au théorème de description syntaxique~:
+
+\begin{theo}{Description syntaxique d'un morphisme de formule}
+    Soient $F,G\in\C_\Sigma$ deux formules. Alors il existe une transformation
+    naturelle $\theta:F\rightarrow G$ si et seulement si $<\phi_F>$ peut être réécrit
+    en $<\phi_G>$ selon les règles de déduction ci-dessus.
+\end{theo}
+
+\begin{proof}
+    TODO
+\end{proof}
+
+\begin{rem}
+    On pourrait même tenter d'établir une bijection entre des arbres de preuve
+    et des transformations naturelles, mais certains arbres donnent les même
+    transformations, donc il faudrait quotienter par la bonne relation, ce qui
+    n'est pas trivial.
+\end{rem}
+
+
