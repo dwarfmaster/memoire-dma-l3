@@ -228,4 +228,88 @@ On arrive maintenant au théorème de description syntaxique~:
     n'est pas trivial.
 \end{rem}
 
+On peut maintenant se demander ce que donnent les constructions classiquent en terme
+de séquent.
+
+\begin{lem}
+    Soient $\phi_1$, $\phi_2$ deux formules telles que $<\phi_1> = \Gamma\vdash\Delta$ et
+    $<\phi_2> = \Xi\vdash\Omega$ (on suppose $\Gamma\cap\Xi=\emptyset$), alors~:
+
+    \begin{align*}
+        <\phi_\mathbf{0}> &=~\vdash \\
+        <\phi_\mathbf{1}> &= x\vdash R_1(x,\dots, x),\dots R_n(x, \dots, x) \\
+        <\phi_1\wedge\phi_1> &= \Gamma,\Xi\vdash\Delta,\Omega \\
+        <\phi_{y\star}> &= x\vdash
+    \end{align*}
+\end{lem}
+
+\subsection{Correction}
+
+Le théorème TODO nous dit que $\sh(\C_\Sigma)\cong \C_\Sigma$, et l'on a une
+interprétation de $\C_\Sigma$ à la fois en terme de formules et en terme de CSP.
+On a donc qu'un faisseau sur $\C_\Sigma$, vu comme catégorie de formules, est
+assimilé par ce théorème à un élément de $\C_\Sigma$, vu comme catégorie de CSPs.
+Cependant, en utilisant l'approche de sémantique de faisceaux de la définition
+TODO, on obtient deux sémantiques possibles pour une formule d'après un faisceau $F$.
+Soit on le fait selon sa structure de formule conjonctive en utilisant le CSP donné
+par $LF$, soit on considère directement son image par $F$. Il faut donc montrer que
+ces deux approches coïncident.
+
+Soit $F$ un faisceau et $X\in\C_\Sigma$ une formule. On définit $\sem{X}$ comme
+étant $\sem{\phi_X}$ d'après la définition TODO pour le CSP $LF$. Pour définir
+$\sem{X}_F$, on a besoin du lemme suivant~:
+
+\begin{lem}
+    Soit $v\in X\star$ une variable de la formule $X$. Notons
+    $\ast = y\star\in\C_\Sigma$. Alors il existe une unique transformation naturelle
+    $\theta^v : \ast\rightarrow X$ telle que $\theta^v_\star(*) = v$.
+\end{lem}
+
+\begin{proof}
+    On remarque que $y\star\star$ est singleton, donc
+    $y\star\star\rightarrow X\star\cong X\star$ de manière canonique. On remarque que pour
+    $R\in\C_\Sigma$ avec $R\neq\star$, $y\star R=\emptyset$. Donc il existe une unique
+    fonction de $y\star R$ vers $X R$. 
+\end{proof}
+
+On peut alors définir la sémantique selon $F$.
+
+\begin{defi}{Sémantique selon un faisceau}
+    On pose~:
+
+    \[\sem{X}_F = \left\{f:\begin{array}{ccc}
+        X\star & \rightarrow & F\ast \\
+        v      & \mapsto     & F\theta^v(x)
+    \end{array} | x\in F X\right\}\]
+\end{defi}
+
+Le résultat qui nous intéresse est le suivante~:
+
+\begin{prop}
+    $\sem{X} = \sem{X}_F$
+\end{prop}
+
+\begin{proof}
+    La preuve est exactement la même que celle du théorème TODO, avec $\ast$ qui joue
+    le rôle de $\star$ et les $yR_i$ qui jouent le rôle des $R_i(x, y, \dots)$. À
+    titre d'exemple on a traduit l'inclusion réciproque.
+
+    \boxed{\supseteq} Soit $f\in\sem{X}_F$. Soit $f_i : \V(R_i)\rightarrow\V(\phi_X)$.
+    On remarque que $\V(\phi_X) = X\star$. On peut donc poser
+    $g = f\circ f_i : \V(R_i)\rightarrow F\star$. On remarque aussi que
+    $\V(R_i) = yR_i\star$. De plus $\sem{R_i(x, \dots)} = \sem{yR_i}_F$ par définition.
+    Or $g\in\sem{yR_i}_F\iff
+    \exists \mathbf{x}\in F y R_i: g = v\mapsto F\theta^v(\mathbf{x})$. Or
+    $f = v\mapsto F\theta^v(\mathbf{x})$ pour un $\mathbf{x}\in F X$. De plus,
+    on peut facilement construire $\theta^i : yR_i\rightarrow X$ tel que
+    $\theta^i_\star = f_i$. On a alors~:
+
+    \begin{align*}
+        g &= f\circ f_i \\
+          &= v\mapsto F\theta^{\theta^i_\star(v)}(\mathbf{x}) \\
+          &= v\mapsto F(\theta^i\circ\theta^v)(\mathbf{x})\text{ par unicité de $\theta^v$} \\
+          &= v\mapsto F\theta^v(F\theta^i(\mathbf{x}))
+    \end{align*}
+\end{proof}
+
 
