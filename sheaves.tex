@@ -32,9 +32,19 @@ aussi exactement la donnée de leur liste et leurs arités. $\Sigma$ a donc la f
 C'est là que le résultat suivant entre en jeu.
 
 \begin{prop}
-    Le plongement de Yoneda de $\psh(\C)\rightarrow\shc(\psh(\C))$ est une équivalence
-    de catégorie.
-    % TODO expliciter l'inverse
+    Soit $Y : \psh(\C)\rightarrow\shc(\psh(\C))$ le plongement de Yoneda sur
+    $\psh(\C)$.
+
+    Notons $y : \C\rightarrow\psh(\C)$ le plongement de Yoneda sur $\C$. Posons~:
+
+    \[L = \left\{\begin{array}{ccc}
+             \shc(\psh(\C)) & \rightarrow & \psh(\C) \\
+             F              & \mapsto     & F\circ y^\text{op} \\
+    \end{array}\right.\]
+
+    Alors $L\circ Y\cong\text{Id}_{\psh(\C)}$ et
+    $Y\circ L\cong\text{Id}_{\shc(\psh(\C))}$. Cela fait de $Y$ une équivalence de
+    catégories.
 \end{prop}
 
 \begin{proof}
