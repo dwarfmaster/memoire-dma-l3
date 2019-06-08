@@ -312,4 +312,77 @@ Le résultat qui nous intéresse est le suivante~:
     \end{align*}
 \end{proof}
 
+\subsection{Comma catégories à la rescousse !}
+
+Un problème apparait quand on essaye de transposer la définition de pp-interprétabilité
+puisqu'on doit faire référence à des formules où seulement certaines variables sont
+libre et certaines quantifiées. Or dans notre système toutes les variables d'une
+formule sont au même niveau. Il faut donc introduire un moyen de \emph{sélectionner}
+certaines variables.
+
+Considérons la flèche suivante~:
+$x_1,\dots, x_n\vdash \rightarrow x_1,\dots, x_k\vdash\Delta$ avec $k>n$ qui identifie
+$n$ variables de $x_1,\dots x_k$. Alors si l'on regarde la sémantique de cette flèche,
+elle prend une solution de $x_1,\dots x_k\vdash\Delta$ et donne une solution de
+$x_1,\dots, x_n\vdash$ qui lui corresponds. Autrement dit, l'image de ce morphisme
+correspond à des $n$-uplets solution de $\exists \dots:\Delta$ où les variables
+quantifiées ne sont pas celles sélectionnées par le morphisme.
+
+On a donc un moyen de représenter une formule avec certaines variables liées et certaines
+variables libres~: ce sont des morphismes dans $\C_\Sigma$ d'une formule de la forme
+$x_1,\dots x_n\vdash$ vers une autre formule. Cela fait donc penser à une comma
+catégorie de la forme $F/\C_\Sigma$ où $F$ est un foncteur bien choisit.
+
+\begin{defi}{Catégorie $\cf$}
+    On note $\cf$ la catégorie squelette de $\fset$. Décrivons là plus explicitement.
+    Ses objets sont les entiers naturels, et ses flèches les fonctions quelconques
+    de l'un vers l'autre.
+\end{defi}
+
+On remarque l'égalité suivante~:
+
+\begin{lem}
+    Soit $n$ un entier naturel. Alors, en notant $n\ast$ le coproduit de $\ast$ pris
+    $n$ fois avec lui-même si $n>0$ et $\mathbf{0}$ l'élément final sinon, on
+    a~:
+
+    \[ <\phi_{n\ast}> = x_1,\dots, x_n\vdash \]
+\end{lem}
+
+\begin{proof}
+    Application directe des lemmes TODO et TODO.
+\end{proof}
+
+On définit alors le foncteur suivant~:
+
+\begin{defi}{Foncteur $\arf$}
+    On crée un foncteur de $\cf$ vers $\C_\Sigma$. Il envoie $n$ sur $n\ast$ et
+    $f : n\rightarrow m$ vers la transformation naturelle $\theta$ telle que
+    $\theta_\star = f$ et $\theta_X = \emptyset$ pour $X\neq\star$. On nomme ce
+    foncteur $\arf : \cf\rightarrow\C_\Sigma$.
+\end{defi}
+
+On peut alors effectuer la construction décrite ci-dessus.
+
+\begin{defi}{Catégorie des formules avec variables liées}
+    On pose $\tsigma = \arf/\C_\Sigma$ la catégories des formules avec variables
+    liées.
+\end{defi}
+
+\begin{prop}
+    $\tsigma$ est finiment complète et cocomplète.
+\end{prop}
+
+\begin{proof}
+    TODO citer le résultat qui nous intéresse et éventuellement le reprouver.
+
+    $\C_\Sigma$ est finiment complète et cocomplète. De même, $\cf$ étant équivalente
+    à $\fset$, elle est finiment complète et cocomplète. Il reste donc à vérifier de
+    $\arf$ est un foncteur exact.
+
+    C'est immédiatement le cas puisque la (co)limite d'un diagramme image par $\arf$ est
+    le foncteur qui envoie $\star$ sur la (co)limite de ce diagramme évalué en $\star$
+    et tout autre prédicat sur $\emptyset$, ce qui est exactement le foncteur image
+    de la (co)limite.
+\end{proof}
 
