@@ -369,6 +369,23 @@ On peut alors effectuer la construction décrite ci-dessus.
     liées.
 \end{defi}
 
+\begin{defi}{Injection de $\Sigma$ dans $\tsigma$}
+    On définit le foncteur $\iota:\Sigma\rightarrow\tsigma$ de la façon suivante~:
+
+    \[ \iota := \left\{\begin{array}{ccc}
+        \Sigma & \rightarrow & \tsigma \\
+        \star  & \mapsto     & \ast\rightarrow\ast \\
+        R      & \mapsto     & \ar(R)\ast\rightarrow y(R) \\
+    \end{array}\right. \]
+
+    De plus, $\iota$ envoie $f_i : \star\rightarrow R$ sur le carré commutatif suivant~:
+
+    \[\begin{tikzcd}
+        \ast\arrow[d, "\id"]\arrow[r, "\arf(0\mapsto i)"] & \text{ar}(R)\ast\arrow[d] \\
+        \ast\arrow[r] & y(R) \\
+    \end{tikzcd}\]
+\end{defi}
+
 \begin{prop}
     $\tsigma$ est finiment complète et cocomplète.
 \end{prop}
@@ -385,4 +402,150 @@ On peut alors effectuer la construction décrite ci-dessus.
     et tout autre prédicat sur $\emptyset$, ce qui est exactement le foncteur image
     de la (co)limite.
 \end{proof}
+
+Maintenant qu'on a ce résultat, on peut essayer d'expliciter les colimites.
+
+\begin{theo}{Colimites de $\tsigma$}
+    TODO vérifier ?
+
+    Soit $F : I\rightarrow\tsigma$ un foncteur avec $I$ une catégorie finie. On note
+    $U_1 : \tsigma\rightarrow\cf$ et $U_2 : \tsigma\rightarrow\C_\Sigma$ les foncteurs
+    d'oublis canoniques de $\tsigma$.
+
+    Alors $F$ a une colimite. De plus, $U_1(\colim_I F) = \colim_I (U_1\circ F)$ et
+    $U_2(\colim_I F) = \colim_I (U_2\circ F)$.
+
+    De plus, $\arf\circ U_1\circ F : I\rightarrow\C_\Sigma$ a une colimite, qui
+    est $\colim_I (\arf\circ U_1\circ F) = \arf(U_1(\colim_I F))$. Alors
+    $U_2(\colim_I F)$ est sommet d'un cocône sur $\arf\circ U_1\circ F$, engendré
+    par les flèches dans l'image de $F$. De plus la flèche de $\colim_I F$ est
+    l'unique flèche allant de $\colim_I (\arf\circ U_1\circ F)$ vers $U_2(\colim_I F)$
+    qui fait commuter ce cocône.
+\end{theo}
+
+\begin{proof}
+    On sait que les colimites existent toujours puisque $\cf$, $\C_\Sigma$ et $\tsigma$
+    sont finiment cocomplètes.
+
+    En prenant
+    l'objet $x$ dans $\tsigma$ décrit dans l'énoncé, ie la flèche allant de
+    $\colim_I (\arf\circ U_1\circ F)$ vers $\colim_I (U_2\circ F)$, on obtient
+    un cocône sur $F$. Donc il existe une unique flèche de $\colim_I F$ vers $x$.
+
+    En prenant l'image par $U_1$ (respectivement $U_2$), on obtient qu'un cocône sur
+    $F$ donne un cocône sur $U_1\circ F$ (resp. $U_2\circ F$). Donc il existe une
+    unique flèche de $\colim_I (U_1\circ F)$ vers $U_1(\colim_I F)$. De même pour
+    $\colim_I (U_2\circ F)$ vers $U_2(\colim_I F)$. Ces deux flèche induisent un
+    morphisme de $x$ vers $\colim_I F$.
+
+    Il est alors facile de vérifier que ces morphismes sont effectivement inverses
+    l'un de l'autres~: $\colim_I F\cong x$. La colimite étant définit à isomorphisme
+    près, on peut même écrire $\colim_I F = x$.
+\end{proof}
+
+Afin de donner une description plus intéressante de quelques colimites usuelles, on
+va définir une description en terme de séquent de objets de $\tsigma$.
+
+\begin{defi}{Représentation en séquents de $\tsigma$}
+    Soit $f : n\ast\rightarrow X$ un objet de $\tsigma$. On note
+    $<\phi_X> = \Xi\vdash\Phi$. $f$ induit une fonction de $x_1,\dots x_n$ vers $\Xi$.
+    On note le séquent associé à $f$ de la façon suivante~:
+
+    \[ <f> := x_1, \dots x_n; \Xi - \im f\vdash \Phi',\mathcal{E} \]
+
+    Où $\Phi'$ est $\Phi$ où l'on a remplacé chaque variable par une de ses préimage
+    par $f$ si elle est dans l'image de $f$. De plus, $\mathcal{E}$ est une suite
+    d'égalités~: $x_i=x_j\in\mathcal{E}$ si $f(x_i) = f(x_j)$ et $i\neq j$.
+
+    Une formule de la forme $\Xi;\Gamma\vdash \Phi$ représente une formule ayant comme
+    variables libre $\Xi$ et comme variables liées $\Gamma$. De plus on a toujours
+    $\Xi\cap\Gamma=\emptyset$.
+\end{defi}
+
+\begin{exs}
+    \item $<\iota\star> = x;\vdash$
+    \item $<\iota R> = x_1,\dots x_{\ar(R)};\vdash R(x_1, \dots, x_{\ar(R)})$
+    \item Si on note $\tilde{0} : 2\rightarrow 2$ la fonction constante égale à
+        zéro, on peut prendre $\theta : 2\ast\rightarrow X$ où $X$ est une formule
+        vide à deux variables telle que $\theta_\star = \tilde{0}$. Dans ce cas, on
+        a $<\theta> = x,y;\vdash x = y$~: c'est la diagonale ! On remarque donc
+        qu'avec ces conventions, il est possible de définir la diagonale même en
+        l'absence de relation. Cela revient à dire que l'égalité fait toujours
+        parti des relations autorisées, ce qui est une convention commune.
+    \item TODO un exemple avec variables liées
+\end{exs}
+
+\begin{lem}
+    Soient $X,Y\in\tsigma$. On note $X+Y$ leur coproduit. Notons aussi
+    $<X> = \Xi;\Gamma\vdash\Phi$ et $<Y> = \Xi';\Gamma'\vdash\Phi'$ (on suppose
+    tous les ensembles de variables disjoints).
+    
+    Alors $<X+Y> = \Xi,\Xi';\Gamma,\Gamma'\vdash\Phi,\Phi'$.
+\end{lem}
+
+\begin{lem}
+    Notons $\mathbf{0}$ l'élément initial de $\tsigma$.
+    
+    Alors $<\mathbf{0}> = ;\vdash$.
+\end{lem}
+
+\begin{lem}
+    Soient $X,Y\in\tsigma$. On note $<X> = \Xi,x;\Gamma\vdash\Phi$ et
+    $<Y> = \Xi',y;\Gamma'\vdash\Phi'$. On considère de plus les flèches allant de
+    $<Z> = x;\vdash$ vers $X$ (resp $Y$) qui sélectionnent la variable $x$ (resp $y$).
+
+    Alors $<X +_Z Y> = \Xi,\Xi',x;\Gamma,\Gamma'\vdash\Phi,\Phi'[y/x]$.
+\end{lem}
+
+\begin{proof}
+    Tous ces lemmes sont des conséquences directes du théorème TODO.
+\end{proof}
+
+\begin{prop}
+    Soit $F:\tsigma\rightarrow\tgamma$ un foncteur exact à droite (préserve les colimites
+    finies).
+    $F$ est entièrement déterminé
+    par l'image des objets $X$ de $\tsigma$ tels que $<X> = \Xi;\vdash \Phi$.
+\end{prop}
+
+\begin{proof}
+    Soit $f:m\ast\rightarrow X$ un objet de $\tsigma$ tel que $f_\star$ soit surjectif
+    et soit $n\leq m$.
+    On note $i:n\hookrightarrow m$ l'inclusion.
+    On a un carré commutatif~:
+
+    \[\begin{tikzcd}
+        n\ast\arrow[r, "\text{ar}(i)"]\arrow[d, "f_{|n}"] & m\ast\arrow[d, "f"] \\
+        X\arrow[r, "\id"] & X \\
+    \end{tikzcd}\]
+
+    Il donne lieu à une flèche dans $\tsigma$. On peut donc regarder son image par $F$.
+    En composant par $U_2$ on se rend compte que la flèche du bas doit être l'indentité.
+    De même, la flèche du haut en entièrement determinée par l'image de $1$ par
+    $U_1\circ F$. L'image du carré commutatif est donc entièrement déterminé par
+    l'image de $\ast$ et l'image de $f$.
+\end{proof}
+
+\begin{theo}{Relèvement sur $\tsigma$}
+    Soit $r : \Sigma\rightarrow\tgamma$ un foncteur. Alors il existe un unique foncteur
+    exact à droite $\tilde{r}$ qui fasse commuter le diagramme suivant~:
+
+    \[\begin{tikzcd}
+        \Sigma\arrow[d, "\iota"]\arrow[r, "r"] & \tgamma \\
+        \tsigma\arrow[ur, "\tilde{r}"] & \\
+    \end{tikzcd}\]
+\end{theo}
+
+\begin{proof}
+    \emph{Unicité} Commençons par prouver l'unicité. En vertu du théorème TODO, il suffit
+    de montrer que l'image de $\tilde{r}$ est entièrement déterminée par son image
+    sur les formules sans variables quantifiées. Or d'après le lemme TODO,
+    on peut écrire une formule sans variables quantifiées comme colimite de formule
+    dans l'image de $\iota$. Or l'image de $\tilde{r}$ est déterminée le long de $\iota$,
+    et $\tilde{r}$ est exact à droite donc préserve les colimites. D'où $\tilde{r}$
+    est uniquement déterminée.
+
+    \emph{Existence} TODO
+\end{proof}
+
 
