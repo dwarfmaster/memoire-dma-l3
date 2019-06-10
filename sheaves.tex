@@ -369,21 +369,21 @@ On peut alors effectuer la construction décrite ci-dessus.
     liées.
 \end{defi}
 
-\begin{defi}{Injection de $\Sigma$ dans $\tsigma$}
-    On définit le foncteur $\iota:\Sigma\rightarrow\tsigma$ de la façon suivante~:
+\begin{defi}{Injection de $\C_\Sigma$ dans $\tsigma$}
+    On définit le foncteur $\iota:\C_\Sigma\rightarrow\tsigma$ de la façon suivante~:
 
     \[ \iota := \left\{\begin{array}{ccc}
         \Sigma & \rightarrow & \tsigma \\
-        \star  & \mapsto     & \ast\rightarrow\ast \\
-        R      & \mapsto     & \ar(R)\ast\rightarrow y(R) \\
+        X      & \mapsto     & \mid X\star\mid\ast\rightarrow X \\
+        \theta : X\rightarrow Y & \mapsto &
+            \begin{tikzcd}
+                \mid X\star\mid\ast\arrow[d]
+                                   \arrow[r, "\theta_\star"]
+                    & \mid Y\star\mid\ast\arrow[d] \\
+                X\arrow[r, "\theta"]
+                    & Y \\
+            \end{tikzcd} \\
     \end{array}\right. \]
-
-    De plus, $\iota$ envoie $f_i : \star\rightarrow R$ sur le carré commutatif suivant~:
-
-    \[\begin{tikzcd}
-        \ast\arrow[d, "\id"]\arrow[r, "\arf(0\mapsto i)"] & \text{ar}(R)\ast\arrow[d] \\
-        \ast\arrow[r] & y(R) \\
-    \end{tikzcd}\]
 \end{defi}
 
 \begin{prop}
@@ -463,8 +463,8 @@ va définir une description en terme de séquent de objets de $\tsigma$.
 \end{defi}
 
 \begin{exs}
-    \item $<\iota\star> = x;\vdash$
-    \item $<\iota R> = x_1,\dots x_{\ar(R)};\vdash R(x_1, \dots, x_{\ar(R)})$
+    \item $<\iota\ast> = x;\vdash$
+    \item $<\iota yR> = x_1,\dots x_{\ar(R)};\vdash R(x_1, \dots, x_{\ar(R)})$
     \item Si on note $\tilde{0} : 2\rightarrow 2$ la fonction constante égale à
         zéro, on peut prendre $\theta : 2\ast\rightarrow X$ où $X$ est une formule
         vide à deux variables telle que $\theta_\star = \tilde{0}$. Dans ce cas, on
@@ -501,51 +501,112 @@ va définir une description en terme de séquent de objets de $\tsigma$.
     Tous ces lemmes sont des conséquences directes du théorème TODO.
 \end{proof}
 
-\begin{prop}
-    Soit $F:\tsigma\rightarrow\tgamma$ un foncteur exact à droite (préserve les colimites
-    finies).
-    $F$ est entièrement déterminé
-    par l'image des objets $X$ de $\tsigma$ tels que $<X> = \Xi;\vdash \Phi$.
-\end{prop}
-
-\begin{proof}
-    Soit $f:m\ast\rightarrow X$ un objet de $\tsigma$ tel que $f_\star$ soit surjectif
-    et soit $n\leq m$.
-    On note $i:n\hookrightarrow m$ l'inclusion.
-    On a un carré commutatif~:
-
-    \[\begin{tikzcd}
-        n\ast\arrow[r, "\text{ar}(i)"]\arrow[d, "f_{|n}"] & m\ast\arrow[d, "f"] \\
-        X\arrow[r, "\id"] & X \\
-    \end{tikzcd}\]
-
-    Il donne lieu à une flèche dans $\tsigma$. On peut donc regarder son image par $F$.
-    En composant par $U_2$ on se rend compte que la flèche du bas doit être l'indentité.
-    De même, la flèche du haut en entièrement determinée par l'image de $1$ par
-    $U_1\circ F$. L'image du carré commutatif est donc entièrement déterminé par
-    l'image de $\ast$ et l'image de $f$.
-\end{proof}
-
 \begin{theo}{Relèvement sur $\tsigma$}
-    Soit $r : \Sigma\rightarrow\tgamma$ un foncteur. Alors il existe un unique foncteur
-    exact à droite $\tilde{r}$ qui fasse commuter le diagramme suivant~:
+    % TODO pas de commutation, juste une équivalence naturelle entre foncteurs
+    Soit $r : \C_\Sigma\rightarrow\tgamma$ un foncteur exact à droite. Alors il
+    existe un foncteur exact à droite $\tilde{r}$ qui fasse commuter le
+    diagramme suivant~:
 
     \[\begin{tikzcd}
-        \Sigma\arrow[d, "\iota"]\arrow[r, "r"] & \tgamma \\
+        \C_\Sigma\arrow[d, "\iota"]\arrow[r, "r"] & \tgamma \\
         \tsigma\arrow[ur, "\tilde{r}"] & \\
     \end{tikzcd}\]
+
+    % TODO est-ce qu'il y a unicité ? Probablement pas, et ce n'est pas nécessaire
+    Il n'y a pas unicité. Cependant, son image sur les objets est entièrement déterminé
+    et la diagonale sur l'image de carrés commutatifs des morphismes est entièrement
+    déterminée.
 \end{theo}
 
 \begin{proof}
-    \emph{Unicité} Commençons par prouver l'unicité. En vertu du théorème TODO, il suffit
-    de montrer que l'image de $\tilde{r}$ est entièrement déterminée par son image
-    sur les formules sans variables quantifiées. Or d'après le lemme TODO,
-    on peut écrire une formule sans variables quantifiées comme colimite de formule
-    dans l'image de $\iota$. Or l'image de $\tilde{r}$ est déterminée le long de $\iota$,
-    et $\tilde{r}$ est exact à droite donc préserve les colimites. D'où $\tilde{r}$
-    est uniquement déterminée.
+    \textbf{Unicité} Montrons qu'un foncteur de $\tsigma$ vers $\tgamma$ est entièrement
+    déterminé par son image le long de $\iota$.
 
-    \emph{Existence} TODO
+    Soit $g:n\ast\rightarrow X$ un objet de $\tsigma$. On peut trouver $m\in\cf$,
+    $f:m\ast\rightarrow X$ dans $\tsigma$ avec $f$ bijective et $i : n\rightarrow m$
+    tels que le carré suivant commute~:
+
+    \[\begin{tikzcd}
+        n\ast\arrow[r, "\text{ar}(i)"]\arrow[d, "g"] & m\ast\arrow[d, "f"] \\
+        X\arrow[r, "\id"] & X \\
+    \end{tikzcd}\]
+
+    Il donne lieu à une flèche dans $\tsigma$. On peut donc regarder son image par
+    $\tilde{r}$.
+    En composant par $U_2$ on se rend compte que la flèche du bas doit être l'indentité.
+    De même, la flèche du haut en entièrement determinée par l'image de $1$ par
+    $U_1\circ \tilde{r}$. L'image du carré commutatif est donc entièrement déterminé par
+    l'image de $\ast$ et l'image de $f$.
+
+    Il suffit alors de remarquer que les objets de $\tsigma$ de la forme
+    $m\ast\rightarrow X$ bijective sont exactement les objets dans l'image de
+    $\iota$.
+
+    Il reste à montrer que la diagonale de l'image des flèches est entièrement
+    déterminée. On considère la flèche suivante~:
+
+    \[\begin{tikzcd}
+        n\ast\arrow[r, "f"]\arrow[d] & m\ast\arrow[d] \\
+        X\arrow[r, "g"] & Y \\
+    \end{tikzcd}\]
+
+    On applique la même technique que ci-dessus pour le factoriser à travers des
+    flèches bijectives~:
+
+    \[\begin{tikzcd}
+        & & n'\ast\arrow[rr]\arrow[dddl] & & m'\ast\arrow[dddl] \\
+        n\ast\arrow[urr]\arrow[rr, dashed, "f"]\arrow[ddr] & &
+            m\ast\arrow[urr]\arrow[ddr] & & \\
+        & & & & \\
+        & X\arrow[rr, "g"] & & Y & \\
+    \end{tikzcd}\]
+
+    On connait donc l'image de toutes les flèches sauf de celle en pointillés, ce qui
+    conclut pour l'unicité.
+
+    \textbf{Existence} On commence par construire un $\tilde{r}$ candidat, puis on
+    vérifiera qu'il est bien exact à droite.
+    
+    Soit $k\ast\xrightarrow{f} X\in\tsigma$. On note $r\ast = n\ast\rightarrow\phi$
+    et $rX = m\ast\rightarrow\psi$. L'objet de $\tsigma$ étant une flèche de $\C_\Sigma$,
+    elle est envoyée sur un carré commutatif. De plus, comme $r$ est exact à droite,
+    on a $r(k\ast) = kr(\ast)$. Donc $r$ nous donne le carré commutatif suivant~:
+
+    \[\begin{tikzcd}
+        kn\ast\arrow[r, "r_1f"]\arrow[d]\arrow[dr,dashed] & m\ast\arrow[d] \\
+        k\phi\arrow[r, "r_2f"] & \psi \\
+    \end{tikzcd}\]
+
+    On définit l'image de $f$ par $\tilde{r}$ comme étant la diagonale de ce carré
+    commutatif. On doit maintenant définir l'image d'une flèche. Soit un carré commutatif
+    dans $\tsigma$~:
+
+    \[\begin{tikzcd}
+        k_1\ast\arrow[r,"g_1"]\arrow[d,"f_1"] & k_2\ast\arrow[d,"f_2"] \\
+        X_1\arrow[r,"g_2"] & X_2 \\
+    \end{tikzcd}\]
+
+    Comme l'image de chaque morphisme est un carré commutatif, donc en prenant
+    l'image par $r$ on obtient la pyramide suivante~:
+
+    \[\begin{tikzcd}
+        k_1n\ast\arrow[rrr,red,"r_1g_1"]\arrow[dr]\arrow[ddd, "r_1f_1"]\arrow[ddr,dashed]
+            & & & k_2n\ast\arrow[dl]\arrow[ddd, "r_1f_2"]\arrow[ddl,dashed] \\
+        & k_1\phi\arrow[r,"r_2g_1"]\arrow[d,"r_2f_1"]
+            & k_2\phi\arrow[d,swap,"r_2f_2"] & \\
+        & \psi_1\arrow[r,red,"r_2g_2"]
+            & \psi_2 & \\
+        n_1\ast\arrow[ur]\arrow[rrr,"r_1g_2"]
+            & & & n_2\ast\arrow[ul] \\
+    \end{tikzcd}\]
+
+    Les flèches en rouge nous donnent l'image du carré commutatif.
+
+    On obtient facilement que $\tilde{r}$ préserve l'identité et la composition
+    (on recolle les pyramides selon leur côté commun). C'est donc bien un foncteur.
+
+    % TODO finir
+
 \end{proof}
 
 
