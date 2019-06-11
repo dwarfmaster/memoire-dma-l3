@@ -367,6 +367,9 @@ On peut alors effectuer la construction décrite ci-dessus.
 \begin{defi}{Catégorie des formules avec variables liées}
     On pose $\tsigma = \arf/\C_\Sigma$ la catégories des formules avec variables
     liées.
+
+    On dispose de deux foncteurs d'oublis canoniques $U_1 : \tsigma\rightarrow\cf$
+    et $U_2 : \tsigma\rightarrow\C_\Sigma$.
 \end{defi}
 
 \begin{defi}{Injection de $\C_\Sigma$ dans $\tsigma$}
@@ -386,62 +389,110 @@ On peut alors effectuer la construction décrite ci-dessus.
     \end{array}\right. \]
 \end{defi}
 
-\begin{prop}
-    $\tsigma$ est finiment complète et cocomplète.
-\end{prop}
+\begin{lem}
+    $\iota$ est un foncteur plein et fidèle.
+\end{lem}
+
+\begin{cor}
+    $\iota$ préserve les colimites finies.
+\end{cor}
+
+\begin{lem}
+    On a une adjunction~:
+
+    \[\begin{tikzcd}
+        \cf\arrow[rr, bend right, swap, "\iota\circ\arf"] & \top
+            & \tsigma\arrow[ll, bend right, swap, "U_1"] \\
+    \end{tikzcd}\]
+\end{lem}
 
 \begin{proof}
-    TODO citer le résultat qui nous intéresse et éventuellement le reprouver.
+    Soit $n\in\cf$ et $m\ast\rightarrow X\in\tsigma$. On veut montrer que~:
 
-    $\C_\Sigma$ est finiment complète et cocomplète. De même, $\cf$ étant équivalente
-    à $\fset$, elle est finiment complète et cocomplète. Il reste donc à vérifier de
-    $\arf$ est un foncteur exact.
+    \[\cf(n, U_1(m\ast\rightarrow X)) = \tsigma(\iota(\arf(n)), m\ast\rightarrow X)\]
 
-    C'est immédiatement le cas puisque la (co)limite d'un diagramme image par $\arf$ est
-    le foncteur qui envoie $\star$ sur la (co)limite de ce diagramme évalué en $\star$
-    et tout autre prédicat sur $\emptyset$, ce qui est exactement le foncteur image
-    de la (co)limite.
+    En développant les définitions, on obtient qu'on trouver une bijection entre
+    les fonctions de $n$ vers $m$ et les carrés commutatifs de la forme suivante~:
+
+    \[\begin{tikzcd}
+        n\ast\arrow[r] & X \\
+        n\ast\arrow[u, "\id"]\arrow[r] & m\ast\arrow[u] \\
+    \end{tikzcd}\]
+
+    C'est immédiat~: la flèche du bas est exactement une fonction de $n$ vers $m$,
+    et celle du haut en entièrement déterminée par la flèche du bas.
 \end{proof}
 
-Maintenant qu'on a ce résultat, on peut essayer d'expliciter les colimites.
+\begin{cor}
+    $\arf$ préserve les colimites finies.
+\end{cor}
 
 \begin{theo}{Colimites de $\tsigma$}
-    TODO vérifier ?
-
-    Soit $F : I\rightarrow\tsigma$ un foncteur avec $I$ une catégorie finie. On note
+    Soit $D : I\rightarrow\tsigma$ un foncteur avec $I$ une catégorie finie. On note
     $U_1 : \tsigma\rightarrow\cf$ et $U_2 : \tsigma\rightarrow\C_\Sigma$ les foncteurs
     d'oublis canoniques de $\tsigma$.
 
-    Alors $F$ a une colimite. De plus, $U_1(\colim_I F) = \colim_I (U_1\circ F)$ et
-    $U_2(\colim_I F) = \colim_I (U_2\circ F)$.
+    Alors $D$ a une colimite. De plus, $U_1(\colim_I D) = \colim_I (U_1\circ D)$ et
+    $U_2(\colim_I D) = \colim_I (U_2\circ D)$.
 
-    De plus, $\arf\circ U_1\circ F : I\rightarrow\C_\Sigma$ a une colimite, qui
-    est $\colim_I (\arf\circ U_1\circ F) = \arf(U_1(\colim_I F))$. Alors
-    $U_2(\colim_I F)$ est sommet d'un cocône sur $\arf\circ U_1\circ F$, engendré
-    par les flèches dans l'image de $F$. De plus la flèche de $\colim_I F$ est
-    l'unique flèche allant de $\colim_I (\arf\circ U_1\circ F)$ vers $U_2(\colim_I F)$
+    De plus, $\arf\circ U_1\circ D : I\rightarrow\C_\Sigma$ a une colimite, qui
+    est $\colim_I (\arf\circ U_1\circ D) = \arf(U_1(\colim_I D))$. Alors
+    $U_2(\colim_I D)$ est sommet d'un cocône sur $\arf\circ U_1\circ D$, engendré
+    par les flèches dans l'image de $D$. De plus la flèche de $\colim_I D$ est
+    l'unique flèche allant de $\colim_I (\arf\circ U_1\circ D)$ vers $U_2(\colim_I D)$
     qui fait commuter ce cocône.
 \end{theo}
 
 \begin{proof}
-    On sait que les colimites existent toujours puisque $\cf$, $\C_\Sigma$ et $\tsigma$
-    sont finiment cocomplètes.
+    On note $x$ l'objet de $\tsigma$ décrit dans l'énoncé de ce théorème. Il existe
+    bien car $\cf$ et $\C_\Sigma$ sont cocomplètes. On veut
+    montrer que c'est la colimite de $D$.
 
-    En prenant
-    l'objet $x$ dans $\tsigma$ décrit dans l'énoncé, ie la flèche allant de
-    $\colim_I (\arf\circ U_1\circ F)$ vers $\colim_I (U_2\circ F)$, on obtient
-    un cocône sur $F$. Donc il existe une unique flèche de $\colim_I F$ vers $x$.
+    On remarque que l'égalité $\arf(\colim_I U_1\circ D) = \colim_I (\arf\circ U_1\circ D)$
+    découle immédiatement du corrolaire TODO.
 
-    En prenant l'image par $U_1$ (respectivement $U_2$), on obtient qu'un cocône sur
-    $F$ donne un cocône sur $U_1\circ F$ (resp. $U_2\circ F$). Donc il existe une
-    unique flèche de $\colim_I (U_1\circ F)$ vers $U_1(\colim_I F)$. De même pour
-    $\colim_I (U_2\circ F)$ vers $U_2(\colim_I F)$. Ces deux flèche induisent un
-    morphisme de $x$ vers $\colim_I F$.
+    La situation est la suivante~:
 
-    Il est alors facile de vérifier que ces morphismes sont effectivement inverses
-    l'un de l'autres~: $\colim_I F\cong x$. La colimite étant définit à isomorphisme
-    près, on peut même écrire $\colim_I F = x$.
+    \begin{center}\begin{tikzpicture}
+        \draw[->] (0,0)   node[above] (d1a) {$\bullet$}
+              -- (0,-1)   node[below] (d1b) {$\bullet$};
+        \draw[->] (1,.5)  node[above] (d2a) {$\bullet$}
+              -- (1,-.5)  node[below] (d2b) {$\bullet$};
+        \draw[->] (3,-.5) node[above] (d3a) {$\bullet$}
+              -- (3,-1.5) node[below] (d3b) {$\bullet$};
+        \draw[->] (d1a) -- (d2a);
+        \draw[->] (d1b) -- (d2b);
+        \draw[dashed] (1.5,-0.5) ellipse (3 and 1.7);
+        \draw (2.3,1.2) node[above] {$D$};
+
+        \draw[->] (2,-3) node[above] (xa) {$\bullet$}
+              -- node[left] {$x$} (2,-4)  node[below] (xb) {$\bullet$};
+        \draw[->,blue]  (d1a) -- (xa);
+        \draw[->,blue]  (d2a) -- (xa);
+        \draw[->,blue]  (d3a) -- (xa);
+        \draw[->,red]   (d1b) -- (xb);
+        \draw[->,red]   (d2b) -- (xb);
+        \draw[->,red]   (d3b) -- (xb);
+        \draw[->,green] (d1a) edge[out=270, in=130] (xb);
+        \draw[->,green] (d2a) edge[out=270, in=100] (xb);
+        \draw[->,green] (d3a) edge[out=270, in=70]  (xb);
+    \end{tikzpicture}\end{center}
+
+    Les flèches bleues indiquent des flèches dans l'image de $\arf$ et les flèches
+    rouges sont dans l'image de $\id_{\C_\Sigma}$. Pour montrer que l'on a un cocône,
+    il faut montrer que les carrés verticaux sont commutatifs, ce qui est immédiat
+    puisque la flèche de $x$ vient de la propriétés de colimite de
+    $\arf(\colim_I U_1\circ f)$ appliqué au cocône formé par les flèches vertes.
+
+    On prends maintenant un cocône $c$ sur $D$. En composant par $U_1$ et $U_2$ on obtient
+    qu'il existe au plus une flèche de $x$ vers $c$. Pour vérifier qu'il en existe une,
+    il faut montrer qu'on peut obtenir un carré commutatif à partir des flèches de
+    colimites dans $\cf$ et $\C_\Sigma$, ce qui est direct.
 \end{proof}
+
+\begin{cor}
+    $U_1$ et $U_2$ sont exacts à droite.
+\end{cor}
 
 Afin de donner une description plus intéressante de quelques colimites usuelles, on
 va définir une description en terme de séquent de objets de $\tsigma$.
@@ -472,7 +523,6 @@ va définir une description en terme de séquent de objets de $\tsigma$.
         qu'avec ces conventions, il est possible de définir la diagonale même en
         l'absence de relation. Cela revient à dire que l'égalité fait toujours
         parti des relations autorisées, ce qui est une convention commune.
-    \item TODO un exemple avec variables liées
 \end{exs}
 
 \begin{lem}
@@ -502,69 +552,18 @@ va définir une description en terme de séquent de objets de $\tsigma$.
 \end{proof}
 
 \begin{theo}{Relèvement sur $\tsigma$}
-    % TODO pas de commutation, juste une équivalence naturelle entre foncteurs
     Soit $r : \C_\Sigma\rightarrow\tgamma$ un foncteur exact à droite. Alors il
-    existe un foncteur exact à droite $\tilde{r}$ qui fasse commuter le
-    diagramme suivant~:
+    existe un foncteur exact à droite $\tilde{r}$ tel que~:
 
     \[\begin{tikzcd}
-        \C_\Sigma\arrow[d, "\iota"]\arrow[r, "r"] & \tgamma \\
-        \tsigma\arrow[ur, "\tilde{r}"] & \\
+        \C_\Sigma\arrow[dr, bend right, "\iota"]\arrow[rr, bend left, "r"]
+            & \cong & \tgamma \\
+        & \tsigma\arrow[ur, bend right, "\tilde{r}"] & \\
     \end{tikzcd}\]
-
-    % TODO est-ce qu'il y a unicité ? Probablement pas, et ce n'est pas nécessaire
-    Il n'y a pas unicité. Cependant, son image sur les objets est entièrement déterminé
-    et la diagonale sur l'image de carrés commutatifs des morphismes est entièrement
-    déterminée.
 \end{theo}
 
 \begin{proof}
-    \textbf{Unicité} Montrons qu'un foncteur de $\tsigma$ vers $\tgamma$ est entièrement
-    déterminé par son image le long de $\iota$.
-
-    Soit $g:n\ast\rightarrow X$ un objet de $\tsigma$. On peut trouver $m\in\cf$,
-    $f:m\ast\rightarrow X$ dans $\tsigma$ avec $f$ bijective et $i : n\rightarrow m$
-    tels que le carré suivant commute~:
-
-    \[\begin{tikzcd}
-        n\ast\arrow[r, "\text{ar}(i)"]\arrow[d, "g"] & m\ast\arrow[d, "f"] \\
-        X\arrow[r, "\id"] & X \\
-    \end{tikzcd}\]
-
-    Il donne lieu à une flèche dans $\tsigma$. On peut donc regarder son image par
-    $\tilde{r}$.
-    En composant par $U_2$ on se rend compte que la flèche du bas doit être l'indentité.
-    De même, la flèche du haut en entièrement determinée par l'image de $1$ par
-    $U_1\circ \tilde{r}$. L'image du carré commutatif est donc entièrement déterminé par
-    l'image de $\ast$ et l'image de $f$.
-
-    Il suffit alors de remarquer que les objets de $\tsigma$ de la forme
-    $m\ast\rightarrow X$ bijective sont exactement les objets dans l'image de
-    $\iota$.
-
-    Il reste à montrer que la diagonale de l'image des flèches est entièrement
-    déterminée. On considère la flèche suivante~:
-
-    \[\begin{tikzcd}
-        n\ast\arrow[r, "f"]\arrow[d] & m\ast\arrow[d] \\
-        X\arrow[r, "g"] & Y \\
-    \end{tikzcd}\]
-
-    On applique la même technique que ci-dessus pour le factoriser à travers des
-    flèches bijectives~:
-
-    \[\begin{tikzcd}
-        & & n'\ast\arrow[rr]\arrow[dddl] & & m'\ast\arrow[dddl] \\
-        n\ast\arrow[urr]\arrow[rr, dashed, "f"]\arrow[ddr] & &
-            m\ast\arrow[urr]\arrow[ddr] & & \\
-        & & & & \\
-        & X\arrow[rr, "g"] & & Y & \\
-    \end{tikzcd}\]
-
-    On connait donc l'image de toutes les flèches sauf de celle en pointillés, ce qui
-    conclut pour l'unicité.
-
-    \textbf{Existence} On commence par construire un $\tilde{r}$ candidat, puis on
+    On commence par construire un $\tilde{r}$ candidat, puis on
     vérifiera qu'il est bien exact à droite.
     
     Soit $k\ast\xrightarrow{f} X\in\tsigma$. On note $r\ast = n\ast\rightarrow\phi$
@@ -605,8 +604,36 @@ va définir une description en terme de séquent de objets de $\tsigma$.
     On obtient facilement que $\tilde{r}$ préserve l'identité et la composition
     (on recolle les pyramides selon leur côté commun). C'est donc bien un foncteur.
 
-    % TODO finir
+    Construisons maintenant une transformation naturelle entre $rX$ et
+    $\tilde{r}\iota X$. On définit $\theta_X$ comme étant le carré commutatif
+    suivant~:
 
+    \[\begin{tikzcd}
+        kn\ast\arrow[r, "r_1f"]\arrow[d] & m\ast\arrow[d] \\
+        \psi\arrow[r, "\id"] & \psi \\
+    \end{tikzcd}\]
+
+    Or $f$ est une flèche de $\tsigma$ créée par $\iota$, elle est donc bijective. Comme
+    les foncteurs préservent les isomorphismes, $r_1f$ est un isomorphisme. On a donc
+    une transformation inversible, vérifions qu'elle est naturelle~:
+
+    \[\begin{tikzcd}
+        kn\ast\arrow[rrrr, "r_1f"]\arrow[dr, "n\arf(h_\star)"]\arrow[dddddrr]
+            & & & & m\ast\arrow[dl, swap, "r_1h"]\arrow[dddddll] \\
+        & k'n\ast\arrow[rr, "r_1f'"]\arrow[ddr]
+            & & m'\ast\arrow[ddl] & \\
+        & & & & \\
+        & & \psi' & & \\
+        & & & & \\
+        & & \phi\arrow[uu, "r_2h"] & & \\
+    \end{tikzcd}\]
+
+    La base et le sommet commutent. De plus, le côté droit et celui du haut commutent.
+    Donc donc les faces commutent~: $\theta$ est un isomorphisme naturel entre
+    $\tilde{r}\circ\iota$ et $r$.
+
+    Il est aussi direct de vérifier que $\tilde{r}$ est exact à droite.
+    % TODO détailler ?
 \end{proof}
 
 
