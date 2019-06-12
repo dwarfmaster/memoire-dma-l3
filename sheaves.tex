@@ -4,7 +4,7 @@ leurs arités $a_1, \dots a_n\in\N$.
 
 L'objectif est de créer une catégorie $\C_\Sigma$, que l'on notera $\C$ en l'absence
 d'ambiguïté sur $\Sigma$, telle que la donnée d'un problème CSP soit exactement la donnée
-d'un faisseau sur $\C$ (à valeur dans $\fset$, puisqu'on se limite à ce cadre là). Pour
+d'un faisceau sur $\C$ (à valeur dans $\fset$, puisqu'on se limite à ce cadre là). Pour
 pouvoir parler de faisceau, il faudra munir $\C$ d'une structure de site.
 
 \subsection{Intuition}
@@ -13,7 +13,7 @@ Qu'est-ce qu'un CSP
 sur un alphabet de relation $\Sigma$~? C'est la donnée d'un domaine fini $D$ et
 de relations sur $D$ de bonne arité pour chaque relation de $\Sigma$. Si
 $\Sigma = \{R_1, \dots R_n\}$, on peut poser la catégorie qui a pour objets
-$\{\star, R_1, \dots R_n\}$ et commes flèches les identités, ainsi pour pour
+$\{\star, R_1, \dots R_n\}$ et comme flèches les identités, ainsi que pour
 tout $1\leq i\leq n$, autant de flèche de $\star$ vers $R_i$ que l'arité de
 $R_i$. Un préfaisceau sur cette catégorie nous donne alors un CSP (et
 vice-versa, par contre plusieurs préfaisceaux peuvent correspondre au même
@@ -69,7 +69,7 @@ simple, on procède par analogie avec la façon de représenter un graphe dirig�
 \end{tikzcd}\]
 
 Un tel préfaisceau $F : G^{\text{op}}\rightarrow\fset$ représente le graphe ayant pour
-ensemble sous jacent $Fe$ et pour arrêtes $Fv$. De plus, la source d'une arrête $a\in Fv$
+ensemble sous-jacent $Fe$ et pour arrêtes $Fv$. De plus, la source d'une arrête $a\in Fv$
 est $Fs(a)$ et sa destination est $Ft(a)$. On peut aussi interpréter un graphe comme
 étant une formule conjonctive, dont les variables sont les points et qui possède un
 unique prédicat binaire qui marque les arrêtes. On remarque que la catégorie $G$ est
@@ -97,7 +97,7 @@ On pose alors $\C_\Sigma = \psh(\Sigma)$ notre nouvelle catégorie des formules.
 \end{lem}
 
 \begin{pv}
-    C'est une propriété générale des catégories des faisceaux.
+    C'est une propriété générale des catégories de faisceaux.
 \end{pv}
 
 On peut alors étudier quelques limites particulières.
@@ -131,11 +131,32 @@ On peut alors étudier quelques limites particulières.
     \[\phi_{A\wedge B} \iff \phi_A\wedge\phi_B \]
 \end{lem}
 
+On donne aussi une représentation sous forme de séquents, qui est pratique
+pour travailler.
+
+\begin{defi}{Séquent associé à une formule}\label{formSeq}
+    Soit $\phi$ une formule conjonctive que l'on suppose mise sous la
+    forme canonique $\exists x_1,\dots\exists x_n, R(\dots)\wedge R(\dots)$. On
+    y associe le séquent $\ml{\phi} = x_1,\dots x_n\vdash R(\dots), \dots, R(\dots)$.
+\end{defi}
+
+\begin{rem}
+    L'habitué remarquera que la partie droite du séquent est utilisée de manière non
+    canonique. En effet, elle sert usuellement à représenter une disjonction et
+    l'on s'en sert ici pour représenter un conjonction. C'est lié au fait que
+    les faisceaux partent de $\C_\Sigma^\text{op}$, et donc que le sens de lecture
+    des règles de déduction est inversé lorsque pris par le faisceau. Ainsi, si l'on
+    veut avoir des règles correspondant aux conjonctions à l'arrivée, il faut dualiser
+    les règles, et cela nous donne les règles de disjonction, ce qui est cohérent avec
+    l'interprétation standard des séquents.
+\end{rem}
+
+
 \subsection{Correction}
 
-Le théorème \ref{canEq} nous dit que $\sh(\C_\Sigma)\cong \C_\Sigma$, et l'on a
+Le théorème \ref{canEq} nous dit que $\shc(\C_\Sigma)\cong \C_\Sigma$, et l'on a
 une interprétation de $\C_\Sigma$ à la fois en terme de formules et en terme de
-CSP.  On a donc qu'un faisseau sur $\C_\Sigma$, vu comme catégorie de formules,
+CSP.  On a donc qu'un faisceau sur $\C_\Sigma$, vu comme catégorie de formules,
 est assimilé par ce théorème à un élément de $\C_\Sigma$, vu comme catégorie de
 CSPs.  Cependant, en utilisant l'approche de sémantique de faisceaux de la
 définition \ref{shSem}, on obtient deux sémantiques possibles pour une formule
@@ -171,7 +192,7 @@ On peut alors définir la sémantique selon $F$.
     \end{array} | x\in F X\right\}\]
 \end{defi}
 
-Le résultat qui nous intéresse est le suivante~:
+Le résultat qui nous intéresse est le suivant~:
 
 \begin{prop}\label{shSemCorrect2}
     $\sem{X} = \sem{X}_F$
@@ -187,7 +208,7 @@ Le résultat qui nous intéresse est le suivante~:
 
 Un problème apparait quand on essaye de transposer la définition de pp-interprétabilité
 puisqu'on doit faire référence à des formules où seulement certaines variables sont
-libre et certaines quantifiées. Or dans notre système toutes les variables d'une
+libres et certaines quantifiées. Or dans notre système toutes les variables d'une
 formule sont au même niveau. Il faut donc introduire un moyen de \emph{sélectionner}
 certaines variables.
 
@@ -202,10 +223,10 @@ quantifiées sont celles qui ne sont pas sélectionnées par le morphisme.
 On a donc un moyen de représenter une formule avec certaines variables liées et certaines
 variables libres~: ce sont des morphismes dans $\C_\Sigma$ d'une formule de la forme
 $x_1,\dots x_n\vdash$ vers une autre formule. Cela fait donc penser à une comma
-catégorie de la forme $F/\C_\Sigma$ où $F$ est un foncteur bien choisit.
+catégorie de la forme $F/\C_\Sigma$ où $F$ est un foncteur bien choisi.
 
 \begin{defi}{Catégorie $\cf$}
-    On note $\cf$ la catégorie squelette de $\fset$. Décrivons là plus explicitement.
+    On note $\cf$ la catégorie squelette de $\fset$. Décrivons la plus explicitement.
     Ses objets sont les entiers naturels, et ses flèches les fonctions quelconques
     de l'un vers l'autre.
 \end{defi}
@@ -239,7 +260,7 @@ On peut alors effectuer la construction décrite ci-dessus.
     On pose $\tsigma = \arf/\C_\Sigma$ la catégories des formules avec variables
     liées.
 
-    On dispose de deux foncteurs d'oublis canoniques $U_1 : \tsigma\rightarrow\cf$
+    On dispose de deux foncteurs d'oubli canoniques $U_1 : \tsigma\rightarrow\cf$
     et $U_2 : \tsigma\rightarrow\C_\Sigma$.
 \end{defi}
 
@@ -274,7 +295,7 @@ annexe \ref{seqTSigma}.
 \end{cor}
 
 \begin{lem}
-    On a une adjunction~:
+    On a une adjonction~:
 
     \[\begin{tikzcd}
         \cf\arrow[rr, bend right, swap, "\iota\circ\arf"] & \top
@@ -287,7 +308,7 @@ annexe \ref{seqTSigma}.
 
     \[\cf(n, U_1(m\ast\rightarrow X)) = \tsigma(\iota(\arf(n)), m\ast\rightarrow X)\]
 
-    En développant les définitions, on obtient qu'on trouver une bijection entre
+    En développant les définitions, on cherche à obtenir une bijection entre
     les fonctions de $n$ vers $m$ et les carrés commutatifs de la forme suivante~:
 
     \[\begin{tikzcd}
@@ -304,9 +325,7 @@ annexe \ref{seqTSigma}.
 \end{cor}
 
 \begin{theo}{Colimites de $\tsigma$}\label{commaCL}
-    Soit $D : I\rightarrow\tsigma$ un foncteur avec $I$ une catégorie finie. On note
-    $U_1 : \tsigma\rightarrow\cf$ et $U_2 : \tsigma\rightarrow\C_\Sigma$ les foncteurs
-    d'oublis canoniques de $\tsigma$.
+    Soit $D : I\rightarrow\tsigma$ un foncteur avec $I$ une catégorie finie.
 
     Alors $D$ a une colimite. De plus, $U_1(\colim_I D) = \colim_I (U_1\circ D)$ et
     $U_2(\colim_I D) = \colim_I (U_2\circ D)$.
@@ -358,7 +377,7 @@ annexe \ref{seqTSigma}.
     rouges sont dans l'image de $\id_{\C_\Sigma}$. Pour montrer que l'on a un cocône,
     il faut montrer que les carrés verticaux sont commutatifs, ce qui est immédiat
     puisque la flèche de $x$ vient de la propriétés de colimite de
-    $\arf(\colim_I U_1\circ f)$ appliqué au cocône formé par les flèches vertes.
+    $\arf(\colim_I U_1\circ f)$ appliquée au cocône formé par les flèches vertes.
 
     On prends maintenant un cocône $c$ sur $D$. En composant par $U_1$ et $U_2$ on obtient
     qu'il existe au plus une flèche de $x$ vers $c$. Pour vérifier qu'il en existe une,

@@ -2,7 +2,7 @@
 \subsection{Description syntaxique des morphismes de formules}
 
 Étudions maintenant les morphismes de formules, qui sont ici des transformations
-naturelles entre faisceau. Regardons un peu plus précisément comment elles se
+naturelles entre faisceaux. Regardons un peu plus précisément comment elles se
 comportent. Soient $F,G\in\C_\psh(\Sigma)$ deux formules et $\theta:F\rightarrow F$
 une transformation naturelle. Regardons comment elle doit se comporter~:
 
@@ -28,29 +28,13 @@ de naturalité est la suivante~:
 Cela nous dit qu'après avoir renommé les variables de $F$ par $\theta_\star$, les
 instance de relation sont envoyées sur des instances identiques dans $G$.
 
-Ces différentes opérations nous rappellent un peu le calcul des séquent, et
+Ces différentes opérations nous rappellent un peu le calcul des séquents, et
 c'est en effet le cas. Afin de le définir plus formellement, il va falloir décrire
-les formules sous forme de séquents.
-
-\begin{defi}{Séquent associé à une formule}
-    Soit $\phi$ une formule conjonctive que l'on suppose mise sous la
-    forme canonique $\exists x_1,\dots\exists x_n, R(\dots)\wedge R(\dots)$. On
-    y associe le séquent $<\phi> = x_1,\dots x_n\vdash R(\dots), \dots, R(\dots)$.
-\end{defi}
-
-\begin{rem}
-    L'habitué remarquera que la partie droite du séquent est utilisée de manière non
-    canonique. En effet, elle sert usuellement à représenter une disjonction et
-    l'on s'en sert ici pour représenter un conjonction. C'est lié au fait que
-    les faisceaux partent de $\C_\Sigma^\text{op}$, et donc que le sens de lecture
-    des règles de déduction est inversé lorsque pris par le faisceau. Ainsi, si l'on
-    veut avoir des règles correspondant aux conjonctions à l'arrivée, il faut dualiser
-    les règles, et cela nous donne les règles de disjonction, ce qui est cohérent avec
-    l'interprétation standard des séquents.
-\end{rem}
+les formules sous forme de séquents. On conseille donc de retourner voir la
+définition \ref{formSeq}.
 
 Nous rappelons maintenant les règles de déduction structurelle adaptées à nos séquents
-(ce sont presque exactement celles du calcul des séquents intuitionistes).
+(ce sont presque exactement celles du calcul des séquents intuitioniste).
 
 \begin{defi}{Règles de déduction}
     Commençons par la règle de l'$\alpha$-renommage~:
@@ -89,8 +73,8 @@ On arrive maintenant au théorème de description syntaxique~:
 
 \begin{theo}{Description syntaxique d'un morphisme de formule}
     Soient $F,G\in\C_\Sigma$ deux formules. Alors il existe une transformation
-    naturelle $\theta:F\rightarrow G$ si et seulement si $<\phi_F>$ peut être réécrit
-    en $<\phi_G>$ selon les règles de déduction ci-dessus.
+    naturelle $\theta:F\rightarrow G$ si et seulement si $\ml{\phi_F}$ peut être réécrit
+    en $\ml{\phi_G}$ selon les règles de déduction ci-dessus.
 \end{theo}
 
 \begin{pv}
@@ -103,34 +87,34 @@ type de séquents introduit un peu plus loin, en \ref{commaSeq}.
 
 \begin{rem}
     On pourrait même tenter d'établir une bijection entre des arbres de preuve
-    et des transformations naturelles, mais certains arbres donnent les même
+    et des transformations naturelles, mais certains arbres donnent les mêmes
     transformations, donc il faudrait quotienter par la bonne relation, ce qui
     n'est pas trivial.
 \end{rem}
 
-On peut maintenant se demander ce que donnent les constructions classiquent en terme
+On peut maintenant se demander ce que donnent les constructions classiques en terme
 de séquent.
 
 \begin{lem}\label{seqStandarts}
-    Soient $\phi_1$, $\phi_2$ deux formules telles que $<\phi_1> = \Gamma\vdash\Delta$ et
-    $<\phi_2> = \Xi\vdash\Omega$ (on suppose $\Gamma\cap\Xi=\emptyset$), alors~:
+    Soient $\phi_1$, $\phi_2$ deux formules telles que $\ml{\phi_1} = \Gamma\vdash\Delta$
+    et $\ml{\phi_2} = \Xi\vdash\Omega$ (on suppose $\Gamma\cap\Xi=\emptyset$), alors~:
 
     \begin{align*}
-        <\phi_\mathbf{0}> &=~\vdash \\
-        <\phi_\mathbf{1}> &= x\vdash R_1(x,\dots, x),\dots R_n(x, \dots, x) \\
-        <\phi_1\wedge\phi_1> &= \Gamma,\Xi\vdash\Delta,\Omega \\
-        <\phi_{y\star}> &= x\vdash
+        \ml{\phi_\mathbf{0}} &=~\vdash \\
+        \ml{\phi_\mathbf{1}} &= x\vdash R_1(x,\dots, x),\dots R_n(x, \dots, x) \\
+        \ml{\phi_1\wedge\phi_1} &= \Gamma,\Xi\vdash\Delta,\Omega \\
+        \ml{\phi_{y\star}} &= x\vdash
     \end{align*}
 \end{lem}
 
-\section{Représentation en séquents de $\tsigma$}\label{seqTSigma}
+\subsection{Représentation en séquents de $\tsigma$}\label{seqTSigma}
 
-\begin{defi}{Représentation en séquents de $\tsigma$}
+\begin{defi}{Représentation en séquents de $\tsigma$}\label{commaSeq}
     Soit $f : n\ast\rightarrow X$ un objet de $\tsigma$. On note
-    $<\phi_X> = \Xi\vdash\Phi$. $f$ induit une fonction de $x_1,\dots x_n$ vers $\Xi$.
+    $\ml{\phi_X} = \Xi\vdash\Phi$. $f$ induit une fonction de $x_1,\dots x_n$ vers $\Xi$.
     On note le séquent associé à $f$ de la façon suivante~:
 
-    \[ <f> := x_1, \dots x_n; \Xi - \im f\vdash \Phi',\mathcal{E} \]
+    \[ \ml{f} := x_1, \dots x_n; \Xi - \im f\vdash \Phi',\mathcal{E} \]
 
     Où $\Phi'$ est $\Phi$ où l'on a remplacé chaque variable par une de ses préimage
     par $f$ si elle est dans l'image de $f$. De plus, $\mathcal{E}$ est une suite
@@ -142,37 +126,37 @@ de séquent.
 \end{defi}
 
 \begin{exs}
-    \item $<\iota\ast> = x;\vdash$
-    \item $<\iota yR> = x_1,\dots x_{\ar(R)};\vdash R(x_1, \dots, x_{\ar(R)})$
+    \item $\ml{\iota\ast} = x;\vdash$
+    \item $\ml{\iota yR} = x_1,\dots x_{\ar(R)};\vdash R(x_1, \dots, x_{\ar(R)})$
     \item Si on note $\tilde{0} : 2\rightarrow 2$ la fonction constante égale à
         zéro, on peut prendre $\theta : 2\ast\rightarrow X$ où $X$ est une formule
         vide à deux variables telle que $\theta_\star = \tilde{0}$. Dans ce cas, on
-        a $<\theta> = x,y;\vdash x = y$~: c'est la diagonale ! On remarque donc
+        a $\ml{\theta} = x,y;\vdash x = y$~: c'est la diagonale ! On remarque donc
         qu'avec ces conventions, il est possible de définir la diagonale même en
         l'absence de relation. Cela revient à dire que l'égalité fait toujours
-        parti des relations autorisées, ce qui est une convention commune.
+        partie des relations autorisées, ce qui est une convention commune.
 \end{exs}
 
 \begin{lem}
     Soient $X,Y\in\tsigma$. On note $X+Y$ leur coproduit. Notons aussi
-    $<X> = \Xi;\Gamma\vdash\Phi$ et $<Y> = \Xi';\Gamma'\vdash\Phi'$ (on suppose
+    $\ml{X} = \Xi;\Gamma\vdash\Phi$ et $\ml{Y} = \Xi';\Gamma'\vdash\Phi'$ (on suppose
     tous les ensembles de variables disjoints).
     
-    Alors $<X+Y> = \Xi,\Xi';\Gamma,\Gamma'\vdash\Phi,\Phi'$.
+    Alors $\ml{X+Y} = \Xi,\Xi';\Gamma,\Gamma'\vdash\Phi,\Phi'$.
 \end{lem}
 
 \begin{lem}
     Notons $\mathbf{0}$ l'élément initial de $\tsigma$.
     
-    Alors $<\mathbf{0}> = ;\vdash$.
+    Alors $\ml{\mathbf{0}} = ;\vdash$.
 \end{lem}
 
 \begin{lem}
     Soient $X,Y\in\tsigma$. On note $<X> = \Xi,x;\Gamma\vdash\Phi$ et
-    $<Y> = \Xi',y;\Gamma'\vdash\Phi'$. On considère de plus les flèches allant de
-    $<Z> = x;\vdash$ vers $X$ (resp $Y$) qui sélectionnent la variable $x$ (resp $y$).
+    $\ml{Y} = \Xi',y;\Gamma'\vdash\Phi'$. On considère de plus les flèches allant de
+    $\ml{Z} = x;\vdash$ vers $X$ (resp $Y$) qui sélectionnent la variable $x$ (resp $y$).
 
-    Alors $<X +_Z Y> = \Xi,\Xi',x;\Gamma,\Gamma'\vdash\Phi,\Phi'[y/x]$.
+    Alors $\ml{X +_Z Y} = \Xi,\Xi',x;\Gamma,\Gamma'\vdash\Phi,\Phi'[y/x]$.
 \end{lem}
 
 \begin{pv}

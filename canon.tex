@@ -4,7 +4,7 @@
     représentables sont des faisceaux.
 \end{defi}
 
-On remarque qu'il est possible d'ordonner les sites sur une catégorie par inclusions
+On remarque qu'il est possible d'ordonner les sites sur une catégorie par inclusion
 des recouvrements. On obtient alors un ordre partiel sur les sites, ce qui justifie
 la définition suivante.
 
@@ -22,10 +22,10 @@ La proposition suivante justifie cette définition.
     Afin de prouver cette proposition, on va utiliser le lemme suivant~:
 
     \begin{lem}
-        Une union quelconque de sites sous-canoniques est un sites sous-canoniques.
+        Une union quelconque de sites sous-canoniques est un site sous-canonique.
     \end{lem}
     \begin{pv}
-        Commençons par remarquer qu'une union quelconque de sites est un sites.
+        Commençons par remarquer qu'une union quelconque de sites est un site.
         La sous-canonicité vient du fait que la condition de faisceau est de la
         forme $\forall (f)\text{ recouvrement}, P(F,(f))$ où $F$ est le
         faisceau considéré.  Donc une union quelconque de familles de
@@ -43,8 +43,8 @@ La proposition suivante justifie cette définition.
     représentables.
 \end{pv}
 
-Cette définition de canonicité rends compliqué le fait de vérifier qu'un site
-spécifique la varifie. Rien que vérifier la sous-canonicité peut s'avérer compliquer. On
+Cette définition de canonicité rend compliqué le fait de vérifier qu'un site
+spécifique la vérifie. Rien que vérifier la sous-canonicité peut s'avérer compliquer. On
 va alors donner un critère de sous-canonicité avec lequel il est plus simple de
 travailler.
 
@@ -82,9 +82,10 @@ On a alors le résultat suivant~:
     Soit $(c',S')$ un autre cocône sur $D$~:
 
     \[\begin{tikzcd}
-        & d \arrow[rr, "u_d"] \arrow[rrdd, "v_d"] & & c \arrow[dd, dashed, "?"] \\
+        & d \arrow[rr, "u_d"] \arrow[rrdd, near start, "v_d"]
+            & & c \arrow[dd, dashed, "?"] \\
         e \arrow[ru, "g"] \arrow[rd, "h"] & & & \\
-        & d' \arrow[rruu, "u_{d'}"] \arrow[rr, "v_{d'}"] & & c' \\
+        & d' \arrow[rruu, near start, "u_{d'}"] \arrow[rr, "v_{d'}"] & & c' \\
     \end{tikzcd}\]
 
     Remarquons que $C(\cdot, c')$ est un faisceau puisque le site est sous-canonique. On
@@ -93,13 +94,13 @@ On a alors le résultat suivant~:
     
     C'est immédiatement une famille cohérente. En effet, la condition de cohérence
     reviens à dire que les $(v_d)$ commutent aux spans sur $S$, ce qui est exactement
-    la façon dont ils sont définits.
+    la façon dont ils sont définis.
 
     Alors la condition de faisceau nous donne l'existence d'une unique flèche dans
     $C(c,c')$ qui est un morphisme de cônes.
 
     $\boxed{\Longleftarrow}$ On peut en fait remonter la preuve puisque les familles 
-    cohérentes sont exactement les cocône sur les diagrammes de spans sur des
+    cohérentes sont exactement les cocônes sur les diagrammes de spans sur des
     recouvrements.
 \end{pv}
 

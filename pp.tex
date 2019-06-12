@@ -22,15 +22,15 @@ vers $\ffun$.
 
 \begin{defi}{Portage de foncteur}
     Soit $F:\C_\Sigma^\op\rightarrow\fset$. On définit $\tf$ un foncteur de
-    $\tsigma$ vers $\ffun$ de la façon suivante.
+    $\tsigma^\op$ vers $\ffun$ de la façon suivante.
 
     On envoie un objet $f:n\ast\rightarrow X$ vers la flèche
-    $F f :FX\rightarrow(F\ast)^n$ et $\tf$ envoie chaque côté d'un
+    $F f :FX\leftarrow(F\ast)^n$ et $\tf$ envoie chaque côté d'un
     carré commutatif sur son image par $F$.
 \end{defi}
 
 \begin{defi}{Catégorie $\fcsp$}
-    On définit la catégorie $\fcsp$ pour \emph{fonctorial CSP} de la façon suivante.
+    On définit la catégorie $\fcsp$ pour \emph{functorial CSP} de la façon suivante.
 
     Ses objets sont des couples $(\Sigma, F)$ où $\Sigma$ est un alphabet et
     $F\in\shc(\C_\Sigma)$ est un faisceau.
@@ -95,7 +95,7 @@ et un foncteur $\gamma : \fcsp\rightarrow\csp$ pour former une adjonction.
 \end{defi}
 
 \begin{rem}
-    Dans les preuves qui vont suivre, on utilisera souvent le fait $\iota$, $\arf$,
+    Dans les preuves qui vont suivre, on utilisera souvent le fait que $\iota$, $\arf$,
     $U_1$ et $U_2$ sont exacts à droite, et donc que si on a
     $r : \tsigma\rightarrow\tgamma$ exact à droite, alors tous les chemins dans le
     diagramme ci-dessous sont exacts à droite.
@@ -106,8 +106,8 @@ et un foncteur $\gamma : \fcsp\rightarrow\csp$ pour former une adjonction.
         \C_\Sigma\arrow[ur, "\iota"] & & & \C_\Sigma \\
     \end{tikzcd}\]
 
-    Donc on pourra raisonner sur $r$ en précomposant et postcomposant par les bon
-    foncteurs.
+    Donc on pourra raisonner sur $r$ en précomposant et postcomposant par des foncteurs
+    bien choisis, et en utilisant la préservation des colimites.
 \end{rem}
 
 \begin{prop}
@@ -143,14 +143,14 @@ et un foncteur $\gamma : \fcsp\rightarrow\csp$ pour former une adjonction.
     maintenant s'assurer que les conditions de la définition \ref{ppInterDef}
     sont respectées.
 
-    On commence par la remarque suivante immédiate suivante~: un objet est
+    On commence par la remarque immédiate suivante~: un objet est
     pp-définissable dans $(D,\mathcal{D})$ si et seulement si il est dans
     l'image du foncteur $\im\circ\tg$ où $\im:\ffun\rightarrow\fset$ prends
     l'image d'une flèche.
 
-    Cette remarque rends immédiat le fait que $F\in<\mathcal{D}>$.
+    Cette remarque rend immédiat le fait que $F$ soit pp-définissable.
 
-    Rappelons maintenant que $=_D$ est la formule obtenu par $\tf(2\ast\rightarrow\ast)$.
+    Rappelons maintenant que $=_D$ est la formule obtenue par $\tf(2\ast\rightarrow\ast)$.
     On veut donc étudier son image par $r$. À cette fin, on regarde l'image par
     $r$ d'un carré commutatif bien choisi, et on déduit des propriétés en composant par
     $U_1$ et $U_2$, et en se servant du fait que tous ces foncteurs sont exacts à droite.
@@ -210,9 +210,9 @@ et un foncteur $\gamma : \fcsp\rightarrow\csp$ pour former une adjonction.
             FyR\arrow[uu]\arrow[ul, blue] \\
     \end{tikzcd}\]
 
-    Les flèches en pointillés sont surjective, donc suivant le chemin rouge, on obtient
+    Les flèches en pointillés sont surjectives, donc en suivant le chemin bleu, on obtient
     exactement tous les $k$-uplets de la sémantique de $R$, donc on les obtient aussi
-    en suivant le chemin bleu. Donc l'image de la flèche épaisse est bien
+    en suivant le chemin rouge. Donc l'image de la flèche épaisse est bien
     $f^{-1}(\sem{R}_F)$, d'où $f^{-1}(\sem{R}_F)\in<\mathcal{D}>$.
 \end{pv}
 
@@ -279,7 +279,7 @@ et un foncteur $\gamma : \fcsp\rightarrow\csp$ pour former une adjonction.
 
 \subsubsection{Foncteur $\gamma$}\label{secGamma}
 
-Il reste à définire un foncteur de $\csp$ vers $\fcsp$.
+Il reste à définir un foncteur de $\csp$ vers $\fcsp$.
 
 Pour l'image d'un CSP $(C,\mathcal{C})$, on peut lui associer le couple
 $(\Sigma, YX)$ où $\Sigma$ est l'aphabet sur lequel est définit $\mathcal{C}$
@@ -290,14 +290,14 @@ associe la projection d'un $n$-uplet sur la $j$-ième coordonnée. La propositio
 naturellement.
 
 Cependant pour les morphismes c'est beaucoup moins facile~: il faut montrer
-que fixer $n$, $f$ et $F$ détermine complètement le $r$ et $\theta$, où au moins
+que fixer $n$, $f$ et $F$ détermine complètement le $r$ et $\theta$, ou au moins
 avoir un moyen de les choisir de manière canonique qui soit compatible avec la
 composition. On a de bonnes raisons de croire que c'est possible, mais il reste
 du travail à faire. Le théorème \ref{lifting} est un pas dans la bonne direction.
 
 Ce n'est pas tout, puisque on aimerait bien que $\alpha$ et $\gamma$ se comportent
-bien vis-à-vis l'un de l'autre. Il est probablement trop ambitieux d'obtenir
+bien l'un vis-à-vis de l'autre. Il est probablement trop ambitieux d'obtenir
 une équivalence de catégorie, mais avoir une adjonction dans un sens ou dans
-l'autre serait intéressant. De plus étudier la pleinitude/fidélité de ces foncteurs
+l'autre serait intéressant. De plus étudier la plénitude/fidélité de ces foncteurs
 serait probablement intéressant.
 

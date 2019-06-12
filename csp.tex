@@ -31,7 +31,7 @@ et de, pour chaque symbole de relation $R_i$ de $\Sigma$, d'une relation $r_i
 
 \begin{defi}{CSP}
     Un CSP $D$ sur $\Sigma$ est un ensemble fini modèle de la théorie vide sur le
-    langage de la logique régulière sur $\Sigma$. On le noteracomme la paire
+    langage de la logique régulière sur $\Sigma$. On le notera comme la paire
     $(D,\Sigma)$. $D$ est appelé domaine du CSP $(D,\Sigma)$.
     
     A un CSP est associé un problème $\csp (D,\Sigma)$, dont une instance est la
@@ -108,7 +108,7 @@ Le théorème suivant donne un lien entre pp-définissabilité et complexité.
     (D,\mathcal{D})$.
 \end{theo}
 
-\begin{proof}
+\begin{pv}
     Notons $\mathcal{D} = \{R_1,\dots,R_n\}$ et $\alpha_1,\dots,\alpha_n$ l'arité
     des relations de $\mathcal{D}$. 
 
@@ -133,14 +133,14 @@ Le théorème suivant donne un lien entre pp-définissabilité et complexité.
     précède à chaque relation, puis à nouveau identifier les variables dans les
     termes faisant intervenir l'égalité pour obtenir une formule équivalente
     qui soit une instance de $\csp (D,\mathcal{D})$. 
-\end{proof}
+\end{pv}
 
 La pp-définissabilité est un outil puissant qui permet de comparer des CSP sur
 un même domaine. Pour comparer deux CSP sur un domaine quelconque, on utilise
 une notion similaire~: la pp-interprétabilité.
 
 \begin{defi}{}
-    Soient $E$ et $F$ deux ensembles, $n \in \mathbb{N}^\star$, $f : E^n
+    Soient $E$ et $F$ deux ensembles, $n \in \mathbb{N}$, $f : E^n
     \rightarrow F$ une application surjective, et $R$ une relation sur $F$
     d'arité $k$. On appelle l'image réciproque de $R$ par $f$ la relation
     d'arité $nk$ définie sur $E$ par :
@@ -159,7 +159,7 @@ une notion similaire~: la pp-interprétabilité.
     \begin{itemize}
     	\item la relation $F$
     	\item l'image réciproque par $f$ de la relation d'égalité sur $E$
-    	\item l'image réciproque par $f$de chaque relation dans $\mathcal{E}$
+    	\item l'image réciproque par $f$ de chaque relation dans $\mathcal{E}$
     \end{itemize}
 \end{defi}
 
@@ -168,12 +168,12 @@ une notion similaire~: la pp-interprétabilité.
     $(E,\mathcal{E}) \leq (D,\mathcal{D})$.
 \end{theo}
 
-\begin{proof}
+\begin{pv}
     Les propriétés de $f$ permettent de réécrire une instance de $(E,\mathcal{E})$
     comme une instance d'un problème défini sur $F$,et par suite, sur $D$, avec
     un langage pp-définissable par $\mathcal{D}$. On peut ensuite utiliser le
     théorème précédent pour conclure.
-\end{proof}
+\end{pv}
 
 La pp-interprétabilité permet de comparer deux CSP quelconques. Nous verrons
 une approche plus algébrique via les clones des polymorphisme, mais nous allons
@@ -193,7 +193,7 @@ d'abord pouvoir nous restreindre à certains types particuliers de CSP.
     est réductible à $(f(D),\mathcal{D})$, et vice-versa.
 \end{prop}
 
-\begin{proof}
+\begin{pv}
     On peut définir l'image $f(R)$ d'une relation $R \in \mathcal{D}$ d'arité $n
     \in \mathbb{N}$ par $f$ :
 
@@ -202,7 +202,7 @@ d'abord pouvoir nous restreindre à certains types particuliers de CSP.
     On peut alors associer à une instance de $(D,\mathcal{D})$ une instance de
     $(f(D),\mathcal{D})$ qui soit equisatisfiable. Toutes les instances de
     $(f(D),\mathcal{D})$ sont atteintes d'où le résultat.
-\end{proof}
+\end{pv}
 
 \begin{defi}{Noyaux}
     Un CSP $(D,\mathcal{D})$ est un noyau si tous ses endomorphismes sont
@@ -212,13 +212,13 @@ d'abord pouvoir nous restreindre à certains types particuliers de CSP.
     $(D,\mathcal{D})$.
 \end{defi}
 
-\begin{proof}
+\begin{pv}
     Si un endomorphisme de CSP $f$ a une image de cardinal minimal, alors tous les
     endomorphismes de $(f(D),\mathcal{D})$ sont des bijections, sinon il existe
     $g$ un endomorphisme non bijectif de $(f(D),\mathcal{D})$, et $g \circ f$
     serait un endomorphisme de $(f(D),\mathcal{D})$ dont l'image est de
     cardinal strictement inférieur à celle de $f$.
-\end{proof}
+\end{pv}
 
 On peut ainsi se ramener à l'étude des noyaux. Plus encore, on peut se ramener
 à l'étude des CSP idempotents.
@@ -229,11 +229,11 @@ Un CSP $(D,\mathcal{D})$ est idempotent si $\mathcal{D}$ contient tous les singl
 
 \begin{theo}{}
     Soit $(D,\mathcal{D})$ un CSP noyau et $\mathcal{E} = \mathcal{D} \cup
-    \bigcup_{a \in D} R_a$ où $R_a$ est la relation unaire $\{a\}$, pour $a \in
+    \bigcup_{a \in D} C_a$ où $C_a$ est la relation unaire $\{a\}$, pour $a \in
     D$. $(D,\mathcal{E})$ est réductible à $(D,\mathcal{D})$.
 \end{theo}
 
-\begin{proof}
+\begin{pv}
     On note $n=|D| $, et $D=\{a_1\}$
 
     Etant donnée une instance de $(D,\mathcal{E})$, on introduit des nouvelles
@@ -253,29 +253,15 @@ Un CSP $(D,\mathcal{D})$ est idempotent si $\mathcal{D}$ contient tous les singl
     associés aux variables $x_1,\dots,x_n$. Comme $(D,\mathcal{D})$ est un
     noyau, $f$ est bijectif, et en considérant $f^{-1}$, on peut trouver une
     solution de l'instance originelle.
-\end{proof}
+\end{pv}
 
 Les CSP idempotents sont des CSP noyaux, puisqu'ils contiennent tous les
 singletons. Ainsi, l'étude peut se restreindre au CSP idempotents. La plupart
 de ces notions apparaîtrons dans notre approche catégorique.
 
 Une autre approche est l'approche algébrique, qui caractérise la
-pp-réductibilité via les clones.\ref{appClones} Nous nous attarderons
-cependant sur la notion de clone relationnel.
-
-\begin{defi}{Clone relationnel}
-    Soit $D$ un ensemble et $\Sigma$ un ensemble de relations sur $D$. $\Sigma$ est
-    un clone relationnel s'il est clos par quantification existentielle et
-    conjonction.  Une intersection quelconque de clones relationnels est encore
-    un clone relationnel, on peut donc définir le clone relationnel engendré
-    par $\Sigma$, noté $<\Sigma>$, comme le plus petit clone relationnel
-    contenant $\Sigma$.
-\end{defi}
-
-La notion de clone relationnel est duale de la notion de clone, et nous sera
-utile pour construire nos catégories.
-
-
+pp-réductibilité via les clones (voire l'annexe \ref{appClones} pour plus de
+détails).
 
 \subsection{Catégorie CSP}
 
@@ -296,14 +282,14 @@ utile pour construire nos catégories.
 \end{defi}
 
 
-\begin{proof}
+\begin{pv}
     Les morphismes se composent de la manière suivante : soient $(D,\mathcal{D})$,
     $(E,\mathcal{E})$ et $(H,\mathcal{H})$ trois CSP, $(n,F,f)$ et $(m,G,g)$
     des morphismes de $(D,\mathcal{D})$ vers $(E,\mathcal{E})$ et de
     $(E,\mathcal{E})$ vers $(H,\mathcal{H})$ respectivement. En considérant la
     partie $K = f^{-1}(G^m)$ de $D^{mn}$, on peut considérer $(mn,K,g \circ
     f)$, et il s'agit bien d'un morphisme par surjectivité de $f$ et $g$.
-\end{proof}
+\end{pv}
 
 Les morphismes de la catégorie CSP correspondent aux manières de pp-interpréter
 un CSP.  Cette catégorie nous servira de modèle pour notre construction

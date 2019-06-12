@@ -36,7 +36,7 @@ nombre d'occurence du prédicat $R_1$, $r_2$ le nombre d'occurences du prédicat
 \end{defi}
 
 Dans une formule, tous les emplacement possibles ne sont pas nécessairement remplis
-par des variables différentes, il faut donc un moyen d'assimiler les lieus de variable
+par des variables différentes, il faut donc un moyen d'assimiler les lieux de variable
 qui sont occupés par la même variable. On fait ça de façon brutale en se munissant d'une
 relation d'équivalence sur $\E(r)$.
 
@@ -51,9 +51,9 @@ La catégorie $\C$ va alors avoir comme objets les formules telles que définit 
 plus un objet spécial $\star$.
 
 Il faut maintenant définir une notion de morphisme sur $\C$. On va distinguer les
-morphismes entre formule, et les morphismes depuis $\star$, qui a un rôle particulier.
+morphismes entre formules, et les morphismes depuis $\star$, qui a un rôle particulier.
 Commençons par les morphismes depuis $\star$. Ces morphismes sont simples~: ils 
-représentent les variables de la formules visée.
+représentent les variables de la formule visée.
 
 \begin{defi}{Morphismes depuis $\star$}
     On pose $\C(\star,\star) = \{\text{id}_\star\}$ (cet objet n'a pas d'intérêt autre
@@ -133,7 +133,7 @@ définir proprement la composition de morphismes dans $\C$.
     $g\circ f\in\D(r,r'')$.
 
     On sait que l'on a $f(\alpha)\subseteq \alpha'$ et $g(\alpha')\subseteq \alpha''$. Or
-    les déplacements sont immédiatements croissants pour l'inclusion lorsque pensés
+    les déplacements sont immédiatement croissants pour l'inclusion lorsque pensés
     comme fonctions de relations.
     Donc $g\circ f(\alpha)\subseteq g(\alpha')\subseteq \alpha''$.
 \end{pv}
@@ -164,7 +164,7 @@ On a maintenant tout en main pour définir la composition de morphismes.
 \begin{defi}{Composition dans $\C$}
     Il y a trois cas à considérer~:\begin{itemize}
         \item $id_\star\in\C(\star,\star)$ et $f\in\C(\star, x)$ où $x$ est n'importe
-            quel object de $\C$. Alors $f\circ id_\star := f$.
+            quel objet de $\C$. Alors $f\circ id_\star := f$.
         \item $v\in\C(\star, (r,\alpha))$ et $f\in\C((r,\alpha), (r',\alpha'))$. Alors
             on pose $f\circ v := f(v)$.
         \item $f\in\C((r,\alpha),(r',\alpha'))$ et $g\in\C((r',\alpha'),(r'',\alpha''))$.
@@ -190,7 +190,7 @@ On a maintenant tout en main pour définir la composition de morphismes.
 
 \begin{lem}
     Soient $(r_1,\alpha_1)$, $(r_2,\alpha_2)$, $(r_3,\alpha_3)$ et $(r_4,\alpha_4)$
-    quatres formules.
+    quatre formules.
     Soient $f\in\C((r_1,\alpha_1), (r_2,\alpha_2))$,
     $g\in\C((r_2,\alpha_2), (r_3,\alpha_3))$ et $h\in\C((r_3,\alpha_3),(r_4,\alpha_4))$.
 
@@ -218,7 +218,7 @@ On a maintenant tout en main pour définir la composition de morphismes.
     existentielles en tête et sans utiliser ni l'égalité, ni le faux (si la
     formule est différentes de juste la formule fausse).
 
-    On appelle une telle écrite la forme normale de $\phi$.
+    On appelle une telle écriture la forme normale de $\phi$.
 \end{lem}
 
 \begin{pv} Induction sur la structure de la formule.
@@ -413,7 +413,7 @@ lemme suivant.
 
 \begin{rem}
     Soit $(r,\alpha)$ une formule de $\C_\Sigma$. Alors cette formule possède un
-    recouvrement constitué uniquement de formule atomique avec une relation d'équivalence
+    recouvrement constitué uniquement de formules atomiques avec une relation d'équivalence
     triviale. On appelle ce recouvrement le \emph{recouvrement fondamental}
     (il est unique à permutation de la famille près).
 \end{rem}
@@ -457,7 +457,7 @@ lemme suivant.
 \end{defi}
 
 \begin{rem}
-    Un relation d'arité $k$ sur $D$ peut être vu comme un ensemble de $k$-uplets
+    Un relation d'arité $k$ sur $D$ peut être vue comme un ensemble de $k$-uplets
     d'éléments de $D$. De plus, un $k$-uplet d'éléments de $D$ est une fonction de
     $k$ dans $D$. Or ici on demande un $k$-uplet parce qu'on a une énumération canonique
     des variables de la formule, dans le cas où c'est un atome, ce qui n'est pas vrai
@@ -529,13 +529,13 @@ formule à partir de ses formules atomiques.
 Vérifions que c'est bien un faisceau.
 
 \begin{lem}
-    $F$ tel que définit ci-dessus est un préfaisceau sur $\C_\Sigma$ vers $\fset$.
+    $F$ tel que défini ci-dessus est un préfaisceau sur $\C_\Sigma$ vers $\fset$.
 \end{lem}
 
 \begin{pv}
     On vérifie immédiatement que $F\id_x = \id_{Fx}$.
 
-    L'image d'une composition de morphismes de formules est immédiatements la composition
+    L'image d'une composition de morphismes de formules est immédiatement la composition
     des images.
 
     Enfin, soit $v\in\C_\Sigma(\star, (r,\alpha))$ et
@@ -755,12 +755,12 @@ utiliser.
 Plus précisément, on va utiliser le résultat \ref{caracCanon} pour déterminer si
 $\C_\Sigma$ est canonique.
 
-Un problème apparait alors ! Considérons la formule $\phi=R(x)\wedge R(y)\wedge S(z)$
+Un problème apparaît alors ! Considérons la formule $\phi=R(x)\wedge R(y)\wedge S(z)$
 recouverte par $f:R(x)\rightarrow\phi$ qui identifie le premier atome et
 $g:R(x)\wedge S(y)\rightarrow\phi$ qui identifie le reste de la formule. Le diagramme
 des spans contient uniquement $R(x)$ et $R(x)\wedge S(y)$ et aucune flèche. La
 condition ci-dessus voudrait donc que $\phi$ soit le produit de ces deux formules dans
-$\C_\Sigma$. Or on a les diagramme suivant~:
+$\C_\Sigma$. Or on a le diagramme suivant~:
 
 \[\begin{tikzcd}
     R(x) \arrow[r, "f"] \arrow[rd] & \phi \arrow[d, red] \\
