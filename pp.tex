@@ -314,8 +314,25 @@ et un foncteur $\gamma : \fcsp\rightarrow\csp$ pour former une adjonction.
 
 \subsubsection{Foncteur $\gamma$}
 
-% TODO
+Il reste à définire un foncteur de $\csp$ vers $\fcsp$.
 
-\subsubsection{Preuve de l'adjonction}
+Pour l'image d'un CSP $(C,\mathscr{C})$, on peut lui associer le couple
+$(\Sigma, YX)$ où $\Sigma$ est l'aphabet sur lequel est définit $\mathscr{C}$
+et $X : \Sigma^\op\rightarrow\fset$ le foncteur qui à $\star$ associe $C$, à
+une relation associe sa définition dans $\mathscr{C}$ et à une flèche $f_j$
+associe la projection d'un $n$-uplet sur la $j$-ième coordonnée. La proposition
+\ref{shSemCorrect2} nous dit que cette sémantique est celle à laquelle on pense
+naturellement.
 
-% TODO
+Cependant pour les morphismes c'est beaucoup moins facile~: il faut montrer
+que fixer $n$, $f$ et $F$ détermine complètement le $r$ et $\theta$, où au moins
+avoir un moyen de les choisir de manière canonique qui soit compatible avec la
+composition. On a de bonnes raisons de croire que c'est possible, mais il reste
+du travail à faire. Le théorème \ref{lifting} est un pas dans la bonne direction.
+
+Ce n'est pas tout, puisque on aimerait bien que $\alpha$ et $\gamma$ se comportent
+bien vis-à-vis l'un de l'autre. Il est probablement trop ambitieux d'obtenir
+une équivalence de catégorie, mais avoir une adjonction dans un sens ou dans
+l'autre serait intéressant. De plus étudier la pleinitude/fidélité de ces foncteurs
+serait probablement intéressant.
+

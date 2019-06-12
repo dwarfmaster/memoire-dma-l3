@@ -1,7 +1,15 @@
 
+Soit $\Sigma = \{R_1, \dots R_n\}$ un alphabet de symboles de relations, avec
+leurs arités $a_1, \dots a_n\in\N$.
+
+L'objectif est de créer une catégorie $\C_\Sigma$, que l'on notera $\C$ en l'absence
+d'ambiguïté sur $\Sigma$, telle que la donnée d'un problème CSP soit exactement la donnée
+d'un faisseau sur $\C$ (à valeur dans $\fset$, puisqu'on se limite à ce cadre là). Pour
+pouvoir parler de faisceau, il faudra munir $\C$ d'une structure de site.
+
 \subsection{Intuition}
 
-Après l'échec de la partie précédente, revenons aux bases. Qu'est-ce qu'un CSP
+Qu'est-ce qu'un CSP
 sur un alphabet de relation $\Sigma$~? C'est la donnée d'un domaine fini $D$ et
 de relations sur $D$ de bonne arité pour chaque relation de $\Sigma$. Si
 $\Sigma = \{R_1, \dots R_n\}$, on peut poser la catégorie qui a pour objets
@@ -285,32 +293,14 @@ On peut alors définir la sémantique selon $F$.
 
 Le résultat qui nous intéresse est le suivante~:
 
-\begin{prop}
+\begin{prop}\label{shSemCorrect2}
     $\sem{X} = \sem{X}_F$
 \end{prop}
 
 \begin{pv}
     La preuve est exactement la même que celle du théorème \ref{shSemCorrect},
     avec $\ast$ qui joue le rôle de $\star$ et les $yR_i$ qui jouent le rôle
-    des $R_i(x, y, \dots)$. À titre d'exemple on a traduit l'inclusion
-    réciproque.
-
-    \boxed{\supseteq} Soit $f\in\sem{X}_F$. Soit $f_i : \V(R_i)\rightarrow\V(\phi_X)$.
-    On remarque que $\V(\phi_X) = X\star$. On peut donc poser
-    $g = f\circ f_i : \V(R_i)\rightarrow F\star$. On remarque aussi que
-    $\V(R_i) = yR_i\star$. De plus $\sem{R_i(x, \dots)} = \sem{yR_i}_F$ par définition.
-    Or $g\in\sem{yR_i}_F\iff
-    \exists \mathbf{x}\in F y R_i: g = v\mapsto F\theta^v(\mathbf{x})$. Or
-    $f = v\mapsto F\theta^v(\mathbf{x})$ pour un $\mathbf{x}\in F X$. De plus,
-    on peut facilement construire $\theta^i : yR_i\rightarrow X$ tel que
-    $\theta^i_\star = f_i$. On a alors~:
-
-    \begin{align*}
-        g &= f\circ f_i \\
-          &= v\mapsto F\theta^{\theta^i_\star(v)}(\mathbf{x}) \\
-          &= v\mapsto F(\theta^i\circ\theta^v)(\mathbf{x})\text{ par unicité de $\theta^v$} \\
-          &= v\mapsto F\theta^v(F\theta^i(\mathbf{x}))
-    \end{align*}
+    des $R_i(x, y, \dots)$.
 \end{pv}
 
 \subsection{Comma catégories à la rescousse !}
@@ -552,7 +542,7 @@ va définir une description en terme de séquent de objets de $\tsigma$.
     Tous ces lemmes sont des conséquences directes du théorème \ref{commaCL}.
 \end{pv}
 
-\begin{theo}{Relèvement sur $\tsigma$}
+\begin{theo}{Relèvement sur $\tsigma$}\label{lifting}
     Soit $r : \C_\Sigma\rightarrow\tgamma$ un foncteur exact à droite. Alors il
     existe un foncteur exact à droite $\tilde{r}$ tel que~:
 

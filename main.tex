@@ -46,12 +46,18 @@
 \newcommand{\tg}{\widetilde{G}}
 \newcommand{\tH}{\widetilde{H}}
 
+\setcounter{tocdepth}{2}
+
 \title{Mémoire de L3~: Un approche catégorique au problème CSP}
-\author{}
+\author{Luc Chabassier\and Simon Cabuche}
+\date{\small Sous la direction de Damiano Mazza}
 
 \begin{document}
 
 \maketitle
+
+\tableofcontents
+\newpage
 
 
 %   ____ ____  ____                    _     _                
@@ -60,7 +66,7 @@
 % | |___ ___) |  __/  | |_) | | | (_) | |_) | |  __/ | | | | |
 %  \____|____/|_|     | .__/|_|  \___/|_.__/|_|\___|_| |_| |_|
 %                     |_|                                     
-\section{Problèmes de satisfaction de contraintes}
+\section{Problèmes de satisfaction de contraintes}\label{secCSP}
 \input csp.tex
 
 %   ____      _                        _           _    ____ ____  ____  
@@ -69,14 +75,42 @@
 % | |__| (_| | ||  __/ (_| | (_) | |  | | (_| (_| | | | |___ ___) |  __/ 
 %  \____\__,_|\__\___|\__, |\___/|_|  |_|\___\__,_|_|  \____|____/|_|    
 %                     |___/                                              
-\section{Une catégorie pour les CSP : approche naïve}
-\input faisceau.tex
-
-\section{Une catégorie pour les CSP : approche catégorique}
+\section{Une catégorie pour les CSP}\label{secCat}
 \input sheaves.tex
 
-\section{PP-interprétabilité catégorique}
+\section{PP-interprétabilité catégorique}\label{secPP}
 \input pp.tex
+
+\section{Conclusion}
+
+Suite à ces travaux, on a presque fini de reformuler en terme de théorie des
+catégories les notions et résultats principaux liés à l'étude des CSPs. Une
+fois cette reformulation terminée (et surtout le lien entre notre formulation
+et la théorie standard mieux compris), il serait intéressant de continuer en
+transposant la preuve du théorème de dichotomie des CSPs dans notre
+formulation. Notre espoir est que une fois cette reformulation finie, on pourra
+expliciter précisément les propriétés nécessaires des objets construits, pour
+les axiomatiser et voir si on ne peut pas étendre le résultat à une classe plus
+large de problème.
+
+\section*{Remerciements}
+
+Nous tenons à remercier Damiano Mazza pour nous avoir encadré tout au long du
+mémoire et nous avoir permi d'avancer autant.
+
+
+%     _                               _ _               
+%    / \   _ __  _ __   ___ _ __   __| (_) ___ ___  ___ 
+%   / _ \ | '_ \| '_ \ / _ \ '_ \ / _` | |/ __/ _ \/ __|
+%  / ___ \| |_) | |_) |  __/ | | | (_| | | (_|  __/\__ \
+% /_/   \_\ .__/| .__/ \___|_| |_|\__,_|_|\___\___||___/
+%         |_|   |_|                                     
+\appendix
+\section{Canonicité}\label{appCanon}
+\input canon.tex
+
+\section{Approche naïve de catégorie pour les CSP}\label{appNaif}
+\input naif.tex
 
 \end{document}
 
