@@ -1,5 +1,5 @@
 NAME=main
-PARTS=faisceau.tex csp.tex sheaves.tex
+PARTS=faisceau.tex csp.tex sheaves.tex pp.tex
 WRAPPER=nix-shell --pure --command
 LATEX=pdflatex
 

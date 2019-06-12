@@ -1,0 +1,311 @@
+
+\subsection{PP-interprétabilité de CSPs}
+
+\begin{defi}{Rappel}
+    $(C,\mathscr{C})$ est pp-interprétable dans $(D,\mathscr{D})$ s'il existe~:
+    \begin{itemize}
+        \item $n$ un entier
+        \item $F\subset D^n$ un ensemble
+        \item $f : F\rightarrow C$ une fonction surjectives
+    \end{itemize}
+
+    Ces objets doivent vérifier les propriétés suivantes~:\begin{itemize}
+        \item $F\in<\mathscr{D}>$
+        \item $f^{-1}(=_D)\in<\mathscr{D}>$
+        \item pour chaque relation $R\in\mathscr{C}$, $f^{-1}(R)\in<\mathscr{D}>$
+    \end{itemize}
+\end{defi}
+
+\begin{lem}
+    La pp-interprétabilité est composable.
+\end{lem}
+
+\begin{proof}
+    Soient les pp-interprétabilités suivantes~:
+
+    \[\begin{tikzcd}
+        (C,\mathscr{C})\arrow[rr, "{(n,F,f)}"] & &
+        (D,\mathscr{D})\arrow[rr, "{(m,G,g)}"] & &
+        (E,\mathscr{E}) \\
+    \end{tikzcd}\]
+
+    Alors $(nm, (g^n)^{-1}(F), f\circ g^n_{|(g^n)^{-1}})$ est une pp-interprétation
+    de $(C,\mathscr{C})$ dans $(E,\mathscr{E})$.
+\end{proof}
+
+\subsection{Approche catégorique}
+
+On définit une catégorie qui va contenir des CSPs sur des alphabets quelconques,
+et les morphismes vont représenter la pp-interprétabilité. À cette fin il nous
+faut un moyen de porter un faisceau sur $\C_\Sigma$ en un foncteur de $\tsigma$
+vers $\ffun$.
+
+\begin{defi}{\ffun}
+    On définit $\ffun$ la catégorie $\fset^\mathbb{2}$ où $\mathbb{2}$ est la
+    catégorie engendrée par le préordre $(2,<)$. C'est la catégorie dont les
+    objets sont des flèches de $\fset$ et les flèches des carrés commutatifs.
+\end{defi}
+
+\begin{lem}
+    Soit $F\in\shc{\C_\Sigma}$. $F$ envoie les colimites de $\C_\Sigma$ vers
+    des limites de $\fset$.
+\end{lem}
+
+\begin{proof}
+    D'après le théorème TODO, on sait que $F\cong (Y\circ L) F$. Or tout préfaisceau
+    représentable est exact à gauche (ie préserve les limites de $\C_\Sigma^\op$).
+\end{proof}
+
+\begin{defi}{Portage de foncteur}
+    Soit $F:\C_\Sigma^\op\rightarrow\fset$. On définit $\tf$ un foncteur de
+    $\tsigma$ vers $\ffun$ de la façon suivante.
+
+    On envoie un objet $f:n\ast\rightarrow X$ vers la flèche
+    $F f :FX\rightarrow(F\ast)^n$ et $\tf$ envoie chaque côté d'un
+    carré commutatif sur son image par $F$.
+\end{defi}
+
+\begin{defi}{Catégorie $\fcsp$}
+    On définit la catégorie $\fcsp$ pour \emph{fonctorial CSP} de la façon suivante.
+
+    Ses objets sont des couples $(\Sigma, F)$ où $\Sigma$ est un alphabet et
+    $F\in\shc(\C_\Sigma)$ est un faisceau.
+
+    Un morphisme de $(\Sigma,F)$ vers $(\Gamma,G)$ est un couple $(r,\theta)$ où $r$
+    est un foncteur exact à droite de $\tsigma$ vers $\tgamma$ et $\theta$ est
+    une transformation naturelle épimorphique de $\tilde{G}\circ r$ vers $\tilde{F}$.
+    On obtient le diagramme suivant~:
+
+    \[\begin{tikzcd}
+        \tsigma^\op\arrow[dr, bend right, swap, "r^\op"]\arrow[rr, bend left, "\tf"]
+            & \Uparrow\theta
+            & \ffun \\
+        & \tgamma^\op\arrow[ur, bend right, swap, "\tg"] \\
+    \end{tikzcd}\]
+
+    La composition se fait comme on l'imagine, en composant les $r$ et
+    $\theta$ avec $r|\theta'$.
+\end{defi}
+
+\subsection{Adjunction}
+
+On va maintenant essayer de construire un foncteur $\alpha : \csp\rightarrow\fcsp$
+et un foncteur $\gamma : \fcsp\rightarrow\csp$ pour former une adjonction.
+
+\begin{defi}{Foncteur $\alpha$}
+    On définit $\alpha : \fcsp\rightarrow\csp$.
+
+    Soit $(\Sigma,F)\in\fcsp$. On lui associe le CSP d'ensemble sous-jacent $C=F\ast$.
+    De plus, si on écrit $\Sigma$ de la façon suivante~:
+
+    \[\begin{tikzcd}
+        & \star \arrow[ddl, shift right, swap, "\pi_1^1"]
+                \arrow[ddl]
+                \arrow[ddl, shift left, "\pi_{\text{ar}(R_1)}^1"]
+                \arrow[ddr, shift right, swap, "\pi_1^m"]
+                \arrow[ddr]
+                \arrow[ddr, shift left, "\pi_{\text{ar}(R_m)}^m"]
+                \\
+        & & \\
+        R_1 & \dots & R_m \\
+    \end{tikzcd}\]
+
+    On définit $\mathscr{C} := \{\sem{R_1}_F,\dots\sem{R_m}\}$ où
+    $\sem{R_i}_F = \{(F\pi^i_1(x), \dots, F\pi^i_{\ar(R_i)}) | x\in FyR_i\}$.
+
+    On peut alors poser $\alpha(\Sigma,F) = (C,\mathscr{C})$.
+
+    On doit maintenant définir l'image d'une flèche~:
+
+    \[\begin{tikzcd}
+        \tsigma^\op\arrow[dr, bend right, swap, "r^\op"]\arrow[rr, bend left, "\tf"]
+            & \Uparrow\theta
+            & \ffun \\
+        & \tgamma^\op\arrow[ur, bend right, swap, "\tg"] \\
+    \end{tikzcd}\]
+
+    On lui associe le triplet $(n,F,f)$ où $n = U_1r\iota\ast$,
+    $F = \im \tg r\iota\ast$ et $f = \theta^1_{\ast|F}$.
+\end{defi}
+
+\begin{rem}
+    Dans les preuves qui vont suivre, on utilisera souvent le fait $\iota$, $\arf$,
+    $U_1$ et $U_2$ sont exacts à droite, et donc que si on a
+    $r : \tsigma\rightarrow\tgamma$ exact à droite, alors tous les chemins dans le
+    diagramme ci-dessous sont exacts à droite.
+    
+    \[\begin{tikzcd}
+        \cf\arrow[dr, "\iota\circ\arf"] & & & \cf \\
+        & \tsigma\arrow[r, "r"] & \tgamma\arrow[ur, "U_1"]\arrow[dr, "U_2"] & \\
+        \C_\Sigma\arrow[ur, "\iota"] & & & \C_\Sigma \\
+    \end{tikzcd}\]
+
+    Donc on pourra raisonner sur $r$ en précomposant et postcomposant par les bon
+    foncteurs.
+\end{rem}
+
+\begin{prop}
+    $\alpha$ est bien définit.
+\end{prop}
+
+\begin{proof}
+    Il faut vérifier que l'image d'un morphisme est bien un morphisme. Considérons le
+    morphisme suivant entre $(\Sigma,F)$ et $(\Gamma,G)$~:
+
+    \[\begin{tikzcd}
+        \tsigma^\op\arrow[dr, bend right, swap, "r^\op"]\arrow[rr, bend left, "\tf"]
+            & \Uparrow\theta
+            & \ffun \\
+        & \tgamma^\op\arrow[ur, bend right, swap, "\tg"] \\
+    \end{tikzcd}\]
+
+    On note $F(\Sigma,F) = (C,\mathscr{C})$, $F(\Gamma,G) = (D,\mathscr{D})$ et l'image
+    du morphisme $(n, F, f)$. On doit commencer par vérifier que $F\subseteq D^n$ et
+    que $f : F\rightarrow C$ est surjective. Regardons le carré commutatif
+    $\theta_{\iota\star}$ dans $\ffun$~:
+
+    \[\begin{tikzcd}
+        C & D^n\arrow[l, "\theta^1_{\iota\ast}"] \\
+        C\arrow[u, "\id"]
+            & G\Phi\arrow[u, "\tg r\iota\ast"]\arrow[l, "\theta^2_{\iota\ast}"] \\
+    \end{tikzcd}\]
+
+    On a alors $F = \im\tg r\iota\ast\subseteq D^n$ et $f = \theta^1_{\ast|F}$ est
+    surjective.
+
+    À proprement parler notre foncteur candidat est au moins bien typé. Il faut
+    maintenant s'assurer que les conditions de la définition TODO sont respectées.
+
+    On commence par la remarque suivante immédiate suivante~: un objet est dans
+    $<\mathscr{D}>$ si et seulement si il est dans l'image du foncteur
+    $\im\circ\tg$ où $\im:\ffun\rightarrow\fset$ prends l'image d'une flèche.
+
+    Cette remarque rends immédiat le fait que $F\in<\mathscr{D}>$.
+
+    Rappelons maintenant que $=_D$ est la formule obtenu par $\tf(2\ast\rightarrow\ast)$.
+    On veut donc étudier son image par $r$. À cette fin, on regarde l'image par
+    $r$ d'un carré commutatif bien choisi, et on déduit des propriétés en composant par
+    $U_1$ et $U_2$, et en se servant du fait que tous ces foncteurs sont exacts à droite.
+    On va donc considérer le carré suivant~:
+
+    \[\begin{tikzcd}
+        2\ast\arrow[r]\arrow[d] & \ast\arrow[d,"\id"] \\
+        \ast\arrow[r, "\id"] & \ast \\
+    \end{tikzcd}\quad\xrightarrow{r}\quad\begin{tikzcd}
+        2n\ast\arrow[r]\arrow[d] & n\ast\arrow[d] \\
+        \Phi\arrow[r,"\id"] & \Phi \\
+    \end{tikzcd}\quad\xrightarrow{\tg}\quad\begin{tikzcd}
+        D^{2n} & D^n\arrow[l,"\Delta"] \\
+        G\Phi\arrow[u] & G\Phi\arrow[l,"\id"]\arrow[u] \\
+    \end{tikzcd}\]
+
+    L'image de la flèche de gauche dans le dernier diagramme est donc $\Delta(F)$.
+
+    En considérant l'image par la transformation naturelle $\theta$ de ce carré commutatif,
+    on obtient un cube, et si on regarde la bonne face on obtient~:
+
+    \[\begin{tikzcd}
+        D^{2n}\arrow[r, "f^2"] & C^2 \\
+        G\Phi\arrow[u]\arrow[r] & C\arrow[u, "\Delta"] \\
+    \end{tikzcd}\]
+
+    Ce qui nous dit exactement ce que l'on veut ! On a donc bien
+    $f^{-1}(=_D)\in <\mathscr{D}>$.
+
+    Il reste à traiter le cas des relations. Soit $R\in\Sigma$ une relation d'arité
+    $k = \ar(R)$. On va considérer le diagramme commutatif suivant dans $\C_\Sigma$ (qui
+    est une flèche de $\tsigma$)~:
+
+    \[\begin{tikzcd}
+        k\ast\arrow[d, "\id"]\arrow[r,"\id"] & k\ast\arrow[d] \\
+        k\ast\arrow[r]                       & yR \\
+    \end{tikzcd}\quad\xrightarrow{r}\quad\begin{tikzcd}
+        kn\ast\arrow[d]\arrow[r,"\id"] & kn\ast\arrow[d] \\
+        k\Phi\arrow[r]                 & \Psi \\
+    \end{tikzcd}\quad\xrightarrow{\tg}\begin{tikzcd}
+        D^{kn} & D^{kn}\arrow[l, "\id"] \\
+        (G\Phi)^k\arrow[u] & G\Psi\arrow[l]\arrow[u] \\
+    \end{tikzcd}\]
+
+    Regardons maintenant le cube commutatif que l'on obtient avec $\theta$~:
+
+    \[\begin{tikzcd}
+        D^{kn}\arrow[rr, dashed, red, "f^k"] & &
+            C^k & \\
+        & D^{kn}\arrow[ul, red, "\id"]
+                \arrow[rr, near start, dashed, "\theta_{k\ast\rightarrow yR}^1"] & &
+            C^k\arrow[ul, "\id"] \\
+        (G\Phi)^k\arrow[uu]\arrow[rr, near start, dashed, "f"] & &
+            C^k\arrow[uu, near end, blue, "\id"] & \\
+        & G\Psi\arrow[ul]\arrow[uu, red, very thick]
+               \arrow[rr, dashed, blue, "\theta_{k\ast\rightarrow yR}^2"] & &
+            FyR\arrow[uu]\arrow[ul, blue] \\
+    \end{tikzcd}\]
+
+    Les flèches en pointillés sont surjective, donc suivant le chemin rouge, on obtient
+    exactement tous les $k$-uplets de la sémantique de $R$, donc on les obtient aussi
+    en suivant le chemin bleu. Donc l'image de la flèche épaisse est bien
+    $f^{-1}(\sem{R}_F)$, d'où $f^{-1}(\sem{R}_F)\in<\mathscr{D}>$.
+\end{proof}
+
+\begin{prop}
+    $\alpha$ est bien un foncteur.
+\end{prop}
+
+\begin{proof}
+    L'image de l'identité est trivialement l'identité. Il reste à vérifier que $\alpha$
+    conserve bien la composition. Soient $(\Sigma,F)$, $(\Gamma,G)$, $(\Lambda,H)$ trois
+    objets de $\fcsp$ avec les flèches suivantes~:
+
+    \[\begin{tikzcd}
+        \tsigma^\op\arrow[dr, bend right, swap, "r^\op"]\arrow[rr, bend left, "\tf"]
+            & \Uparrow\theta
+            & \ffun \\
+        & \tgamma^\op\arrow[ur, bend right, swap, "\tg"] \\
+    \end{tikzcd}\qquad\begin{tikzcd}
+        \tgamma^\op\arrow[dr, bend right, swap, "r'^\op"]\arrow[rr, bend left, "\tg"]
+            & \Uparrow\theta'
+            & \ffun \\
+        & \tlambda^\op\arrow[ur, bend right, swap, "\tH"] \\
+    \end{tikzcd}\]
+
+    L'image du premier morphisme est le triplet $(n,F,f)$ où $n = U_1r\iota\ast$,
+    $F = \im \tg r\iota\ast$ et $f = \theta^1_{\ast|F}$.
+
+    L'image du second morphisme est le triplet $(m,G,g)$ où $m = U_1r'\iota\ast$,
+    $G = \im \tH r'\iota\ast$ et $g = \theta'^1_{\ast|F}$.
+
+    L'image de la composition est le triplet $(k,H,h)$ où $k = U_1r'r\iota\ast$,
+    $H = \im \tH r'r\iota\ast$ et $h = (\theta\circ(r|\theta'))^1_{\ast|F}$.
+
+    On note $r\iota\ast = n\ast\rightarrow\phi$ et
+    $r'\iota\ast = m\ast\rightarrow\psi$. On regarde maintenant le carré commutatif
+    suivant~:
+
+    \[\begin{tikzcd}
+        n\ast\arrow[d,"\id"]\arrow[r,"\id"] & n\ast\arrow[d] \\
+        n\ast\arrow[r] & \phi \\
+    \end{tikzcd}\quad\xrightarrow{r'}\quad\begin{tikzcd}
+        mn\ast\arrow[r, "\id"]\arrow[d] & mn\ast\arrow[d] \\
+        n\psi\arrow[r] & \phi' \\
+    \end{tikzcd}\quad\xrightarrow{\tH}\quad\begin{tikzcd}
+        E^{mn} & E^{mn}\arrow[l, "\id"] \\
+        (H\psi)^n\arrow[u] & H\phi'\arrow[l]\arrow[u] \\
+    \end{tikzcd}\]
+
+    En regardant ce que l'on obtient avec les transformations naturelles, et en
+    contractant les flèches qui sont l'identité, on obtient le diagramme commutatif
+    suivant~:
+
+    \[\begin{tikzcd}
+        E^{mn}\arrow[rr, "\theta'^1_{r\iota\ast} = (\theta'^1_{\iota\ast})^n"] & &
+            D^n\arrow[dr, "\theta^1_{\iota\ast}"] & \\
+        & (H\psi)^n\arrow[ur, swap, "(\theta'^2_{\iota\ast})^n"]\arrow[ul] & &
+            C \\
+        H\phi'\arrow[ur]\arrow[rr, "\theta'^2_{r\iota\ast}"]\arrow[uu] & &
+            G\phi\arrow[ur, "\theta^2_{\iota\ast}"]\arrow[uu] & \\
+    \end{tikzcd}\]
+
+    Ce diagramme nous permet de conclure immédiatement.
+\end{proof}
+
