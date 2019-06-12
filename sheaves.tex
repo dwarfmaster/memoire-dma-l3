@@ -56,7 +56,7 @@ C'est là que le résultat suivant entre en jeu.
 \end{prop}
 
 \begin{pv}
-    %TODO référence
+    Admis.
 \end{pv}
 
 Par cet isomorphisme, $\shc(\psh(\Sigma))$ correspond aux CSP. On aimerait donc pouvoir
@@ -131,126 +131,6 @@ On peut alors étudier quelques limites particulières.
     \[\phi_{A\wedge B} \iff \phi_A\wedge\phi_B \]
 \end{lem}
 
-\subsection{Description syntaxique des morphismes de formules}
-
-Étudions maintenant les morphismes de formules, qui sont ici des transformations
-naturelles entre faisceau. Regardons un peu plus précisément comment elles se
-comportent. Soient $F,G\in\C_\psh(\Sigma)$ deux formules et $\theta:F\rightarrow F$
-une transformation naturelle. Regardons comment elle doit se comporter~:
-
-\[ \theta_\star : F\star \rightarrow G\star \]
-
-L'existence de cette fonction nous dit que l'on renomme les variables de $F$ en des
-variables de $G$, éventuellement en en contractant certaines. De plus, pour chaque
-$R$ relation on a~:
-
-\[ \theta_R : FR\rightarrow GR\]
-
-Si on regarde comment $\phi_F$ et $\phi_G$ sont définies, cela signifie que chaque
-instance de relation de $F$ est envoyée sur une instance de la même relation de $G$,
-de nouveau en en contractant éventuellement certaines. Finalement, la contrainte
-de naturalité est la suivante~:
-
-\[\begin{tikzcd}
-    F\star \arrow[d, "\theta_\star"] & FR_j \arrow[l, "Ff_i^j"]
-                                            \arrow[d, "\theta_{R_j}"] \\
-    G\star & GR_j \arrow[l, "Gf_i^j"] \\
-\end{tikzcd}\]
-
-Cela nous dit qu'après avoir renommé les variables de $F$ par $\theta_\star$, les
-instance de relation sont envoyées sur des instances identiques dans $G$.
-
-Ces différentes opérations nous rappellent un peu le calcul des séquent, et
-c'est en effet le cas. Afin de le définir plus formellement, il va falloir décrire
-les formules sous forme de séquents.
-
-\begin{defi}{Séquent associé à une formule}
-    Soit $\phi$ une formule conjonctive que l'on suppose mise sous la
-    forme canonique $\exists x_1,\dots\exists x_n, R(\dots)\wedge R(\dots)$. On
-    y associe le séquent $<\phi> = x_1,\dots x_n\vdash R(\dots), \dots, R(\dots)$.
-\end{defi}
-
-\begin{rem}
-    L'habitué remarquera que la partie droite du séquent est utilisée de manière non
-    canonique. En effet, elle sert usuellement à représenter une disjonction et
-    l'on s'en sert ici pour représenter un conjonction. C'est lié au fait que
-    les faisceaux partent de $\C_\Sigma^\text{op}$, et donc que le sens de lecture
-    des règles de déduction est inversé lorsque pris par le faisceau. Ainsi, si l'on
-    veut avoir des règles correspondant aux conjonctions à l'arrivée, il faut dualiser
-    les règles, et cela nous donne les règles de disjonction, ce qui est cohérent avec
-    l'interprétation standard des séquents.
-\end{rem}
-
-Nous rappelons maintenant les règles de déduction structurelle adaptées à nos séquents
-(ce sont presque exactement celles du calcul des séquents intuitionistes).
-
-\begin{defi}{Règles de déduction}
-    Commençons par la règle de l'$\alpha$-renommage~:
-
-    \[ \tproof{ \hypo{\Gamma, x\vdash \Delta}
-         \infer1[$y\not\in\Gamma$]{\Gamma, y\vdash \Delta[x/y]} }\]
-
-    Viennent ensuite les règles de commutation~:
-
-    \[ \tproof{ \hypo{\Gamma, x, y, \Xi\vdash \Delta}
-         \infer1{\Gamma, y, x, \Xi\vdash \Delta} }
-       \qquad
-       \tproof{ \hypo{\Gamma\vdash \Delta_1, R(\mathbf{x}), S(\mathbf{y}), \Delta_2}
-         \infer1{\Gamma\vdash \Delta_1, S(\mathbf{y}), R(\mathbf{x}), \Delta_2} }
-    \]
-
-    Maintenant, les règles d'affaiblissement~:
-
-    \[ \tproof{ \hypo{\Gamma\vdash\Delta}
-         \infer1{\Gamma, x\vdash \Delta} }
-       \qquad
-       \tproof{ \hypo{\Gamma\vdash\Delta}
-         \infer1{\Gamma\vdash\Delta,R(\mathbf{x})} }\]
-
-    Enfin, les règles de contraction~:
-
-    \[ \tproof{ \hypo{\Gamma,x,y\vdash\Delta}
-         \infer1{\Gamma, x\vdash\Delta[y/x]} }
-       \qquad
-       \tproof{ \hypo{\Gamma\vdash\Delta, R(\mathbf{x}), R(\mathbf{x})}
-         \infer1{\Gamma\vdash\Delta, R(\mathbf{x})} }\]
-
-\end{defi}
-
-On arrive maintenant au théorème de description syntaxique~:
-
-\begin{theo}{Description syntaxique d'un morphisme de formule}
-    Soient $F,G\in\C_\Sigma$ deux formules. Alors il existe une transformation
-    naturelle $\theta:F\rightarrow G$ si et seulement si $<\phi_F>$ peut être réécrit
-    en $<\phi_G>$ selon les règles de déduction ci-dessus.
-\end{theo}
-
-\begin{pv}
-    Admis
-\end{pv}
-
-\begin{rem}
-    On pourrait même tenter d'établir une bijection entre des arbres de preuve
-    et des transformations naturelles, mais certains arbres donnent les même
-    transformations, donc il faudrait quotienter par la bonne relation, ce qui
-    n'est pas trivial.
-\end{rem}
-
-On peut maintenant se demander ce que donnent les constructions classiquent en terme
-de séquent.
-
-\begin{lem}\label{seqStandarts}
-    Soient $\phi_1$, $\phi_2$ deux formules telles que $<\phi_1> = \Gamma\vdash\Delta$ et
-    $<\phi_2> = \Xi\vdash\Omega$ (on suppose $\Gamma\cap\Xi=\emptyset$), alors~:
-
-    \begin{align*}
-        <\phi_\mathbf{0}> &=~\vdash \\
-        <\phi_\mathbf{1}> &= x\vdash R_1(x,\dots, x),\dots R_n(x, \dots, x) \\
-        <\phi_1\wedge\phi_1> &= \Gamma,\Xi\vdash\Delta,\Omega \\
-        <\phi_{y\star}> &= x\vdash
-    \end{align*}
-\end{lem}
-
 \subsection{Correction}
 
 Le théorème \ref{canEq} nous dit que $\sh(\C_\Sigma)\cong \C_\Sigma$, et l'on a
@@ -317,7 +197,7 @@ $n$ variables de $x_1,\dots x_k$. Alors si l'on regarde la sémantique de cette 
 elle prend une solution de $x_1,\dots x_k\vdash\Delta$ et donne une solution de
 $x_1,\dots, x_n\vdash$ qui lui corresponds. Autrement dit, l'image de ce morphisme
 correspond à des $n$-uplets solution de $\exists \dots:\Delta$ où les variables
-quantifiées ne sont pas celles sélectionnées par le morphisme.
+quantifiées sont celles qui ne sont pas sélectionnées par le morphisme.
 
 On a donc un moyen de représenter une formule avec certaines variables liées et certaines
 variables libres~: ce sont des morphismes dans $\C_\Sigma$ d'une formule de la forme
@@ -362,6 +242,11 @@ On peut alors effectuer la construction décrite ci-dessus.
     On dispose de deux foncteurs d'oublis canoniques $U_1 : \tsigma\rightarrow\cf$
     et $U_2 : \tsigma\rightarrow\C_\Sigma$.
 \end{defi}
+
+On peut munir $\tsigma$ d'une représentation sous forme de séquents de manière
+similaire à ce qui est fait pour $\C_\Sigma$, mais c'est moins utile. La représentation,
+ainsi que la représentation de quelques limites usuelles, sont disponibles en
+annexe \ref{seqTSigma}.
 
 \begin{defi}{Injection de $\C_\Sigma$ dans $\tsigma$}
     On définit le foncteur $\iota:\C_\Sigma\rightarrow\tsigma$ de la façon suivante~:
@@ -484,147 +369,5 @@ On peut alors effectuer la construction décrite ci-dessus.
 \begin{cor}
     $U_1$ et $U_2$ sont exacts à droite.
 \end{cor}
-
-Afin de donner une description plus intéressante de quelques colimites usuelles, on
-va définir une description en terme de séquent de objets de $\tsigma$.
-
-\begin{defi}{Représentation en séquents de $\tsigma$}
-    Soit $f : n\ast\rightarrow X$ un objet de $\tsigma$. On note
-    $<\phi_X> = \Xi\vdash\Phi$. $f$ induit une fonction de $x_1,\dots x_n$ vers $\Xi$.
-    On note le séquent associé à $f$ de la façon suivante~:
-
-    \[ <f> := x_1, \dots x_n; \Xi - \im f\vdash \Phi',\mathcal{E} \]
-
-    Où $\Phi'$ est $\Phi$ où l'on a remplacé chaque variable par une de ses préimage
-    par $f$ si elle est dans l'image de $f$. De plus, $\mathcal{E}$ est une suite
-    d'égalités~: $x_i=x_j\in\mathcal{E}$ si $f(x_i) = f(x_j)$ et $i\neq j$.
-
-    Une formule de la forme $\Xi;\Gamma\vdash \Phi$ représente une formule ayant comme
-    variables libre $\Xi$ et comme variables liées $\Gamma$. De plus on a toujours
-    $\Xi\cap\Gamma=\emptyset$.
-\end{defi}
-
-\begin{exs}
-    \item $<\iota\ast> = x;\vdash$
-    \item $<\iota yR> = x_1,\dots x_{\ar(R)};\vdash R(x_1, \dots, x_{\ar(R)})$
-    \item Si on note $\tilde{0} : 2\rightarrow 2$ la fonction constante égale à
-        zéro, on peut prendre $\theta : 2\ast\rightarrow X$ où $X$ est une formule
-        vide à deux variables telle que $\theta_\star = \tilde{0}$. Dans ce cas, on
-        a $<\theta> = x,y;\vdash x = y$~: c'est la diagonale ! On remarque donc
-        qu'avec ces conventions, il est possible de définir la diagonale même en
-        l'absence de relation. Cela revient à dire que l'égalité fait toujours
-        parti des relations autorisées, ce qui est une convention commune.
-\end{exs}
-
-\begin{lem}
-    Soient $X,Y\in\tsigma$. On note $X+Y$ leur coproduit. Notons aussi
-    $<X> = \Xi;\Gamma\vdash\Phi$ et $<Y> = \Xi';\Gamma'\vdash\Phi'$ (on suppose
-    tous les ensembles de variables disjoints).
-    
-    Alors $<X+Y> = \Xi,\Xi';\Gamma,\Gamma'\vdash\Phi,\Phi'$.
-\end{lem}
-
-\begin{lem}
-    Notons $\mathbf{0}$ l'élément initial de $\tsigma$.
-    
-    Alors $<\mathbf{0}> = ;\vdash$.
-\end{lem}
-
-\begin{lem}
-    Soient $X,Y\in\tsigma$. On note $<X> = \Xi,x;\Gamma\vdash\Phi$ et
-    $<Y> = \Xi',y;\Gamma'\vdash\Phi'$. On considère de plus les flèches allant de
-    $<Z> = x;\vdash$ vers $X$ (resp $Y$) qui sélectionnent la variable $x$ (resp $y$).
-
-    Alors $<X +_Z Y> = \Xi,\Xi',x;\Gamma,\Gamma'\vdash\Phi,\Phi'[y/x]$.
-\end{lem}
-
-\begin{pv}
-    Tous ces lemmes sont des conséquences directes du théorème \ref{commaCL}.
-\end{pv}
-
-\begin{theo}{Relèvement sur $\tsigma$}\label{lifting}
-    Soit $r : \C_\Sigma\rightarrow\tgamma$ un foncteur exact à droite. Alors il
-    existe un foncteur exact à droite $\tilde{r}$ tel que~:
-
-    \[\begin{tikzcd}
-        \C_\Sigma\arrow[dr, bend right, "\iota"]\arrow[rr, bend left, "r"]
-            & \cong & \tgamma \\
-        & \tsigma\arrow[ur, bend right, "\tilde{r}"] & \\
-    \end{tikzcd}\]
-\end{theo}
-
-\begin{pv}
-    On commence par construire un $\tilde{r}$ candidat, puis on
-    vérifiera qu'il est bien exact à droite.
-    
-    Soit $k\ast\xrightarrow{f} X\in\tsigma$. On note $r\ast = n\ast\rightarrow\phi$
-    et $rX = m\ast\rightarrow\psi$. L'objet de $\tsigma$ étant une flèche de $\C_\Sigma$,
-    elle est envoyée sur un carré commutatif. De plus, comme $r$ est exact à droite,
-    on a $r(k\ast) = kr(\ast)$. Donc $r$ nous donne le carré commutatif suivant~:
-
-    \[\begin{tikzcd}
-        kn\ast\arrow[r, "r_1f"]\arrow[d]\arrow[dr,dashed] & m\ast\arrow[d] \\
-        k\phi\arrow[r, "r_2f"] & \psi \\
-    \end{tikzcd}\]
-
-    On définit l'image de $f$ par $\tilde{r}$ comme étant la diagonale de ce carré
-    commutatif. On doit maintenant définir l'image d'une flèche. Soit un carré commutatif
-    dans $\tsigma$~:
-
-    \[\begin{tikzcd}
-        k_1\ast\arrow[r,"g_1"]\arrow[d,"f_1"] & k_2\ast\arrow[d,"f_2"] \\
-        X_1\arrow[r,"g_2"] & X_2 \\
-    \end{tikzcd}\]
-
-    Comme l'image de chaque morphisme est un carré commutatif, donc en prenant
-    l'image par $r$ on obtient la pyramide suivante~:
-
-    \[\begin{tikzcd}
-        k_1n\ast\arrow[rrr,red,"r_1g_1"]\arrow[dr]\arrow[ddd, "r_1f_1"]\arrow[ddr,dashed]
-            & & & k_2n\ast\arrow[dl]\arrow[ddd, "r_1f_2"]\arrow[ddl,dashed] \\
-        & k_1\phi\arrow[r,"r_2g_1"]\arrow[d,"r_2f_1"]
-            & k_2\phi\arrow[d,swap,"r_2f_2"] & \\
-        & \psi_1\arrow[r,red,"r_2g_2"]
-            & \psi_2 & \\
-        n_1\ast\arrow[ur]\arrow[rrr,"r_1g_2"]
-            & & & n_2\ast\arrow[ul] \\
-    \end{tikzcd}\]
-
-    Les flèches en rouge nous donnent l'image du carré commutatif.
-
-    On obtient facilement que $\tilde{r}$ préserve l'identité et la composition
-    (on recolle les pyramides selon leur côté commun). C'est donc bien un foncteur.
-
-    Construisons maintenant une transformation naturelle entre $rX$ et
-    $\tilde{r}\iota X$. On définit $\theta_X$ comme étant le carré commutatif
-    suivant~:
-
-    \[\begin{tikzcd}
-        kn\ast\arrow[r, "r_1f"]\arrow[d] & m\ast\arrow[d] \\
-        \psi\arrow[r, "\id"] & \psi \\
-    \end{tikzcd}\]
-
-    Or $f$ est une flèche de $\tsigma$ créée par $\iota$, elle est donc bijective. Comme
-    les foncteurs préservent les isomorphismes, $r_1f$ est un isomorphisme. On a donc
-    une transformation inversible, vérifions qu'elle est naturelle~:
-
-    \[\begin{tikzcd}
-        kn\ast\arrow[rrrr, "r_1f"]\arrow[dr, "n\arf(h_\star)"]\arrow[dddddrr]
-            & & & & m\ast\arrow[dl, swap, "r_1h"]\arrow[dddddll] \\
-        & k'n\ast\arrow[rr, "r_1f'"]\arrow[ddr]
-            & & m'\ast\arrow[ddl] & \\
-        & & & & \\
-        & & \psi' & & \\
-        & & & & \\
-        & & \phi\arrow[uu, "r_2h"] & & \\
-    \end{tikzcd}\]
-
-    La base et le sommet commutent. De plus, le côté droit et celui du haut commutent.
-    Donc donc les faces commutent~: $\theta$ est un isomorphisme naturel entre
-    $\tilde{r}\circ\iota$ et $r$.
-
-    Il est aussi direct de vérifier que $\tilde{r}$ est exact à droite.
-    % TODO détailler ?
-\end{pv}
 
 

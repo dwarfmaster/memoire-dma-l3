@@ -48,7 +48,7 @@
 
 \setcounter{tocdepth}{3}
 
-\title{Mémoire de L3~: Un approche catégorique au problème CSP}
+\title{Mémoire de L3~: Une approche catégorique au problème CSP}
 \author{Luc Chabassier\and Simon Cabuche}
 \date{\small Sous la direction de Damiano Mazza}
 
@@ -59,6 +59,20 @@
 \newpage
 \tableofcontents
 \newpage
+
+\section*{Remarques générales}
+
+Les annexes contiennent différents résultats et différentes preuves auxquelles
+ont est arrivé, dont on juge qu'elles ne sont pas nécessaire pour la
+présentation des résultats principaux, mais qui peuvent être intéressantes
+quand même. On a essayé de s'arranger pour que la lecture des annexes ne soit
+pas nécessaire pour la compréhension de notre démarche et de nos résultats,
+mais il est possible que certaines preuves fassent référence à des résultats
+mis en annexe.
+
+De plus, on considèrera que les entiers sont égaux à leur encodage classique en théorie
+des ensembles, à savoir que l'égalité $n = \{0, \dots, n-1\}$ est toujours vraies. On
+parlera donc de fonction entre entiers par exemple.
 
 
 %   ____ ____  ____                    _     _                
@@ -122,6 +136,10 @@ mémoire et nous avoir permi d'avancer autant.
 \newpage
 \section{Vision algébrique}\label{appClones}
 \input clones.tex
+
+\newpage
+\section{Relèvement sur $\tsigma$}
+\input rel.tex
 
 \end{document}
 

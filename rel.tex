@@ -1,0 +1,91 @@
+
+Cette partie contient une preuve non terminée du résultat suivant. Il est donc
+possible que ce résultat soit faux. Heureusement il n'est utilisé nul part dans
+ce mémoire, mais il serait probablement utile pour la construction de
+$\gamma$ (voire \ref{secGamma}) si on avait eu le temps de la faire.
+
+\begin{theo}{Relèvement sur $\tsigma$}\label{lifting}
+    Soit $r : \C_\Sigma\rightarrow\tgamma$ un foncteur exact à droite. Alors il
+    existe un foncteur exact à droite $\tilde{r}$ tel que~:
+
+    \[\begin{tikzcd}
+        \C_\Sigma\arrow[dr, bend right, "\iota"]\arrow[rr, bend left, "r"]
+            & \cong & \tgamma \\
+        & \tsigma\arrow[ur, bend right, "\tilde{r}"] & \\
+    \end{tikzcd}\]
+\end{theo}
+
+\begin{pv}
+    On commence par construire un $\tilde{r}$ candidat, puis on
+    vérifiera qu'il est bien exact à droite.
+    
+    Soit $k\ast\xrightarrow{f} X\in\tsigma$. On note $r\ast = n\ast\rightarrow\phi$
+    et $rX = m\ast\rightarrow\psi$. L'objet de $\tsigma$ étant une flèche de $\C_\Sigma$,
+    elle est envoyée sur un carré commutatif. De plus, comme $r$ est exact à droite,
+    on a $r(k\ast) = kr(\ast)$. Donc $r$ nous donne le carré commutatif suivant~:
+
+    \[\begin{tikzcd}
+        kn\ast\arrow[r, "r_1f"]\arrow[d]\arrow[dr,dashed] & m\ast\arrow[d] \\
+        k\phi\arrow[r, "r_2f"] & \psi \\
+    \end{tikzcd}\]
+
+    On définit l'image de $f$ par $\tilde{r}$ comme étant la diagonale de ce carré
+    commutatif. On doit maintenant définir l'image d'une flèche. Soit un carré commutatif
+    dans $\tsigma$~:
+
+    \[\begin{tikzcd}
+        k_1\ast\arrow[r,"g_1"]\arrow[d,"f_1"] & k_2\ast\arrow[d,"f_2"] \\
+        X_1\arrow[r,"g_2"] & X_2 \\
+    \end{tikzcd}\]
+
+    Comme l'image de chaque morphisme est un carré commutatif, donc en prenant
+    l'image par $r$ on obtient la pyramide suivante~:
+
+    \[\begin{tikzcd}
+        k_1n\ast\arrow[rrr,red,"r_1g_1"]\arrow[dr]\arrow[ddd, "r_1f_1"]\arrow[ddr,dashed]
+            & & & k_2n\ast\arrow[dl]\arrow[ddd, "r_1f_2"]\arrow[ddl,dashed] \\
+        & k_1\phi\arrow[r,"r_2g_1"]\arrow[d,"r_2f_1"]
+            & k_2\phi\arrow[d,swap,"r_2f_2"] & \\
+        & \psi_1\arrow[r,red,"r_2g_2"]
+            & \psi_2 & \\
+        n_1\ast\arrow[ur]\arrow[rrr,"r_1g_2"]
+            & & & n_2\ast\arrow[ul] \\
+    \end{tikzcd}\]
+
+    Les flèches en rouge nous donnent l'image du carré commutatif.
+
+    On obtient facilement que $\tilde{r}$ préserve l'identité et la composition
+    (on recolle les pyramides selon leur côté commun). C'est donc bien un foncteur.
+
+    Construisons maintenant une transformation naturelle entre $rX$ et
+    $\tilde{r}\iota X$. On définit $\theta_X$ comme étant le carré commutatif
+    suivant~:
+
+    \[\begin{tikzcd}
+        kn\ast\arrow[r, "r_1f"]\arrow[d] & m\ast\arrow[d] \\
+        \psi\arrow[r, "\id"] & \psi \\
+    \end{tikzcd}\]
+
+    Or $f$ est une flèche de $\tsigma$ créée par $\iota$, elle est donc bijective. Comme
+    les foncteurs préservent les isomorphismes, $r_1f$ est un isomorphisme. On a donc
+    une transformation inversible, vérifions qu'elle est naturelle~:
+
+    \[\begin{tikzcd}
+        kn\ast\arrow[rrrr, "r_1f"]\arrow[dr, "n\arf(h_\star)"]\arrow[dddddrr]
+            & & & & m\ast\arrow[dl, swap, "r_1h"]\arrow[dddddll] \\
+        & k'n\ast\arrow[rr, "r_1f'"]\arrow[ddr]
+            & & m'\ast\arrow[ddl] & \\
+        & & & & \\
+        & & \psi' & & \\
+        & & & & \\
+        & & \phi\arrow[uu, "r_2h"] & & \\
+    \end{tikzcd}\]
+
+    La base et le sommet commutent. De plus, le côté droit et celui du haut commutent.
+    Donc donc les faces commutent~: $\theta$ est un isomorphisme naturel entre
+    $\tilde{r}\circ\iota$ et $r$.
+
+    Il faudrait vérifier que $\tilde{r}$ est exact à droite pour conclure.
+\end{pv}
+
+
