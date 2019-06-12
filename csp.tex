@@ -1,209 +1,162 @@
+\subsection{Problèmes de satisfaction de contraintes}
 
-Soit $D$ un ensemble fini.
+Les CSP, ou problèmes de satisfaction de contraintes, sont une catégorie de problèmes étudiés depuis les années 60. Nous proposons une définition des CSP comme problèmes forméspar un modèle sur la logique régulière d'un langage.
 
-\subsection{CSP}
 
 \begin{defi}{Logique régulière}
-    Une proposition de la logique régulière est construite à partir d'un nombre
-    fini de relations $R_1, \dots R_n$, sur un langage de termes ne contenant que
-    des variables $x, y, z \dots$, de la conjonction, de la quantification existentielle
-    et du symbole faux.
+Soit $\Gamma$ un ensemble fini de relations $\{R_1,\dots,R_n\}$, d'arités respectives $\alpha_1,\dots,\alpha_n$.\\
+Une proposition de la logique régulière sur le langage $\Gamma$ est une proposition de la logique ne faisant intervenir que les symboles logiques $\wedge, \exists$, les termes formées à partir de variables et des relations de $\Gamma$, et le symbole faux.
 
     \[\begin{array}{rcl}
-        P, Q & := & R_1(x_1, \dots, x_{\ar(R_1)}) \\
-             & |  & \vdots                        \\
-             & |  & R_n(x_1, \dots, x_{\ar(R_n)}) \\
-             & |  & x = y                         \\
-             & |  & P \wedge Q                    \\
-             & |  & \exists x. P                  \\
-             & |  & \bot                          \\
-    \end{array}\]
+P,Q & := & R_1(x_1, \dots, x_{\alpha_1}) \\
+& |  & \vdots                        \\
+& |  & R_n(x_1, \dots, x_{\alpha_n}) \\
+& |  & P \wedge Q                    \\
+& |  & \exists x \ P                  \\
+& |  & \bot                          \\
+\end{array}\]
 \end{defi}
 
-\begin{defi}{Problème de satisfaction de contraintes}
-    Pour un ensemble fini $\mathcal{D}$ de contraintes, on donne une interprétation de
-    ces contraintes sur $D$. Cela revient à dire que $D$ est un modèle de la théorie
-    vide sur le langage de la logique régulière. L'interprétation des différents 
-    connecteurs se font comme en théorie des modèle de premier ordre usuel. 
-    $\csp(\mathcal{D})$ est alors le problème, pour une proposition de la logique
-    régulière $P$, de déterminer si $D\models P$.
+Le langage $\Gamma$ sera parfois appelé ensemble de contraintes. Etant donné un tel ensemble $\Gamma$, un CSP sur $\Gamma$ est la donnée d'un ensemble fini $D$ et de, pour chaque symbole de relation $R_i$ de $\Gamma$, d'une relation $r_i \subset D^{\alpha_i}$ sur $D$. 
+
+
+\begin{defi}{CSP}
+Un CSP $D$ sur $\Gamma$ est un ensemble fini modèle de la théorie vide sur le langage de la logique régulière sur $\Gamma$. On le notera $\csp (D,\Gamma)$, et il sera assimilé à la paire $(D,\Gamma)$.\\
+Une instance du problème $\csp (D,\Gamma)$ est la donnée d'une formule $P$ de la logique régulière sur $\Gamma$, et il s'agit de savoir si $D \models P$. $D$ est appelé domaine du CSP $(D,\Gamma)$.
+\\On noteras $\csp (\Gamma)$ l'ensemble des CSP sur $\Gamma$, et $\csp (\star)$ l'ensemble de tous les CSP.
 \end{defi}
 
-Par la suite, on assimilera une proposition à $m$ variables libres avec une relation
-d'arité $m$.
+De nombreux problèmes usuels sont des CSP, par exemple, pour $k \geq 2$, $k$-SAT est équivalent au CSP $(\{0,1\}^k,\Gamma_{k-SAT})$, avec :\\
 
-\begin{lem}
-    Pour tout $\mathcal{D}$, $\csp(\mathcal{D})$ est dans $NP$.
+$$\Gamma_{k-SAT} = \{R_{a_1,\dots,a_k}|(a_1,\dots,a_k) \in \{0,1\}^k\}$$\\ Et pour $$(a_1,\dots,a_k) \in \{0,1\}^k$$, $$r_{a_1,\dots,a_k} = \{0,1\}^k - \{a_1,\dots,a_k\} $$
 
-    On ne peut pas dire mieux dans le cas général. En effet, $3-SAT$ est un $\csp$
-    (facile), donc certains $\csp$ sont $NP$-complets.
-\end{lem}
+Chaque relation joue le rôle d'une clause de littéraux qu'il faut satisfaire. Une instance de $k$-SAT est une conjonction de clauses (donc de relations). D'autres problèmes, comme la k-colorabilité d'un graphe, ou l'existence d'un chemin netre deux arêtes d'un graphe.\\
 
-\begin{theo}{Dichotomie}
-    Soit $\mathcal{D}$. $\csp(\mathcal{D})$ est soit $NP$-complet, soit dans $P$.
+On vient de voir qu'il existe des CSP solvables en temps polynomial ($2$-SAT), et d'autres $NP$-complets ($k$-SAT pour $k \geq 3$). En 1998, Feder et Vardi ont conjecturé que les CSP étaient soient dans $P$, soit $NP$-complets. Cette conjecture, longtemps restée au centre de la recherche dans le domaine, a été démontrée en 2017. Feder et Vardi conjecturent également que la classe des CSP est la classe naturelle de problèmes la plus large à avoir une telle dichotomie ($P$ - $NP$-complet).\\
+Dans ce mémoire, nous allons étudier les CSP et les notions relatives avec une approche catégorique.\\
+
+\subsection{Réduction, pp-définissabilité, pp-interprétabilité}
+
+Jusqu'à présent, nous avions distingué symboles de relation (notés $R$), qui étaient des éléments de $\Gamma$, et relations sur l'ensemble fini $D$ (notés $r$). Nous assimilerons à présent relations et symboles de relation, et nous ne préciserons que lorsqu'il y aura une ambiguïté problématique.
+
+\begin{defi}{Reduction}
+Soient $(D,\mathcal{D})$ et $(E,\mathcal{E})$ deux CSP. On dit que $(D,\mathcal{D})$ se réduit à  $(E,\mathcal{E})$ s'il existe une réduction LogSPACE de $(D,\mathcal{D})$ à$(E,\mathcal{E})$, c'est à dire s'il existe une fonction calculable en espace logarithmique qui envoie une instance de $(D,\mathcal{D})$ sur une instance de $(E,\mathcal{E})$ qui soit equisatisfiable. On notera $(D,\mathcal{D}) \leq (E,\mathcal{E})$
+\end{defi}
+
+\begin{prop}
+La relation $\leq$ est transitive, et la relation binaire $\mathcal{R}$ définie sur $\csp (\star)$ par 
+$$(D,\mathcal{D}) \mathcal{R} (E,\mathcal{E}) \iff (D,\mathcal{D}) \leq (E,\mathcal{E}) \ et \ (E,\mathcal{E}) \leq (D,\mathcal{D})$$
+est une relation d'équivalence. Il suffit donc pour déterminer la complexité des CSP d'étudier un représentant par classe.
+\end{prop}
+
+D'autres outils permettent de hiérarchiser les CSP.
+
+\begin{defi}{pp-définissabilité}
+Soient $(D,\mathcal{D})$ et $(D,\mathcal{E})$ deux CSP sur le même domaine $D$. On dit que $(D,\mathcal{D})$ pp-définit (primitif-positif définit) $(D,\mathcal{E})$ (ou $(D,\mathcal{E})$ est pp-définissable dans $(D,\mathcal{D})$) lorsque chaque relation dans $\mathcal{E}$ peut être définie par une formule du premier ordre qui n'utilise que des relations de $\mathcal{D}$, l'égalité, la quantification existentielle et la conjonction.
+\end{defi}
+
+L théorème suivant donne un lien entre pp-définissabilité et complexité.
+
+\begin{theo}{}
+Si  $(D,\mathcal{D})$ et $(D,\mathcal{E})$ sont deux CSP tels que  $(D,\mathcal{D})$ pp-définit $(D,\mathcal{E})$, alors $(D,\mathcal{E}) \leq (D,\mathcal{D})$
 \end{theo}
 
-Ce théorème est très difficile. Pour commencer à l'attauqer, on veut pouvoir comparer les
-$\csp$ par difficulté. La comparaison qui va nous intéresser est la réduction LOGSpace.
+\begin{proof}
+Notons $\mathcal{D} = \{R_1,\dots,R_n\}$ et $\alpha_1,\dots,\alpha_n$ l'arité des relations de $\mathcal{D}$. 
 
-\begin{defi}{Réduction}
-    Soient $\mathcal{D}$ et $\mathcal{F}$ des ensembles finis de relations, éventuellement
-    sur des domaines différents. On écrit $\csp(\mathcal{D})\leq\csp(\mathcal{F})$ si il
-    existe une fonction calculable en espace logarithmique qui envoie une instance de
-    $\csp(\mathcal{D})$ sur une instance de $\csp(\mathcal{F})$ qui soit équisatisfiable.
+Supposons qu'on ait donné une instance de $\csp (D,\mathcal{E})$ de la forme :
+
+$$P = \exists x_1 \dots \exists x_k \ R(y_1,\dots,y_m)$$
+
+où R est une relation d'arité $m$
+
+Alors, il existe une formule $F$ du premier ordre de la logique régulière sur $\mathcal{D} \cup \{=\}$ telle que :
+
+$$ R(y_1,\dots,y_m) \iff F[y_1,\dots,y_m]$$
+
+On peut donc remplacer dans $P$ la relation $R$ par la formule $F$. Il suffit d'identifier dans la formule $F$ les termes faisant intervenir la relation d'égalité, et d'identifier les variables, puis de retirer ces closes. On a alors remplacé P par une instance de $\csp (D,\mathcal{D})$ équivalente.
+
+Si la formule $P$ est une conjonction de termes, on peut appliquer ce qui précède à chaque relation, puis à nouveau identifier les variables dans les termes faisant intervenir l'égalité pour obtenir une formule équivalente qui soit une instance de $\csp (D,\mathcal{D})$. 
+\end{proof}
+
+La pp-définissabilité est un outil puissant qui permet de comparer des CSP sur un même domaine. Pour comparer deux CSP sur un domaine quelconque, on utilise une notion similaire : la pp-interprétabilité.
+
+\begin{defi}{}
+Soient $E$ et $F$ deux ensembles, $n \in \mathbb{N}^\star$, $f : E^n \rightarrow F$ une application surjective, et $R$ une relation sur $F$ d'arité $k$. On appelle l'image réciproque de $R$ par $f$ la relation d'arité $nk$ définie sur $E$ par :
+
+Pour $(x_{11},\dots,x_{1k},x_{2k},\dots,\dots,x_{nk}) \in E^{nk}$
+
+$$(x_{11},\dots,x_{1k},x_{2k},\dots,\dots,x_{nk}) \in f^{-1}(R) \iff (f(x_{11},\dots,x_{n1}),\dots,f(x_{1k},\dots,x_{nk})) \in R$$
 \end{defi}
 
-On va maintenant considérer des critères plus simples qui permettent de comparer des
-$\csp$.
-
-\begin{defi}{pp-réduction}
-    $\mathcal{F}$ est dit pp-réductible (primitif positif réductible) à
-    $\mathcal{D}$ (sur un même domaine) si chaque relation de $\mathcal{F}$ peut
-    s'écrire comme une formule régulière sur $\mathcal{D}$.
+\begin{defi}{pp-interprétabilité}
+Soient $(D,\mathcal{D})$ et $(E,\mathcal{E})$ deux CSP. $(D,\mathcal{D})$ pp-interprète $(E,\mathcal{E})$ lorsqu'il existe $n \in \mathbb{N}$, $F \subset D^n$ et une application injective $f : F \rightarrow E$ telle que $(D,\mathcal{D})$ pp-définit :
+\begin{itemize}
+	\item la relation $F$
+	\item l'image réciproque par $f$ de la relation d'égalité sur $E$
+	\item l'image réciproque par $f$de chaque relation dans $\mathcal{E}$
+\end{itemize}
 \end{defi}
 
-\begin{lem}
-    Si $\mathcal{F}$ est pp-réductible à $\mathcal{D}$, alors
-    $\csp(\mathcal{F})\leq\csp(\mathcal{D})$.
-\end{lem}
-
-\subsection{Adjunction}
-
-\begin{defi}{$\Rel$}
-    $\Rel$ est l'ensemble des ensembles de relations sur $D$.
-
-    \[\Rel = \P\left(\bigcup_{n\in\N^*} \P(D^n)\right)\]
-\end{defi}
-
-\begin{defi}{$\Oper$}
-    $\Oper$ est l'ensemble des ensemble d'opérations sur $D$.
-
-    \[\Oper = \P\left(\bigcup_{n\in\N^*} \P(D^{D^n})\right)\]
-\end{defi}
-
-Ces deux ensembles sont partiellement ordonnables par l'inclusion. On va alors
-chercher à créer une connection de Galois (ou adjonction/dualité) entre ces
-ensembles.
-
-Pour cela, on va définir une relation entre les opérations et les relations sur $D$.
-
-\begin{defi}{$\bot$} Soit $R\in \bigcup_{n\in\N^*} \P(D^n)$ une relation sur $D$
-    et $f\in\bigcup_{n\in\N^*} \P(D^{D^n})$ une opération sur $D$. On écrit alors
-    $R\bot f$ si, en posant $n = \ar(R)$ et $m = \ar(f)$~:
-
-    \[ \forall (a_{i,j})\in D^{nm}, (\forall 1\leq j\leq m, R(a_{1,j}, \dots a_{n, j}))
-         \implies R(f(a_{1,1}, \dots a_{1,m}), \dots f(a_{n,1}, \dots a_{n,m})) \]
-\end{defi}
-
-On va maintenant définir les deux foncteurs contrinvariant (fonctions décroissantes)
-entre $\Rel$ et $\Oper$ qui formeront notre adjunction.
-
-\begin{defi}{$\Pol$ et $\Inv$}
-    On définit~:
-
-    \[\Pol:\begin{array}{rcl}\Rel & \rightarrow & \Oper \\
-        S & \mapsto & \{f\in\Oper | \forall R\in S, R\bot f\} \\
-    \end{array}\]
-
-    \[\Inv:\begin{array}{rcl}\Oper & \rightarrow & \Rel \\
-        S & \mapsto & \{R\in\Rel | \forall f\in S, R\bot f\} \\
-    \end{array}\]
-\end{defi}
-
-\begin{lem}
-    $\Pol$ et $\Inv$ sont des foncteurs contrinvariants, respectivement de $\Rel$ vers
-    $\Oper$ et de $\Oper$ vers $\Rel$.
-\end{lem}
-
-On a maintenant le premier résultat intéressant, qui motive leur définition~:
-
-\begin{theo}{Adjunction}
-    $\Pol\dashv\Inv : \Rel^\text{op} \rightarrow \Oper$
+\begin{theo}
+Si un CSP $(D,\mathcal{D})$ pp-interprète un CSP $(E,\mathcal{E})$, alors $(E,\mathcal{E}) \leq (D,\mathcal{D})$.
 \end{theo}
-\begin{proof}
-    Soit $S_R\in\Rel$ et $S_f\in\Oper$. On a~:
 
-    \begin{align*}
-        S_f\subseteq\Pol(S_R) &\iff \forall f\in S_f, \forall R\in S_R, R\bot f \\
-                              &\iff \forall R\in S_R, \forall f\in S_f, R\bot f \\
-                              &\iff S_R\subseteq\Inv(S_f)
-    \end{align*}
+\begin{proof}
+Les propriétés de $f$ permettent de réécrire une instance de $(E,\mathcal{E})$ comme une instance d'un problème défini sur $F$,et par suite, sur $D$, avec un langage pp-définissable par $\mathcal{D}$. On peut ensuite utiliser le théorème précédent pour conclure.
 \end{proof}
 
-\subsection{Clone}
+La pp-interprétabilité permet de comparer deux CSP quelconques. Nous verrons une approche plus algébrique via les clones des polymorphisme, mais nous allons d'abord pouvoir nous restreindre à certains types particuliers de CSP
 
-\begin{defi}{Clone} Un clone est un ensemble d'opérations (donc un élément de $\Oper$)
-    contenant l'identité, et stable par composition, permutation, affaiblissement et
-    contraction.
+\subsection{Endomorphismes, noyaux de CSP et CSP idempotents}
+
+\begin{defi}{Endomorphisme de CSP}
+Soit $(D,\mathcal{D})$ un CSP. Une application $f : D \rightarrow D$ est un endomorphisme de CSP si $f$ préserve toutes les relations de $\mathcal{D}$, c'est-à-dire si , pour une relation $R$ d'arité $n$ de $\mathcal{D}$, et pour $(a_1,\dots,a_n) \in R$, alors $(f(a_1),\dots,f(a_n)) \in R$
 \end{defi}
 
-\begin{defi}{Clone relationel} Un clone relationel est un ensemble de relations
-    (donc un élément de $\Rel$) contenant l'égalité et clôt par les constructions
-    régulières (quantification existentielle et conjonction).
-\end{defi}
+\begin{prop}
+Soit $(D,\mathcal{D})$ un CSP, et $f$ un endomorphisme. Alors $(D,\mathcal{D})$ est réductible à $(f(D),\mathcal{D})$, et vice-versa. (les interprétations des relations de $\mathcal{D}$ dans $f(D)$ sont données par restriction des relations sur $D$ à $f(D) \subset D$).
+\end{prop}
 
-\begin{defi}{Clone relationel engendré} Pour $\Gamma\in\Rel$, on note $<\Gamma>$ le plus
-    petit clone relationel contenant $\Gamma$ (c'est bien défini car l'intersection d'un
-    ensemble quelconque de clones relationels est un clone relationel).
-\end{defi}
-
-\subsection{Théorème important}
-
-% TODO hypothèse : l'image de Inv est toujours un clone relationel, et l'image de Pol est
-% toujours un clone
-\begin{lem}{}
-    \[\forall \Gamma\in\Rel, \Inv(\Pol(\Gamma)) \text{ est un clone relationel}\]
-\end{lem}
 \begin{proof}
-    Soit $\Gamma\in\Rel$.
+On peut définir l'image $f(R)$ d'une relation $R \in \mathcal{D}$ d'arité $n \in \mathbb{N}$ par $f$ :
 
-    Soit $f$ une opération sur $D$. Comme
-    $\forall (a_i), (b_i)\in D^{\ar(f)}, (a_i) = (b_i) 
-        \implies f(a_1, \dots a_{\ar(f)}) = f(b_1, \dots b_{\ar(f)})$, on a $\Delta\bot f$
-    et donc $\Delta\in \Inv(F)$ pour tout $F\in\Oper$. Donc $\Delta\in\Inv(\Pol(\Gamma))$.
+$$ f(R) = \{ (f(a_1),\dots,f(a_n))| (a_1,\dots,a_n) \in R\}$$
 
-    De manière immédiate, $\Inv(F)$ est clos par intersection de relations pour tout
-    $F\in\Oper$.
-
-    Soit $f\in\Pol(\Gamma)$. Soit $R\in\Inv(\Pol(\Gamma))$, avec $\ar(R)>1$. Posons
-    $R'$ la relation définie par $R'(x_1, \dots x_{\ar(R)-1}) :\iff
-    \exists x. R(x, x_1, \dots x_{\ar(R)-1})$. Posons $m = \ar(R) - 1$ et $n = \ar(f)$.
-    Soient maintenant $(a_{i,j})\in D^{mn}$ tels que
-    $\forall 1\leq j\leq n, R'(a_{1,j}, \dots, a_{m,j})$. On prends $x_1, \dots x_n$ les
-    témoins de chaque relation. En posant $x = f(x_1, \dots x_n)$, et
-    $a_i = f(a_{i,1}, \dots a_{i,n})$, on a $R(x, a_1, \dots a_m)$ et donc
-    $R'(a_1, \dots a_m)$, d'où le résultat.
+On peut alors associer à une instance de $(D,\mathcal{D})$ une instance de $(f(D),\mathcal{D})$ qui soit equisatisfiable. Toutes les instances de $(f(D),\mathcal{D})$ sont atteintes d'où le résultat.
 \end{proof}
 
-\begin{theo}{1969}
-    \[\forall \Gamma\in\Rel, <\Gamma> = \Inv(\Pol(\Gamma))\]
+\begin{defi}{Noyaux}
+Un CSP $(D,\mathcal{D})$ est un noyau si tous ses endomorphismes sont bijectifs. Si $(D,\mathcal{D})$ est un CSP, et si $f$ est un endomorphisme d'image minimale (de cardinal minimal), alors $(f(D),\mathcal{D})$ est un noyau. Il est unique à isomorphisme près, ainsi il s'agira du noyau du CSP $(D,\mathcal{D})$.
+\end{defi}
+
+\begin{proof}
+Si un endomorphisme de CSP $f$ a une image de cardinal minimal, alors tous les endomorphismes de $(f(D),\mathcal{D})$ sont des bijections, sinon il existe $g$ un endomorphisme non bijectif de $(f(D),\mathcal{D})$, et $g \circ f$ serait un endomorphisme de $(fD,\mathcal{D})$ de cardinal strictement inférieur à $f$.
+\end{proof}
+
+On peut ainsi se ramener à l'étude des noyaux. Plus encore, on peut se ramener à l'étude des CSP idempotents.
+
+\begin{defi}
+Un CSP $(D,\mathcal{D})$ est idempotent si $\mathcal{D}$ contient tous les singletons.
+\end{defi}
+
+\begin{theo}
+Soit $(D,\mathcal{D})$ un CSP noyau et $\mathcal{E} = \mathcal{D} \cup \bigcup_{a \in D} R_a$ où $R_a$ est la relation unaire $\{a\}$, pour $a \in D$. $(D,\mathcal{E})$ est réductible à $(D,\mathcal{D})$.
 \end{theo}
-\begin{proof}\begin{description}
-    \item[$\subseteq$] Par propriété d'adjonction, on a 
-        $\Gamma\subseteq\Inv(\Pol(\Gamma))$. Or d'après le lemme précédent, 
-        $\Inv(\Pol(\Gamma))$ est un clone relationel. Donc, comme $<\Gamma >$ est le
-        plus petit clone relationel contenant $\Gamma$, on a 
-        $<\Gamma>\subseteq\Inv(\Pol(\Gamma))$.
-    \item[$\supseteq$] Difficile ! Donc admis. % TODO
-\end{description}\end{proof}
-
-\begin{cor}{Critère de pp-réductibilité}
-    $\mathcal{D}$ est pp-réductible à $\mathcal{F}$ si et seulement si
-    $\Pol(\mathcal{F})\subseteq\Pol(\mathcal{D})$.
-\end{cor}
 
 \begin{proof}
-    $\mathcal{D}$ est pp-réductible à $\mathcal{F}$ si et seulement si
-    $\mathcal{D}\subseteq<\mathcal{F}>$ (c'est exactement la définition de
-    pp-réductibilité). On a alors~:
-    \[\begin{array}{rll}
-        \mathcal{D}\subseteq<\mathcal{F}>
-          &\iff \mathcal{D}\subseteq\Inv(\Pol(\mathcal{F}))
-            & \text{ par le théorème précédent} \\
-          &\iff \Pol(\mathcal{F})\subseteq\Pol(\mathcal{D})
-            & \text{ par propriété d'adjunction} \\
-    \end{array}\]
+On note $n=|D| $, et $D=\{a_1\}$
+
+Etant donnée une instance de $(D,\mathcal{E})$, on introduit des nouvelles variables $x_1,\dots,x_n$ et on remplace dans l'instance tous les termes de la forme $C_{a_i}(x)$ par $x=x_a$. Enfin on rajoute une relation $End(x_1,\dots,x_n)$, où $End$ est la relation d'arité $n$ 
+
+$$ End = \{(f(a_1),\dots,f(a_n))| f\ est\ un\ endomorphisme\ de\ (D,\mathcal{D})\}$$
+
+La relation $End$ est pp-définissable dans $D$ (car les endomorphismes sont exactement les applications qui préservent les relations). 
+
+Ainsi, on a une instance de $(D,\mathcal{D} \cup \{=\})$. Si l'instance originelle a une solution, celle-ci aussi, et si cette instance à une solution, alors il existe un endomorphisme $f$ donné par les éléments associés aux variables $x_1,\dots,x_n$. Comme $(D,\mathcal{D})$ est un noyau, $f$ est bijectif, et en considérant $f^{-1}$, on peut trouver une solution de l'instance originelle.
 \end{proof}
 
+Les CSP idempotents sont des CSP noyaux, puisqu'ils contiennent tous les singletons. Ainsi, l'étude peut se restreindre au CSP idempotents. Notre approche catégorique n'en rend pas compte, même si des notions comme la pp-réductibilité apparaîtrons.
 
+\subsection{Vision algébrique}
 
