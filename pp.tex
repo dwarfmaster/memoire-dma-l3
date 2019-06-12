@@ -1,40 +1,4 @@
 
-\subsection{PP-interprétabilité de CSPs}
-
-\begin{defi}{Rappel}\label{ppInterDef}
-    $(C,\mathscr{C})$ est pp-interprétable dans $(D,\mathscr{D})$ s'il existe~:
-    \begin{itemize}
-        \item $n$ un entier
-        \item $F\subset D^n$ un ensemble
-        \item $f : F\rightarrow C$ une fonction surjectives
-    \end{itemize}
-
-    Ces objets doivent vérifier les propriétés suivantes~:\begin{itemize}
-        \item $F\in<\mathscr{D}>$
-        \item $f^{-1}(=_D)\in<\mathscr{D}>$
-        \item pour chaque relation $R\in\mathscr{C}$, $f^{-1}(R)\in<\mathscr{D}>$
-    \end{itemize}
-\end{defi}
-
-\begin{lem}
-    La pp-interprétabilité est composable.
-\end{lem}
-
-\begin{pv}
-    Soient les pp-interprétabilités suivantes~:
-
-    \[\begin{tikzcd}
-        (C,\mathscr{C})\arrow[rr, "{(n,F,f)}"] & &
-        (D,\mathscr{D})\arrow[rr, "{(m,G,g)}"] & &
-        (E,\mathscr{E}) \\
-    \end{tikzcd}\]
-
-    Alors $(nm, (g^n)^{-1}(F), f\circ g^n_{|(g^n)^{-1}})$ est une pp-interprétation
-    de $(C,\mathscr{C})$ dans $(E,\mathscr{E})$.
-\end{pv}
-
-\subsection{Approche catégorique}
-
 On définit une catégorie qui va contenir des CSPs sur des alphabets quelconques,
 et les morphismes vont représenter la pp-interprétabilité. À cette fin il nous
 faut un moyen de porter un faisceau sur $\C_\Sigma$ en un foncteur de $\tsigma$
@@ -112,10 +76,10 @@ et un foncteur $\gamma : \fcsp\rightarrow\csp$ pour former une adjonction.
         R_1 & \dots & R_m \\
     \end{tikzcd}\]
 
-    On définit $\mathscr{C} := \{\sem{R_1}_F,\dots\sem{R_m}\}$ où
+    On définit $\mathcal{C} := \{\sem{R_1}_F,\dots\sem{R_m}\}$ où
     $\sem{R_i}_F = \{(F\pi^i_1(x), \dots, F\pi^i_{\ar(R_i)}) | x\in FyR_i\}$.
 
-    On peut alors poser $\alpha(\Sigma,F) = (C,\mathscr{C})$.
+    On peut alors poser $\alpha(\Sigma,F) = (C,\mathcal{C})$.
 
     On doit maintenant définir l'image d'une flèche~:
 
@@ -161,7 +125,7 @@ et un foncteur $\gamma : \fcsp\rightarrow\csp$ pour former une adjonction.
         & \tgamma^\op\arrow[ur, bend right, swap, "\tg"] \\
     \end{tikzcd}\]
 
-    On note $F(\Sigma,F) = (C,\mathscr{C})$, $F(\Gamma,G) = (D,\mathscr{D})$ et l'image
+    On note $F(\Sigma,F) = (C,\mathcal{C})$, $F(\Gamma,G) = (D,\mathcal{D})$ et l'image
     du morphisme $(n, F, f)$. On doit commencer par vérifier que $F\subseteq D^n$ et
     que $f : F\rightarrow C$ est surjective. Regardons le carré commutatif
     $\theta_{\iota\star}$ dans $\ffun$~:
@@ -179,11 +143,12 @@ et un foncteur $\gamma : \fcsp\rightarrow\csp$ pour former une adjonction.
     maintenant s'assurer que les conditions de la définition \ref{ppInterDef}
     sont respectées.
 
-    On commence par la remarque suivante immédiate suivante~: un objet est dans
-    $<\mathscr{D}>$ si et seulement si il est dans l'image du foncteur
-    $\im\circ\tg$ où $\im:\ffun\rightarrow\fset$ prends l'image d'une flèche.
+    On commence par la remarque suivante immédiate suivante~: un objet est
+    pp-définissable dans $(D,\mathcal{D})$ si et seulement si il est dans
+    l'image du foncteur $\im\circ\tg$ où $\im:\ffun\rightarrow\fset$ prends
+    l'image d'une flèche.
 
-    Cette remarque rends immédiat le fait que $F\in<\mathscr{D}>$.
+    Cette remarque rends immédiat le fait que $F\in<\mathcal{D}>$.
 
     Rappelons maintenant que $=_D$ est la formule obtenu par $\tf(2\ast\rightarrow\ast)$.
     On veut donc étudier son image par $r$. À cette fin, on regarde l'image par
@@ -213,7 +178,7 @@ et un foncteur $\gamma : \fcsp\rightarrow\csp$ pour former une adjonction.
     \end{tikzcd}\]
 
     Ce qui nous dit exactement ce que l'on veut ! On a donc bien
-    $f^{-1}(=_D)\in <\mathscr{D}>$.
+    $f^{-1}(=_D)\in <\mathcal{D}>$.
 
     Il reste à traiter le cas des relations. Soit $R\in\Sigma$ une relation d'arité
     $k = \ar(R)$. On va considérer le diagramme commutatif suivant dans $\C_\Sigma$ (qui
@@ -248,7 +213,7 @@ et un foncteur $\gamma : \fcsp\rightarrow\csp$ pour former une adjonction.
     Les flèches en pointillés sont surjective, donc suivant le chemin rouge, on obtient
     exactement tous les $k$-uplets de la sémantique de $R$, donc on les obtient aussi
     en suivant le chemin bleu. Donc l'image de la flèche épaisse est bien
-    $f^{-1}(\sem{R}_F)$, d'où $f^{-1}(\sem{R}_F)\in<\mathscr{D}>$.
+    $f^{-1}(\sem{R}_F)$, d'où $f^{-1}(\sem{R}_F)\in<\mathcal{D}>$.
 \end{pv}
 
 \begin{prop}
@@ -316,10 +281,10 @@ et un foncteur $\gamma : \fcsp\rightarrow\csp$ pour former une adjonction.
 
 Il reste à définire un foncteur de $\csp$ vers $\fcsp$.
 
-Pour l'image d'un CSP $(C,\mathscr{C})$, on peut lui associer le couple
-$(\Sigma, YX)$ où $\Sigma$ est l'aphabet sur lequel est définit $\mathscr{C}$
+Pour l'image d'un CSP $(C,\mathcal{C})$, on peut lui associer le couple
+$(\Sigma, YX)$ où $\Sigma$ est l'aphabet sur lequel est définit $\mathcal{C}$
 et $X : \Sigma^\op\rightarrow\fset$ le foncteur qui à $\star$ associe $C$, à
-une relation associe sa définition dans $\mathscr{C}$ et à une flèche $f_j$
+une relation associe sa définition dans $\mathcal{C}$ et à une flèche $f_j$
 associe la projection d'un $n$-uplet sur la $j$-ième coordonnée. La proposition
 \ref{shSemCorrect2} nous dit que cette sémantique est celle à laquelle on pense
 naturellement.

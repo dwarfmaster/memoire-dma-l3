@@ -1,0 +1,112 @@
+Soit $D$ un ensemble fini.
+
+\begin{defi}{$\Rel$}
+    $\Rel$ est l'ensemble des ensembles de relations sur $D$.
+
+    $$\Rel = \P\left(\bigcup_{n\in\mathbb{N^*}} \P(D^n)\right)$$
+\end{defi}
+
+\begin{defi}{$\Oper$}
+    $\Oper$ est l'ensemble des ensemble d'opérations sur $D$.
+
+    $$\Oper = \P\left(\bigcup_{n\in\mathbb{N^*}} \P(D^{D^n})\right)$$
+\end{defi}
+
+\begin{defi}{Relation $\bot$}
+    Soit $R$ une relation d'arité $n$ et $f$ une opération d'arité $k$ sur $D$.
+    On écrit que $R \bot f$ lorsque pour tout $(a_{i,j}) \in D^{nk}$,
+    
+    $$ \forall 1 \leq j \leq k, (a_{1,j},\dots,a_{n,j}) \in R \implies
+    (f(a_{1,1},\dots,a_{1,k}),\dots,f(a_{n,1},\dots,a_{n,k})) \in R$$
+    
+    Cela signifie que $f$ est compatible avec la realtion $R$.
+\end{defi}
+
+On définit:
+
+\begin{defi}{Pol et Inv}
+    $$\Pol:\begin{array}{rcl}\Rel & \rightarrow & \Oper \\
+    S & \mapsto & \{f\in\Oper | \forall R\in S, R\bot f\} \\
+    \end{array}$$
+    
+    $$\Inv:\begin{array}{rcl}\Oper & \rightarrow & \Rel \\
+    S & \mapsto & \{R\in\Rel | \forall f\in S, R\bot f\} \\
+    \end{array}$$
+\end{defi}
+
+Pour un CSP $(D,\mathcal{D})$, $\Pol(\mathcal{D})$ est l'ensemble des
+polymorphismes du CSP. Cet ensemble contient les endomorphismes (opérations
+d'arités 1), qui peuvent être vus comme des symétries (car ils préservent les
+relations). Les autres éléments de $\Pol(\mathcal{D})$ peuvent être vus comme
+des symétries de plus grande arité.
+
+\begin{prop}
+    $\Pol(\mathcal{D})$ a les propriétés suivantes :
+    \begin{itemize}
+    	\item $\Pol(\mathcal{D})$ contient toutes les projections
+        \item $\Pol(\mathcal{D})$ est clos par composition, c'est à dire, si
+            $g$ est une opération d'arité $k$ et si $f_1,\dots,f_k$ sont des
+            opérations d'arité $n$, l'opération $g(f_1,\dots,f_k)$ est définie
+            par :
+
+            $$ \forall (a_1,\dots,a_n) \in \mathcal{D}^n,\
+            g(f_1,\dots,f_k)(a_1,\dots,a_n) =
+            g(f_1(a_1,\dots,a_n),\dots,f_k(a_1,\dots,a_n)) $$
+    \end{itemize}
+    Les éléments de $\Oper$ qui vérifient ces propriétés sont appelés des
+    clones concrets. $\Pol(\mathcal{D})$ est donc le clone (concret) des
+    polymorphismes de $\mathcal{D}$.
+\end{prop}
+
+\begin{theo}{}
+    Soient $(D,\mathcal{D})$ et $(D,\mathcal{E})$ deux CSP sur le domaine $D$.
+    $(D,\mathcal{D})$ pp-définit $(D,\mathcal{E})$ si et seulement si
+    $\Pol(\mathcal{D}) \subset \Pol(\mathcal{E})$
+\end{theo}
+
+\begin{proof}
+    L'implication $\implies$ découle de la définition de pp-définissabilité
+
+    L'autre implication se montre comme dans le cas des CSP idempotents : En
+    considérant une relation $R$ de $\mathcal{E}$ compatible avec toutes les
+    relations de $\Pol(\mathcal{D})$, alors $R$ est pp-définissable dans
+    $\mathcal{D}$. Il suffit de constater que l'ensemble des polymorphismes
+    $k$-aires de $\Pol(\mathcal{D})$ peut être vu comme une relation
+    $|D|^k$-aire S pp-définissable dans $D$. $R$ peut être défini par une telle
+    relation en projetant sur des coordonnées adéquates.
+\end{proof}
+
+\begin{defi}{}
+    Un clone abstrait est un clone dont on ne précise pas le domaine. C'est une
+    structure algébrique où seule importe la composition des opérations, et
+    quelles opérations sont les projections. C'est le "squelette" d'un clone
+    concret.  Soient $\mathbb{D}$ et $\mathbb{E}$ deux clones abstraits. Une
+    application $H : \mathbb{D} \rightarrow \mathbb{E}$ est un morphisme de
+    clones si :
+    \begin{itemize}
+    	\item $H$ préserve l'arité des opérations.
+    	\item $H$ envoie les projections sur les projections.
+        \item $H$ préserve la composition, c'est à dire, pour $f_1,\dots,f_n,g
+            \in \mathbb{D}$, avec $g$ d'arité $n \in \mathbb{N}$:
+            $$H(g(f_1,\dots,f_n)) = H(g)(H(f_1),\dots,H(f_n)) $$
+    \end{itemize}
+\end{defi}
+
+\begin{theo}{}
+    Soient $(D,\mathcal{D})$ et $(E,\mathcal{E})$ deux CSP.  $(D,\mathcal{D})$
+    pp-interprète  $(E,\mathcal{E})$ si et seulement si il existe un morphisme
+    de clone de $\Pol(\mathcal{D})$ vers $\Pol(\mathcal{E})$
+\end{theo}
+
+Ce résultat montre que seul importe le clone abstrait d'un CSP pour déterminer
+sa complexité. On peut ainsi obtenir des conditions sur un CSP
+$(E,\mathcal{E})$ pour que celui-ci soit pp-interprétable par un autre CSP
+$(D,\mathcal{D})$. S'il existe dans $\Pol(\mathcal{D})$ des opérations
+vérifiant certaines équations fonctionnelles, alors il doit exister dans
+$\Pol(\mathcal{D})$ des opérations vérifiant les même conditions (c'est l'image
+des opérations de $\Pol(\mathcal{D})$ par un morphisme de clone $H$).
+Inversement, si il n'y a pas pp-interprétabilité, il existe une condition du
+type formulé plus haut qui est vérifiée dans $\Pol(\mathcal{D})$ mais pas dans
+$\Pol(\mathcal{E})$. Ces conditions sont appelées les condition de Mal'tsev, et
+permettent de caractériser les CSP.
+
