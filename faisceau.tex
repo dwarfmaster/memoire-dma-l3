@@ -107,10 +107,6 @@ On peut vérifier que cette définition a bien un sens~:
     Alors $\phi(\alpha)$ est une relation d'équivalence sur $\E(r')$.
 \end{lem}
 
-\begin{proof}
-    TODO mais facile.
-\end{proof}
-
 On a maintenant tout en main pour définir les morphismes entre formules.
 
 \begin{defi}{Morphismes entre formules}
@@ -140,7 +136,7 @@ définir proprement la composition de morphismes dans $\C$.
     terme à terme.
 \end{lem}
 
-\begin{proof}
+\begin{pv}
     Comme la composition de deux injections est un injection, on a que
     $g\circ f\in\D(r,r'')$.
 
@@ -148,7 +144,7 @@ définir proprement la composition de morphismes dans $\C$.
     les déplacements sont immédiatements croissants pour l'inclusion lorsque pensés
     comme fonctions de relations.
     Donc $g\circ f(\alpha)\subseteq g(\alpha')\subseteq \alpha''$.
-\end{proof}
+\end{pv}
 
 \begin{defi}{Déplacement d'un lieu de variable}
     Soient $(r,\alpha)$ et $(r',\alpha')$ des formules, et $f\in\D(r,r')$.
@@ -209,16 +205,16 @@ On a maintenant tout en main pour définir la composition de morphismes.
     Alors $h\circ(g\circ f) = (h\circ g)\circ f$.
 \end{lem}
 
-\begin{proof} Les trois lemmes sont immédiats. Il suffit d'écrire la définition de $\circ$
+\begin{pv} Les trois lemmes sont immédiats. Il suffit d'écrire la définition de $\circ$
     dans chacun des cas pour que ça marche.
-\end{proof}
+\end{pv}
 
 \begin{theo}{Définition de $\C$}
     $\C$ est une catégorie.
 \end{theo}
 
-\begin{proof} Conséquence immédiate des trois lemmes précédents.
-\end{proof}
+\begin{pv} Conséquence immédiate des trois lemmes précédents.
+\end{pv}
 
 \subsection{Représentation des formules}
 % TODO est-ce qu'on veut faire les preuves en détail ici ?
@@ -233,8 +229,8 @@ On a maintenant tout en main pour définir la composition de morphismes.
     On appelle une telle écrite la forme normale de $\phi$.
 \end{lem}
 
-\begin{proof} Induction sur la structure de la formule.
-\end{proof}
+\begin{pv} Induction sur la structure de la formule.
+\end{pv}
 
 On suppose désormais que toutes les formules sont sous forme normale.
 
@@ -279,25 +275,18 @@ On va montrer que cette représentation contient toute l'information qui nous in
     la flèche qui lui est associée par la bijection ci-dessus.
 \end{defi}
 
-\begin{lem}
+\begin{lem}\label{concretCompIff}
     Soient $\phi$ et $\psi$ deux formules telles que $[\phi] = [\psi]$.
 
     Alors $\vdash \phi\iff\psi$
 \end{lem}
 
-\begin{lem}
+\begin{lem}\label{varAlongSub}
     Soient $\phi$ et $\psi$ deux formules.
     
     Si $\phi$ est une sous-formule de $\psi$ avec $\iota$ l'assimilation de
     variables associée, alors il existe $f\in\C_\Sigma([\phi], [\psi])$ telle
     que le diagramme suivant commute~:
-
-    % \[\begin{tikzcd}
-    %     \C_\Sigma(\star,[\phi]) \arrow[d, "f"] & \V(\phi) \arrow[l, "[.]"]
-    %                                                       \arrow[d, "\iota"] \\
-    %     \C_\Sigma(\star,[\psi]) \arrow[r, ".^*"] & \V(\psi)
-    % \end{tikzcd}\]
-
 
     \[\begin{tikzcd}
         \C_\Sigma(\star,[\phi]) \arrow[d, "f"] & \V(\phi) \arrow[d, "\iota"]
@@ -314,7 +303,7 @@ On va montrer que cette représentation contient toute l'information qui nous in
     $\V(\psi)$ donnée par le lemme ci-dessus.
 \end{defi}
 
-\begin{lem}
+\begin{lem}\label{abstractExists}
     Soit $(r,\alpha)\in\C_\Sigma$.
 
     Alors il existe une formule $\phi$ telle que $[\phi] = (r,\alpha)$.
@@ -328,8 +317,9 @@ lemme ci-dessus lorsque l'on parlera de sous-formule.
     Soit $(r,\alpha)\in\C_\Sigma$.
 
     On note $\phi_{(r,\alpha)}$ une formule telle que $[\phi_{(r,\alpha)}] = (r,\alpha)$.
-    C'est toujours possible d'après le lemme (ci-dessus-4) et le choix n'est pas important
-    puisque toutes les formules sont équivalentes d'après le lemme (ci-dessus-2).
+    C'est toujours possible d'après le lemme \ref{abstractExists} et le choix n'est
+    pas important puisque toutes les formules sont équivalentes d'après le lemme
+    \ref{concretCompIff}.
 \end{defi}
 
 \subsection{Structure de site}
@@ -440,7 +430,7 @@ lemme suivant.
     Cette définition est bien un site.
 \end{lem}
 
-\begin{proof}
+\begin{pv}
     Traitons d'abords le cas de $\star$. Comme il existe une seule flèche
     entrante en $\star$, son identité, et un seul recouvrement, la propriété de
     site est immédiatement vraie.
@@ -460,7 +450,7 @@ lemme suivant.
     sous-formule du recouvrement. En prenant le morphisme depuis $\star$ vers
     cette sous-formule qui identifie l'une des variables qui est ensuite
     envoyée sur $v$, on fait commuter le carré voulu.
-\end{proof}
+\end{pv}
 
 \subsection{Correction de la définition}
 
@@ -498,7 +488,7 @@ Intuitivement, cela correspond à rajouter des variables qui n'apparaissent pas 
 formule à sa sémantique. On dispose alors d'un moyen de définir la sémantique d'une
 formule à partir de ses formules atomiques.
 
-\begin{defi}{Sémantique d'une formule}
+\begin{defi}{Sémantique d'une formule}\label{cspSem}
     Soit $\psi$ une formule quelconque. $\psi$ est une conjonction d'atomes~:
 
     \[ \psi = \exists x_1,\exists x_2,\dots
@@ -507,7 +497,7 @@ formule à partir de ses formules atomiques.
     Alors pour $1\leq i\leq k$, on prend $f_i$ l'assimilation de
     $R_{j_i}(x_1, x_2, \dots)$ (toutes les variables doivent être distinctes) comme
     sous formule de $\psi$. Elle induit une fonction de $\V(R_{j_i}(x_1, x_2, \dots))$
-    dans $\V(\psi)$ d'après le lemme ?? % TODO numéroter les lemmes et faire les liens
+    dans $\V(\psi)$ d'après le lemme \ref{varAlongSub}
 
     On pose alors~:
 
@@ -525,8 +515,8 @@ formule à partir de ses formules atomiques.
     On pose $F\star = D$ et $F(r,\alpha) = \sem{\psi_{(r,\alpha)}}$.
 
     Soit $v\in\C_\Sigma(\star, (r,\alpha))$, on peut lui associer une variable
-    $v^*$ de manière naturelle dans $\V(\psi_{(r,\alpha)})$ d'après le lemme %TODO ref
-    . Alors on pose~:
+    $v^*$ de manière naturelle dans $\V(\psi_{(r,\alpha)})$ d'après le lemme 
+    \ref{varAlongSub}. Alors on pose~:
     
     \[ Fv = \left\{\begin{array}{ccc}
                        \sem{\psi_{(r,\alpha)}} & \rightarrow & D              \\
@@ -550,7 +540,7 @@ Vérifions que c'est bien un faisceau.
     $F$ tel que définit ci-dessus est un préfaisceau sur $\C_\Sigma$ vers $\fset$.
 \end{lem}
 
-\begin{proof}
+\begin{pv}
     On vérifie immédiatement que $F\id_x = \id_{Fx}$.
 
     L'image d'une composition de morphismes de formules est immédiatements la composition
@@ -566,10 +556,10 @@ Vérifions que c'est bien un faisceau.
                     & = & \mathbf{x}\mapsto \mathbf{x}((f(v))^*) 
                             & \text{par définition de F} \\
                     & = & \mathbf{x}\mapsto (\mathbf{x}\circ f^*)(v^*)
-                            & \text{d'après le lemme TODO} \\
+                            & \text{d'après le lemme \ref{varAlongSub}} \\
                     & = & Fv \circ Ff & \text{par définition de F} \\
     \end{array}\]
-\end{proof}
+\end{pv}
 
 Il faut alors vérifier la condition de faisceau.
 
@@ -577,7 +567,7 @@ Il faut alors vérifier la condition de faisceau.
     $F$ tel que définit ci-dessus est un faisceau sur $\C_\Sigma$ vers $\fset$.
 \end{lem}
 
-\begin{proof}
+\begin{pv}
     D'après de lemme précédent $F$ est un préfaisceau. Il reste vérifier la condition
     de faisceau.
 
@@ -608,7 +598,7 @@ Il faut alors vérifier la condition de faisceau.
         \mathbf{x}(v^*) & = & \mathbf{x}((f_i\circ v')^*)
                                  & \text{par choix de } i \\
                         & = & \mathbf{x}(f_i^*(v'^*))
-                                 & \text{d'après le lemme TODO} \\
+                                 & \text{d'après le lemme \ref{varAlongSub}} \\
                         & = & \mathbf{x_i}(v'^*)
                                  & \text{par définition de }\mathscr{S}\\
                         & = & \mathbf{y}(f_i^*(v'^*))
@@ -638,7 +628,7 @@ Il faut alors vérifier la condition de faisceau.
     \end{tikzcd}\]
 
     Ce carré commute bien d'après l'égalité \ref{fact}.
-\end{proof}
+\end{pv}
 
 \subsubsection{Tout faisceau est un CSP}
 
@@ -646,7 +636,7 @@ On veut maintenant montrer qu'il est possible d'associer un CSP à chaque faisce
 $F$ un faisceau de $\C_\Sigma$. On commence par définir la sémantique d'une formule
 selon $F$.
 
-\begin{defi}{Sémantique de faisceau}
+\begin{defi}{Sémantique de faisceau}\label{shSem}
     Soit $\psi$ une formule. La sémantique de $\psi$ selon $F$ est alors~:
 
     \[ \sem{\psi}_F := \left\{ f:\begin{array}{ccc}
@@ -669,11 +659,11 @@ On aimerait que ces deux sémantiques soient les mêmes. C'est en effet le cas, 
 cela que l'on considère des faisceaux et pas juste des préfaisceaux (les définitions
 ci-dessus marcheraient aussi avec juste un préfaisceau).
 
-\begin{theo}{Correction de la sémantique de faisceau}
+\begin{theo}{Correction de la sémantique de faisceau}\label{shSemCorrect}
     Pour toute formule $\psi$, $\sem{\psi}_F = \sem{\psi}$.
 \end{theo}
 
-\begin{proof}
+\begin{pv}
     Soit $\psi$ une formule.
     Soient $(j_i)_{1\leq i\leq k}$ les indices des formules atomiques de $\psi$
     et $(f_i)$ les morphismes de sous-formule associés.
@@ -693,7 +683,7 @@ ci-dessus marcheraient aussi avec juste un préfaisceau).
     \[\begin{array}{rll}
         \mathbb{x}\circ f_i^*(v^*) &= F([f_i^*(v^*)])(\mathbf{x}) & \\
          &= F(f_i\circ v)(\mathbf{x})
-             & \text{d'après le lemme TODO} \\
+             & \text{d'après le lemme \ref{varAlongSub}} \\
          &= (Fv\circ Ff_i)(\mathbf{x}) & \text{par fonctiorialité de } F\\
          &= Fv(Ff_i(\mathbf{x})) & \\
     \end{array}\]
@@ -732,7 +722,7 @@ ci-dessus marcheraient aussi avec juste un préfaisceau).
         Fg(\mathbf{x_i}) & = & \mathbb{x}\circ f_i^*(g^*)
                              & \text{par définition de } \mathbf{x_i} \\
                          & = & \mathbb{x}((f_i\circ g)^*)
-                             & \text{d'après le lemme TODO } \\
+                             & \text{d'après le lemme \ref{varAlongSub} } \\
                          & = & \mathbb{x}((f_j\circ h)^*)
                              & \text{par condition de cohérence} \\
                          & = & Fh(\mathbf{x_j})
@@ -751,7 +741,7 @@ ci-dessus marcheraient aussi avec juste un préfaisceau).
         \mathbb{x}(v^*) & = & \mathbb{x}((f_i\circ v')^*)
                                 & \text{car $(f_i)$ est couvrante} \\
                         & = & \mathbb{x}\circ f_i^*(v'^*)
-                                & \text{d'après le lemme TODO} \\
+                                & \text{d'après le lemme \ref{varAlongSub}} \\
                         & = & Fv'(\mathbf{x_i})
                                 & \text{par définition de }\mathbf{x_i}\\
                         & = & Fv'(Ff_i(\mathbf{x}))
@@ -762,7 +752,7 @@ ci-dessus marcheraient aussi avec juste un préfaisceau).
     \end{array}\]
 
     Donc $\mathbb{x} = x\mapsto F[x](\mathbf{x})$, d'où $\mathbb{x}\in\sem{\psi}_F$.
-\end{proof}
+\end{pv}
 
 \subsection{Canonicité}
 
@@ -788,20 +778,20 @@ La proposition suivante justifie cette définition.
     Soit $C$ une catégorie. Il existe un unique site canonique sur cette catégorie.
 \end{prop}
 
-\begin{proof}
+\begin{pv}
     Afin de prouver cette proposition, on va utiliser le lemme suivant~:
 
     \begin{lem}
         Une union quelconque de sites sous-canoniques est un sites sous-canoniques.
     \end{lem}
-    \begin{proof}
+    \begin{pv}
         Commençons par remarquer qu'une union quelconque de sites est un sites.
         La sous-canonicité vient du fait que la condition de faisceau est de la
         forme $\forall (f)\text{ recouvrement}, P(F,(f))$ où $F$ est le
         faisceau considéré.  Donc une union quelconque de familles de
         recouvrements qui ont toutes la propriétés vraie aura encore la
         propriété validée.
-    \end{proof}
+    \end{pv}
 
     L'unicité est alors immédiate.
 
@@ -811,7 +801,7 @@ La proposition suivante justifie cette définition.
     exactement un recouvrement qui est son identité. C'est effectivement un site,
     et alors tout préfaisceau est un faisceau, donc notament les préfaisceaux
     représentables.
-\end{proof}
+\end{pv}
 
 On aimerait vérifier que le site $\C_\Sigma$ est canonique, ou éventuellement le modifier
 pour qu'il le soit. Cependant, la définition ci-dessus de canonicité rends compliqué
@@ -843,7 +833,7 @@ On a alors le résultat suivant~:
     récouvrements de $J$ sont effectifs-polymorphiques.
 \end{lem}
 
-\begin{proof}
+\begin{pv}
     $\boxed{\implies}$ Soit $c\in \C$ et $S\in Jc$. Soit $D$ le diagramme formé
     de tous les spans sur $S$.
 
@@ -872,7 +862,7 @@ On a alors le résultat suivant~:
     $\boxed{\Longleftarrow}$ On peut en fait remonter la preuve puisque les familles 
     cohérentes sont exactement les cocône sur les diagrammes de spans sur des
     recouvrements.
-\end{proof}
+\end{pv}
 
 On peut alors montrer que le site canonique est celui dont les recouvrements sont
 exactement les familles effectives épimorphiques de $\C$.
@@ -886,7 +876,7 @@ $\C_\Sigma$. Or on a les diagramme suivant~:
 
 \[\begin{tikzcd}
     R(x) \arrow[r, "f"] \arrow[rd] & \phi \arrow[d, red] \\
-    R(x)\wedge S(y) \arrow[ru, "g"] \arrow[r] & R(x)\wedge S(y) \\
+    R(x)\wedge S(y) \arrow[ru, near end, "g"] \arrow[r] & R(x)\wedge S(y) \\
 \end{tikzcd}\]
 
 La flèche rouge est impossible puisque $R(x)\wedge S(y)$ a strictement moins d'atomes

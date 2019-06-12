@@ -1,7 +1,7 @@
 
 \subsection{PP-interprétabilité de CSPs}
 
-\begin{defi}{Rappel}
+\begin{defi}{Rappel}\label{ppInterDef}
     $(C,\mathscr{C})$ est pp-interprétable dans $(D,\mathscr{D})$ s'il existe~:
     \begin{itemize}
         \item $n$ un entier
@@ -20,7 +20,7 @@
     La pp-interprétabilité est composable.
 \end{lem}
 
-\begin{proof}
+\begin{pv}
     Soient les pp-interprétabilités suivantes~:
 
     \[\begin{tikzcd}
@@ -31,7 +31,7 @@
 
     Alors $(nm, (g^n)^{-1}(F), f\circ g^n_{|(g^n)^{-1}})$ est une pp-interprétation
     de $(C,\mathscr{C})$ dans $(E,\mathscr{E})$.
-\end{proof}
+\end{pv}
 
 \subsection{Approche catégorique}
 
@@ -51,10 +51,10 @@ vers $\ffun$.
     des limites de $\fset$.
 \end{lem}
 
-\begin{proof}
-    D'après le théorème TODO, on sait que $F\cong (Y\circ L) F$. Or tout préfaisceau
+\begin{pv}
+    D'après le théorème \ref{canEq}, on sait que $F\cong (Y\circ L) F$. Or tout préfaisceau
     représentable est exact à gauche (ie préserve les limites de $\C_\Sigma^\op$).
-\end{proof}
+\end{pv}
 
 \begin{defi}{Portage de foncteur}
     Soit $F:\C_\Sigma^\op\rightarrow\fset$. On définit $\tf$ un foncteur de
@@ -91,6 +91,8 @@ vers $\ffun$.
 
 On va maintenant essayer de construire un foncteur $\alpha : \csp\rightarrow\fcsp$
 et un foncteur $\gamma : \fcsp\rightarrow\csp$ pour former une adjonction.
+
+\subsubsection{Foncteur $\alpha$}
 
 \begin{defi}{Foncteur $\alpha$}
     On définit $\alpha : \fcsp\rightarrow\csp$.
@@ -148,7 +150,7 @@ et un foncteur $\gamma : \fcsp\rightarrow\csp$ pour former une adjonction.
     $\alpha$ est bien définit.
 \end{prop}
 
-\begin{proof}
+\begin{pv}
     Il faut vérifier que l'image d'un morphisme est bien un morphisme. Considérons le
     morphisme suivant entre $(\Sigma,F)$ et $(\Gamma,G)$~:
 
@@ -174,7 +176,8 @@ et un foncteur $\gamma : \fcsp\rightarrow\csp$ pour former une adjonction.
     surjective.
 
     À proprement parler notre foncteur candidat est au moins bien typé. Il faut
-    maintenant s'assurer que les conditions de la définition TODO sont respectées.
+    maintenant s'assurer que les conditions de la définition \ref{ppInterDef}
+    sont respectées.
 
     On commence par la remarque suivante immédiate suivante~: un objet est dans
     $<\mathscr{D}>$ si et seulement si il est dans l'image du foncteur
@@ -246,13 +249,13 @@ et un foncteur $\gamma : \fcsp\rightarrow\csp$ pour former une adjonction.
     exactement tous les $k$-uplets de la sémantique de $R$, donc on les obtient aussi
     en suivant le chemin bleu. Donc l'image de la flèche épaisse est bien
     $f^{-1}(\sem{R}_F)$, d'où $f^{-1}(\sem{R}_F)\in<\mathscr{D}>$.
-\end{proof}
+\end{pv}
 
 \begin{prop}
     $\alpha$ est bien un foncteur.
 \end{prop}
 
-\begin{proof}
+\begin{pv}
     L'image de l'identité est trivialement l'identité. Il reste à vérifier que $\alpha$
     conserve bien la composition. Soient $(\Sigma,F)$, $(\Gamma,G)$, $(\Lambda,H)$ trois
     objets de $\fcsp$ avec les flèches suivantes~:
@@ -307,5 +310,12 @@ et un foncteur $\gamma : \fcsp\rightarrow\csp$ pour former une adjonction.
     \end{tikzcd}\]
 
     Ce diagramme nous permet de conclure immédiatement.
-\end{proof}
+\end{pv}
 
+\subsubsection{Foncteur $\gamma$}
+
+% TODO
+
+\subsubsection{Preuve de l'adjonction}
+
+% TODO

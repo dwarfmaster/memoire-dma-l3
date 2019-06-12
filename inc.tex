@@ -1,7 +1,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[francais]{babel}
-% \usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry}
+\usepackage[top=3.5cm, bottom=3.5cm, left=3cm, right=3cm]{geometry}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{pgfornament}
@@ -96,20 +96,20 @@
 ]{leftbarbrown}
 
 \theoremstyle{defistyle}
-\newtheorem*{definth}{Définition}
+\newtheorem{definth}{Définition}[section]
 \theoremstyle{theostyle}
+\newtheorem{theonth}{Th\'eor\`eme}[subsection]
 \newtheorem*{propnth}{Propriété}
 \newtheorem*{propsnth}{Propriétés}
-\newtheorem*{proponth}{Proposition}
-\newtheorem*{theonth}{Th\'eor\`eme}
-\newtheorem*{cornth}{Corollaire}
-\newtheorem*{lemnth}{Lemme}
+\newtheorem{proponth}[theonth]{Proposition}
+\newtheorem{cornth}[theonth]{Corollaire}
+\newtheorem{lemnth}[theonth]{Lemme}
 \newtheorem*{exnth}{Exemple}
 \newtheorem*{exsnth}{Exemples}
 \theoremstyle{preuvestyle}
 \newtheorem*{remnth}{Remarque}
 \newtheorem*{remsnth}{Remarques}
-\newtheorem*{pvnth}{Preuve}
+\newtheorem*{pvnth}{Démonstration}
 \theoremstyle{axiostyle}
 \newtheorem*{axinth}{Axiome}
 \newtheorem*{lointh}{Loi}
@@ -119,8 +119,8 @@
   {\begin{leftbarred}\begin{definth} \textbf{#1}\ \\}
   {\end{definth}\end{leftbarred}}
 \newenvironment{prop}[1][]
-  {\begin{leftbarviolet}\begin{propnth} \textbf{#1}\ \\}
-  {\end{propnth}\end{leftbarviolet}}
+  {\begin{leftbarviolet}\begin{proponth} \textbf{#1}\ \\}
+  {\end{proponth}\end{leftbarviolet}}
 \newenvironment{props}[1][]
   {\begin{leftbarviolet}\begin{propsnth} \textbf{#1} \begin{enumerate}}
   {\end{enumerate}\end{propsnth}\end{leftbarviolet}}
@@ -150,7 +150,7 @@
   {\end{itemize}\end{remnth}\end{leftbarbrown}}
 \newenvironment{pv}
   {\begin{leftbargreen}\begin{pvnth}}
-  {\end{pvnth}\end{leftbargreen}}
+  {\hfill$\square$\end{pvnth}\end{leftbargreen}}
 \newenvironment{axi}[1][]
   {\begin{leftbarblue}\begin{axinth} \textbf{#1}\ \\}
   {\end{axinth}\end{leftbarblue}}

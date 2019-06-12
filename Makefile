@@ -6,7 +6,7 @@ LATEX=pdflatex
 all: $(NAME).pdf
 
 $(NAME).pdf: $(NAME).tex inc.tex $(PARTS)
-	$(WRAPPER) '$(LATEX) $(NAME).tex'
+	$(WRAPPER) '$(LATEX) $(NAME).tex && $(LATEX) $(NAME).tex'
 
 clean:
 	@touch $(NAME).pdf
